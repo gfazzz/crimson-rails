@@ -1,0 +1,17 @@
+name: pr-guard
+on: [pull_request]
+
+jobs:
+  no-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: в пулл-реквесте не должно быть файлов из artifacts/
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          bad=$(git diff --name-only "$base"...HEAD | grep '/artifacts/' | grep -v '\.gitkeep$' || true)
+          if [ -n "$bad" ]; then
+            echo "Это твои решения, им не место в курсе:"; echo "$bad"; exit 1
+          fi
+          echo "чисто"
