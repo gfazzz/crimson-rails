@@ -1,0 +1,135 @@
+/* bradshaw.css — свод правил Палаты, редакция третья: ряды.
+ *
+ * Здесь лежит редакция вторая, из s02e06. Всё, что в ней есть, остаётся:
+ * мера по внешнему краю, поля только вниз, стороны логические, ни одного
+ * !important, ни одного идентификатора, от общего к частному.
+ *
+ * TODO: шапка — колонкой, с зазором вместо полей у строк
+ * TODO: собственные поля строк шапки снять: во флексе они не схлопываются,
+ *       а складываются с зазором
+ * TODO: оглавление — рядом: без маркеров, без отступа под них, с переносом
+ * TODO: условные обозначения — тем же рядом
+ *
+ * Новая секция «Ряды» — между «Полосой» и «Частными случаями»: селекторы в
+ * ней из тегов, значит по весу она встаёт именно туда.
+ */
+
+/* ── Основание: нулевая специфичность ─────────────────────────────────── */
+
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(body, h1, h2, h3, p, figure, table, ol) {
+  margin: 0;
+}
+
+:where(ol) {
+  padding-inline-start: 1.5rem;
+}
+
+/* ── Полоса ───────────────────────────────────────────────────────────── */
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  color: #1c1a17;
+  background-color: #f6f1e7;
+  max-inline-size: 44rem;
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-block-end: 0.5rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+  margin-block-end: 0.5rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+  margin-block-end: 0.5rem;
+}
+
+p {
+  margin-block-end: 1.25rem;
+}
+
+a {
+  color: #7b1220;
+  text-decoration-thickness: 1px;
+}
+
+img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+figure {
+  margin-block-end: 1.5rem;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  margin-block-end: 1.5rem;
+}
+
+caption {
+  text-align: left;
+  font-style: italic;
+  margin-block-end: 0.5rem;
+}
+
+th,
+td {
+  border: 1px solid #cfc4ae;
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+}
+
+/* ── Частные случаи ───────────────────────────────────────────────────── */
+
+/* Спрятана от глаза — и только от него: из потока вынута, из дерева нет. */
+.skip {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* И возвращается тому, кто идёт по полосе с клавиатуры. */
+.skip:focus {
+  position: static;
+  inline-size: auto;
+  block-size: auto;
+  padding: 0.35rem 0.6rem;
+  overflow: visible;
+  clip-path: none;
+  background-color: #7b1220;
+  color: #f6f1e7;
+}
+
+.timetable td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.timetable tbody th {
+  font-weight: normal;
+}
+
+.note {
+  font-size: 0.875rem;
+}

@@ -1,0 +1,103 @@
+/* bradshaw.css — свод правил Палаты, редакция первая.
+ *
+ * Порядок файла: основание → полоса → частные случаи.
+ * Ни одного «в обязательном порядке» (!important), ни одного указателя на
+ * конкретный экземпляр (#id). Если правило перебивает соседа — оно стоит ниже
+ * и названо точнее, и это единственный разрешённый способ спорить.
+ */
+
+/* ── Основание: нулевая специфичность ─────────────────────────────────── */
+/* Всё, что ниже, перебьёт эти правила без борьбы: :where() не считается. */
+
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(body, h1, h2, h3, p, figure, table, ol) {
+  margin: 0;
+}
+
+:where(ol) {
+  padding-inline-start: 1.5rem;
+}
+
+/* ── Полоса: наследуемое объявлено один раз, у корня ──────────────────── */
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  color: #1c1a17;
+  background-color: #f6f1e7;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-block: 0.25rem 0.5rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+  margin-block: 1.75rem 0.5rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+  margin-block: 1.25rem 0.5rem;
+}
+
+p {
+  margin-block: 0.75rem;
+}
+
+a {
+  color: #7b1220;
+  text-decoration-thickness: 1px;
+}
+
+figure {
+  margin-block: 1.25rem;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+caption {
+  text-align: left;
+  font-style: italic;
+  margin-block-end: 0.5rem;
+}
+
+th,
+td {
+  border: 1px solid #cfc4ae;
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+}
+
+/* ── Частные случаи: класс называет роль, а не вид ────────────────────── */
+
+.skip {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  background-color: #7b1220;
+  color: #f6f1e7;
+}
+
+.timetable td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.timetable tbody th {
+  font-weight: normal;
+}
+
+.note {
+  font-size: 0.875rem;
+}

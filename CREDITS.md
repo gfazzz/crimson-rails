@@ -96,6 +96,12 @@ Rails»](https://eurecable.com/ideas/972)**, опубликованной на e
 | **WAI-ARIA Authoring Practices** — w3.org/WAI/ARIA/apg — для серии про таблицу расписания | — |
 | Meyer E., Weyl E. — **CSS: The Definitive Guide** (4th ed., 2017) — в библиотеке только 2-е издание; Grid и Flexbox есть лишь в 4-м, стоит добрать к пилоту сезона 2 | — |
 | Pickering H. — **Inclusive Components** (2018) — доступность как следствие правильных тегов; стоит добрать | — |
+| Andrew R. — **The New CSS Layout** (2017) — автор спецификации о том, зачем Flexbox и Grid устроены так; серии s02e06–s02e08 | — |
+| **WCAG 2.2** — w3.org/TR/WCAG22 и разделы Understanding — пороги контраста и правило «не только цветом»; серии s02e04, s02e10, s02e11 | — |
+| **WAI Web Accessibility Tutorials** — w3.org/WAI/tutorials — изображения, таблицы, формы; серии s02e02–s02e04 | — |
+| Marcotte E. — **Responsive Web Design** (A List Apart, 2010) — статья, с которой начались медиазапросы; серия s02e10 | — |
+| Bringhurst R. — **The Elements of Typographic Style** (4th ed., 2012) — откуда мера строки в 45–75 знаков; серия s02e09 | — |
+| Itten J. — **Kunst der Farbe**; рус. «Искусство цвета» — почему одинаковая светлота не выглядит одинаковой; серия s02e11 | — |
 
 ## JavaScript
 
@@ -131,6 +137,7 @@ Rails»](https://eurecable.com/ideas/972)**, опубликованной на e
 | Макконнелл С. — **Совершенный код** (2-е изд.) | ✓ |
 | Мартин Р. — **Чистый код**, **Чистая архитектура** | ✓ |
 | Петцольд Ч. — **Код. Тайный язык информатики** (2019) — книга, которая начинается с телеграфных реле; для курса про телеграф вдоль полотна — прямое попадание | ✓ |
+| Fowler M. — **Patterns of Enterprise Application Architecture** (2002) — Template View и Transform View, развилка финала сезона 2; дальше — Active Record в сезоне 4 | — |
 
 ---
 

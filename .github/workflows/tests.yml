@@ -2,19 +2,47 @@ name: tests
 on: [push, pull_request]
 
 jobs:
-  test:
+  season-01:
+    name: Season 1 — Ruby
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        season: ["01"]
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
-      - name: серии сезона ${{ matrix.season }}
-        run: make test SEASON=${{ matrix.season }}
+      - run: make test SEASON=01
+
+  season-02:
+    name: Season 2 — HTML и CSS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # Финал сезона печатает полосу шаблоном ERB — нужен Ruby.
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+      - name: пакеты разбора
+        run: npm ci --omit=optional
+        working-directory: season-02-st-pancras
+      - run: make test SEASON=02
+
+  season-02-visual:
+    name: Season 2 — раскладка в браузере
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: пакеты разбора и браузер
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+        working-directory: season-02-st-pancras
+      - run: make test-visual SEASON=02
 
   links:
     runs-on: ubuntu-latest

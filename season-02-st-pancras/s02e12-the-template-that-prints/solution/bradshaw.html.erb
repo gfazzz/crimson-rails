@@ -1,0 +1,134 @@
+<%# bradshaw.html.erb — образец, по которому печатается полоса. -%>
+<%# -%>
+<%# Лист выпуска приходит в переменной issue. В шаблоне нет ни одного -%>
+<%# названия станции, ни одного времени и ни одной даты: всё, что видно на -%>
+<%# полосе, пришло из листа. Чего в листе нет — того нет и на полосе. -%>
+<%# -%>
+<%# Скобки со знаком равенства печатают, без него — выполняют, с решёткой — -%>
+<%# примечание для читающего шаблон. Дефис убирает пустую строку, оставшуюся -%>
+<%# от строки-управления. h() экранирует: обычный ERB печатает как есть. -%>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Брэдшоу — <%= h issue["title"] %> — <%= h issue["issue"]["label"] %></title>
+  <link rel="stylesheet" href="bradshaw.css">
+</head>
+<body>
+  <a href="#<%= h issue["skip"]["to"] %>" class="skip"><%= h issue["skip"]["text"] %></a>
+
+  <header>
+    <p>Справочник <span lang="<%= h issue["guide"]["lang"] %>"><%= h issue["guide"]["text"] %></span></p>
+    <h1><%= h issue["title"] %></h1>
+    <p>Выпуск за <time datetime="<%= h issue["issue"]["datetime"] %>"><%= h issue["issue"]["label"] %></time></p>
+  </header>
+
+  <nav aria-label="<%= h issue["nav_label"] %>">
+    <h2><%= h issue["nav_label"] %></h2>
+    <ul>
+<%- issue["sections"].each do |section| -%>
+      <li><a href="#<%= h section["id"] %>"<%= ' aria-current="page"' if section["current"] %>><%= h section["name"] %></a></li>
+<%- end -%>
+      <li><a href="#<%= h issue["notes"]["id"] %>"><%= h issue["notes"]["heading"] %></a></li>
+    </ul>
+  </nav>
+
+  <main>
+<%- issue["sections"].each do |section| -%>
+    <h2 id="<%= h section["id"] %>"><%= h section["name"] %></h2>
+    <p>
+<%- section["intro"].each do |part| -%>
+<%- if part.is_a?(Hash) -%>
+      <abbr title="<%= h part["title"] %>"><%= h part["abbr"] %></abbr>
+<%- else -%>
+      <%= h part %>
+<%- end -%>
+<%- end -%>
+    </p>
+
+<%- if (stops = section["service_stops"]) -%>
+    <h3><%= h stops["heading"] %></h3>
+    <p>
+      <%= h stops["intro"] %>
+<%- stops["items"].each_with_index do |stop, index| -%>
+      <%= h stop["name"] %><a href="#<%= h stop["note"]["id"] %>">[<%= h stop["note"]["label"] %>]</a><%= index == stops["items"].size - 1 ? "." : " и" %>
+<%- end -%>
+    </p>
+
+<%- end -%>
+<%- if (figure = section["figure"]) -%>
+    <figure>
+      <img src="<%= h figure["src"] %>" width="<%= h figure["width"] %>" height="<%= h figure["height"] %>"
+           alt="<%= h figure["alt"] %>">
+      <figcaption><%= h figure["caption"] %></figcaption>
+    </figure>
+
+<%- end -%>
+<%- if (rule = section["rule"]) -%>
+    <img src="<%= h rule["src"] %>" width="<%= h rule["width"] %>" height="<%= h rule["height"] %>" alt="">
+
+<%- end -%>
+<%- if (schedule = section["schedule"]) -%>
+    <h3 id="<%= h schedule["id"] %>"><%= h schedule["heading"] %></h3>
+    <figure class="scroller" role="region" aria-labelledby="<%= h schedule["id"] %>" tabindex="0">
+      <table class="timetable">
+        <caption><%= h schedule["caption"] %></caption>
+        <thead>
+          <tr>
+            <td></td>
+<%- schedule["groups"].each do |group| -%>
+            <th scope="colgroup" colspan="<%= h group["span"] %>"><%= h group["name"] %></th>
+<%- end -%>
+          </tr>
+          <tr>
+            <th scope="col"><%= h schedule["column"] %></th>
+<%- schedule["trains"].each do |train| -%>
+            <th scope="col"><%= h train["number"] %><%- if (note = train["note"]) -%><a href="#<%= h note["id"] %>">[<%= h note["label"] %>]</a><%- end -%></th>
+<%- end -%>
+          </tr>
+        </thead>
+        <tbody>
+<%- schedule["stations"].select { |station| station["print"] }.each do |station| -%>
+          <tr>
+            <th scope="row"><%= h station["name"] %><%- if (note = station["note"]) -%><a href="#<%= h note["id"] %>">[<%= h note["label"] %>]</a><%- end -%></th>
+<%- station["times"].each do |time| -%>
+            <td><%= h time %></td>
+<%- end -%>
+          </tr>
+<%- end -%>
+        </tbody>
+      </table>
+    </figure>
+
+<%- end -%>
+<%- if (legend = section["legend"]) -%>
+    <ul class="legend">
+<%- legend.each do |item| -%>
+      <li><%= h item %></li>
+<%- end -%>
+    </ul>
+
+<%- end -%>
+<%- end -%>
+  </main>
+
+  <aside aria-label="<%= h issue["aside"]["label"] %>">
+    <h2><%= h issue["aside"]["heading"] %></h2>
+    <p><%= h issue["aside"]["printer"] %></p>
+    <p>
+      <%= h issue["aside"]["checked_before"] %>
+      <time datetime="<%= h issue["aside"]["checked"]["datetime"] %>"><%= h issue["aside"]["checked"]["label"] %></time>.
+    </p>
+  </aside>
+
+  <footer>
+    <h2 id="<%= h issue["notes"]["id"] %>"><%= h issue["notes"]["heading"] %></h2>
+    <ol class="note">
+<%- issue["notes"]["items"].each do |note| -%>
+      <li id="<%= h note["id"] %>"><%= h note["text"] %></li>
+<%- end -%>
+    </ol>
+  </footer>
+</body>
+</html>

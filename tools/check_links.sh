@@ -10,7 +10,10 @@ while IFS= read -r file; do
     target="${link%%#*}"; [ -z "$target" ] && continue
     [ -e "$dir/$target" ] || echo "БИТАЯ  $file → $link"
   done
-done < <(find . -name '*.md' -not -path './_backup*' -not -path './.git/*') | tee /tmp/cr_links.$$
+done < <(find . -name '*.md' \
+           -not -path './_backup*' \
+           -not -path './.git/*' \
+           -not -path '*/node_modules/*') | tee /tmp/cr_links.$$
 if [ -s /tmp/cr_links.$$ ]; then bad=1; else echo "ссылки: все целы"; fi
 rm -f /tmp/cr_links.$$
 exit $bad

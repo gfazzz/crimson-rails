@@ -43,21 +43,47 @@ def table(season, prefix=""):
 
 
 def stats(season):
+    """Хронометраж и число проверок. Раннер выбирается по тому, что лежит в
+    tests/: minitest у Ruby, встроенный node --test у остального."""
     items = list(series(season))
     minutes = sum(i["minutes"] for i in items)
     runs = checks = 0
+    unmeasured = []
+    environment = dict(os.environ, FORCE_SOLUTION="1")
     for item in items:
-        test = glob.glob(f"{item['path']}/tests/*.rb")[0]
-        out = subprocess.run(
-            ["ruby", os.path.basename(test)],
-            cwd=os.path.dirname(test), capture_output=True, text=True,
-        ).stdout
-        found = re.search(r"(\d+) runs, (\d+) assertions", out)
-        if found:
-            runs += int(found.group(1))
+        ruby_tests = sorted(glob.glob(f"{item['path']}/tests/*.rb"))
+        node_tests = sorted(glob.glob(f"{item['path']}/tests/*.test.mjs"))
+        if ruby_tests:
+            out = subprocess.run(
+                ["ruby", os.path.basename(ruby_tests[0])],
+                cwd=os.path.dirname(ruby_tests[0]), capture_output=True, text=True,
+                env=environment,
+            ).stdout
+            found = re.search(r"(\d+) runs, (\d+) assertions, 0 failures, 0 errors", out)
+        elif node_tests:
+            out = subprocess.run(
+                ["node", "--test", *[os.path.basename(t) for t in node_tests]],
+                cwd=os.path.dirname(node_tests[0]), capture_output=True, text=True,
+                env=environment,
+            ).stdout
+            found = re.search(r"^# pass (\d+)$", out, re.M)
+            if not re.search(r"^# fail 0$", out, re.M):
+                found = None
+        else:
+            found = None
+        if not found:
+            unmeasured.append(item["code"])
+            continue
+        runs += int(found.group(1))
+        if found.lastindex and found.lastindex > 1:
             checks += int(found.group(2))
-    return (f"серий: {len(items)} · время: {minutes // 60} ч {minutes % 60:02d} мин · "
-            f"проверок: {runs} · утверждений: {checks}")
+    line = (f"серий: {len(items)} · время: {minutes // 60} ч {minutes % 60:02d} мин · "
+            f"проверок: {runs}")
+    if checks:
+        line += f" · утверждений: {checks}"
+    if unmeasured:
+        line += f" (не измерены без браузера: {', '.join(unmeasured)})"
+    return line
 
 
 if __name__ == "__main__":

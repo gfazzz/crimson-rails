@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Брэдшоу — Мидлендская линия — апрель 1891</title>
+  <link rel="stylesheet" href="bradshaw.css">
+</head>
+<body>
+  <a href="#schedule" class="skip">К расписанию</a>
+
+  <header>
+    <p>Справочник <span lang="en">Bradshaw's Railway Guide</span></p>
+    <h1>Мидлендская линия</h1>
+    <p>Выпуск за <time datetime="1891-04">апрель 1891 года</time></p>
+  </header>
+
+  <nav aria-label="Линии выпуска">
+    <h2>Линии выпуска</h2>
+    <ul>
+      <li><a href="#midland" aria-current="page">Дерби — Лондон</a></li>
+      <li><a href="#leicester">Лестер — Бедфорд</a></li>
+      <li><a href="#notes">Примечания</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2 id="midland">Дерби — Лондон</h2>
+    <p>
+      Сообщение открыто круглый год. Пассажирские составы следуют через
+      <abbr title="Ноттингем">Нтм.</abbr> и Лестер; почтовый — без остановки
+      в Лестере.
+    </p>
+
+    <h3>Служебные остановки</h3>
+    <p>
+      Кроме станций, показанных в таблице, на линии имеются служебные
+      остановки: Колвик-Сайдингс<a href="#note-1">[1]</a> и
+      Тоттон-Юкцион<a href="#note-2">[2]</a>.
+    </p>
+
+
+    <figure>
+      <img src="line-map.png" width="600" height="120"
+           alt="Схема мидлендской линии: Дерби, Ноттингем, Лестер, Бедфорд, Лондон">
+      <figcaption>Схема линии Дерби — Лондон</figcaption>
+    </figure>
+
+    <img src="rule.png" width="600" height="4" alt="">
+
+    <h3 id="schedule">Расписание</h3>
+    <figure class="scroller" role="region" aria-labelledby="schedule" tabindex="0">
+      <table class="timetable">
+        <caption>Дерби — Лондон, апрель 1891 года</caption>
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="colgroup" colspan="2">Утренние</th>
+            <th scope="colgroup" colspan="2">Дневные</th>
+          </tr>
+          <tr>
+            <th scope="col">Станция</th>
+            <th scope="col">№ 3</th>
+            <th scope="col">№ 7</th>
+            <th scope="col">№ 11</th>
+            <th scope="col">№ 15<a href="#note-2">[2]</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Дерби</th>
+            <td>6:20</td><td>8:05</td><td>12:40</td><td>15:10</td>
+          </tr>
+          <tr>
+            <th scope="row">Ноттингем</th>
+            <td>6:58</td><td>8:43</td><td>13:18</td><td>15:48</td>
+          </tr>
+          <tr>
+            <th scope="row">Колвик-Сайдингс<a href="#note-1">[1]</a></th>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <th scope="row">Лестер</th>
+            <td>7:35</td><td>9:20</td><td>13:55</td><td></td>
+          </tr>
+          <tr>
+            <th scope="row">Бедфорд</th>
+            <td>8:40</td><td>10:25</td><td>15:00</td><td>17:05</td>
+          </tr>
+          <tr>
+            <th scope="row">Лондон, Сент-Панкрас</th>
+            <td>9:25</td><td>11:10</td><td>15:45</td><td>17:50</td>
+          </tr>
+        </tbody>
+      </table>
+    </figure>
+
+    <ul class="legend">
+      <li>п — почтовый</li>
+      <li>т — по требованию</li>
+      <li>сл — служебная</li>
+      <li>× — пересадка</li>
+    </ul>
+
+    <h2 id="leicester">Лестер — Бедфорд</h2>
+    <p>Сообщение открыто с апреля по октябрь.</p>
+  </main>
+
+  <aside aria-label="Служебные сведения">
+    <h2>Выпуск</h2>
+    <p>Отпечатано в типографии Брэдшоу, Манчестер.</p>
+    <p>
+      Сверено Расчётной палатой
+      <time datetime="1891-03-28">28 марта 1891 года</time>.
+    </p>
+  </aside>
+
+  <footer>
+    <h2 id="notes">Примечания</h2>
+    <ol class="note">
+      <li id="note-1">
+        Колвик-Сайдингс: служебная остановка, для сверки не учитывается.
+      </li>
+      <li id="note-2">
+        Тоттон-Юкцион: остановка по требованию, кроме воскресений.
+      </li>
+    </ol>
+  </footer>
+</body>
+</html>

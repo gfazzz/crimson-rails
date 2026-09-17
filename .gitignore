@@ -4,3 +4,8 @@
 vendor/bundle/
 tmp/
 _backup-*/
+node_modules/
+
+# Артефакты — работа проходящего курс. В репозиторий идёт только пустая папка.
+*/*/artifacts/*
+!*/*/artifacts/.gitkeep

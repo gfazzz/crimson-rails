@@ -1,0 +1,171 @@
+/* bradshaw.css — свод правил Палаты, редакция четвёртая: сетка.
+ *
+ * Здесь лежит редакция третья, из s02e07. Всё, что в ней есть, остаётся.
+ *
+ * TODO: полоса — сетка из двух колонок с названными областями:
+ *         "head head" / "nav nav" / "main side" / "foot foot"
+ * TODO: колонка содержания — minmax(0, 1fr), колонка справки — по содержимому
+ * TODO: зазор между областями объявить один раз, у сетки
+ * TODO: области выровнять по началу строки, а не растягивать
+ * TODO: раздать области: header, nav, main, aside, footer
+ * TODO: поля и зазоры, которые теперь задаёт сетка, у самих областей убрать
+ * TODO: ссылка в обход при фокусе не должна возвращаться в поток — иначе она
+ *       станет клеткой сетки и сдвинет полосу
+ */
+
+/* ── Основание: нулевая специфичность ─────────────────────────────────── */
+
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(body, h1, h2, h3, p, figure, table, ol) {
+  margin: 0;
+}
+
+:where(ol) {
+  padding-inline-start: 1.5rem;
+}
+
+/* ── Полоса ───────────────────────────────────────────────────────────── */
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  color: #1c1a17;
+  background-color: #f6f1e7;
+  max-inline-size: 44rem;
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-block-end: 0.5rem;
+}
+
+h2 {
+  font-size: 1.375rem;
+  margin-block-end: 0.5rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+  margin-block-end: 0.5rem;
+}
+
+p {
+  margin-block-end: 1.25rem;
+}
+
+a {
+  color: #7b1220;
+  text-decoration-thickness: 1px;
+}
+
+img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+figure {
+  margin-block-end: 1.5rem;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  margin-block-end: 1.5rem;
+}
+
+caption {
+  text-align: left;
+  font-style: italic;
+  margin-block-end: 0.5rem;
+}
+
+th,
+td {
+  border: 1px solid #cfc4ae;
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+}
+
+/* ── Ряды ─────────────────────────────────────────────────────────────── */
+
+/* Зазор между строками шапки объявлен один раз и не схлопывается ни с чем. */
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-block-end: 1.5rem;
+}
+
+/* Зазор задан gap — значит собственные поля строк лишние: во флексе они не
+   схлопываются, а складываются с зазором. */
+header > * {
+  margin-block-end: 0;
+}
+
+/* Оглавление: один ряд, который сам решает, когда стать двумя. */
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  padding-inline-start: 0;
+  margin-block-end: 1.5rem;
+}
+
+/* ── Частные случаи ───────────────────────────────────────────────────── */
+
+/* Спрятана от глаза — и только от него: из потока вынута, из дерева нет. */
+.skip {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* И возвращается тому, кто идёт по полосе с клавиатуры. */
+.skip:focus {
+  position: static;
+  inline-size: auto;
+  block-size: auto;
+  padding: 0.35rem 0.6rem;
+  overflow: visible;
+  clip-path: none;
+  background-color: #7b1220;
+  color: #f6f1e7;
+}
+
+.timetable td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.timetable tbody th {
+  font-weight: normal;
+}
+
+.note {
+  font-size: 0.875rem;
+}
+
+/* Условные обозначения: тот же ряд, пункты разной длины. */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  list-style: none;
+  padding-inline-start: 0;
+  margin-block-end: 1.5rem;
+  font-size: 0.875rem;
+}

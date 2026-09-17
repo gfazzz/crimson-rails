@@ -1,0 +1,285 @@
+/* bradshaw.css — свод правил Палаты, редакция седьмая: тёмный набор.
+ *
+ * Здесь лежит редакция шестая, из s02e10. Всё, что в ней есть, остаётся.
+ * Разметка не меняется вовсе.
+ *
+ * TODO: собрать палитру пользовательскими свойствами у корня: бумага, набор,
+ *       подписи, линейка, красные чернила и набор по красному
+ * TODO: убрать из свода все цвета, написанные на месте, — они темы не знают
+ * TODO: объявить браузеру обе темы: color-scheme
+ * TODO: добавка @media (prefers-color-scheme: dark) — только палитра, ни
+ *       одного правила раскладки
+ * TODO: проверить каждую пару «набор на фоне» коэффициентом контраста:
+ *       4,5 для текста, 3 для линеек, в обоих наборах
+ *
+ * Считать коэффициент руками не нужно — он есть в любом инспекторе, рядом с
+ * образцом цвета.
+ */
+
+
+/* ── Основание: нулевая специфичность ─────────────────────────────────── */
+
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(body, h1, h2, h3, p, figure, table, ol) {
+  margin: 0;
+}
+
+:where(ol) {
+  padding-inline-start: 1.5rem;
+}
+
+/* ── Шкала кеглей и меры ──────────────────────────────────────────────── */
+/* Корневой кегль не объявлен намеренно: это настройка читателя, а не автора.
+   Всё остальное считается от него. Пользовательские свойства наследуются —
+   объявленные у корня, они доступны всей полосе. */
+
+html {
+  --type-small: clamp(0.82rem, 0.8rem + 0.1vi, 0.9rem);
+  --type-body: clamp(1rem, 0.96rem + 0.2vi, 1.125rem);
+  --type-h3: clamp(1.125rem, 1.05rem + 0.35vi, 1.3rem);
+  --type-h2: clamp(1.3rem, 1.15rem + 0.7vi, 1.7rem);
+  --type-h1: clamp(1.8rem, 1.5rem + 1.5vi, 2.6rem);
+
+  --page: 48rem;      /* предел ширины полосы: в кеглях читателя */
+  --measure: 66ch;    /* мера строки: в знаках текущего шрифта */
+  --gutter: 1.5rem;   /* зазор сетки */
+}
+
+/* ── Полоса ───────────────────────────────────────────────────────────── */
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  color: #1c1a17;
+  background-color: #f6f1e7;
+  font-size: var(--type-body);
+  max-inline-size: var(--page);
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "head"
+    "nav"
+    "main"
+    "side"
+    "foot";
+  gap: var(--gutter);
+  align-items: start;
+}
+
+h1 {
+  font-size: var(--type-h1);
+  margin-block-end: 0.5rem;
+}
+
+h2 {
+  font-size: var(--type-h2);
+  margin-block-end: 0.5rem;
+}
+
+h3 {
+  font-size: var(--type-h3);
+  margin-block-end: 0.5rem;
+}
+
+p {
+  max-inline-size: var(--measure);
+  margin-block-end: 1.25rem;
+}
+
+a {
+  color: #7b1220;
+  text-decoration-thickness: 1px;
+}
+
+img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+figure {
+  margin-block-end: 1.5rem;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  margin-block-end: 1.5rem;
+}
+
+caption {
+  text-align: left;
+  font-style: italic;
+  margin-block-end: 0.5rem;
+}
+
+th,
+td {
+  border: 1px solid #cfc4ae;
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+}
+
+/* ── Сетка полосы: кто в какой области ────────────────────────────────── */
+
+/* Области названы словами. Разметка и свод сходятся по имени, а не по числу:
+   переставить область — значит переписать рисунок в одном месте. */
+
+header {
+  grid-area: head;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Зазор задан gap — значит собственные поля строк лишние: во флексе они не
+   схлопываются, а складываются с зазором. */
+header > * {
+  margin-block-end: 0;
+}
+
+nav {
+  grid-area: nav;
+}
+
+main {
+  grid-area: main;
+}
+
+aside {
+  grid-area: side;
+  border-inline-start: 1px solid #cfc4ae;
+  padding-inline-start: 1rem;
+  font-size: var(--type-small);
+}
+
+footer {
+  grid-area: foot;
+}
+
+/* ── Ряды ─────────────────────────────────────────────────────────────── */
+
+/* Оглавление: один ряд, который сам решает, когда стать двумя. */
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem var(--gutter);
+  list-style: none;
+  padding-inline-start: 0;
+  margin-block-end: 0;
+}
+
+/* ── Частные случаи ───────────────────────────────────────────────────── */
+
+/* Спрятана от глаза — и только от него: из потока вынута, из дерева нет. */
+.skip {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* И возвращается тому, кто идёт по полосе с клавиатуры. */
+/* Возвращается, оставаясь вне потока: сделавшись static, она стала бы
+   клеткой сетки и сдвинула бы всю полосу. */
+.skip:focus {
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  inline-size: auto;
+  block-size: auto;
+  padding: 0.35rem 0.6rem;
+  overflow: visible;
+  clip-path: none;
+  background-color: #7b1220;
+  color: #f6f1e7;
+}
+
+.timetable td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.timetable tbody th {
+  font-weight: normal;
+}
+
+.note {
+  font-size: var(--type-small);
+}
+
+/* Условные обозначения: тот же ряд, пункты разной длины. */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  list-style: none;
+  padding-inline-start: 0;
+  margin-block-end: 1.5rem;
+  font-size: var(--type-small);
+}
+
+/* Расписание в пять колонок в узкое окно не входит. Прокручиваемая область
+   объявлена всегда, а не на узких экранах: широкий экран тоже бывает узким —
+   достаточно увеличить шрифт. */
+.scroller {
+  overflow-x: auto;
+}
+
+/* ── Добавка: широкое окно ────────────────────────────────────────────── */
+/* Перелом назван содержимым: на этой ширине служебная колонка перестаёт
+   мешать набору. Задан в em — значит считается от кегля браузера и переживает
+   увеличение шрифта. */
+
+@media (min-width: 45em) {
+  body {
+    grid-template-columns: minmax(0, 1fr) fit-content(12rem);
+    grid-template-areas:
+      "head head"
+      "nav  nav"
+      "main side"
+      "foot foot";
+  }
+}
+
+/* ── Добавка: бумага ──────────────────────────────────────────────────── */
+/* Справочник печатают. На бумаге нет ни оглавления по ссылкам, ни обхода
+   с клавиатуры, ни прокрутки. */
+
+@media print {
+  body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "main"
+      "side"
+      "foot";
+    max-inline-size: none;
+    color: #000;
+    background-color: #fff;
+  }
+
+  nav,
+  .skip {
+    display: none;
+  }
+
+  .scroller {
+    overflow-x: visible;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

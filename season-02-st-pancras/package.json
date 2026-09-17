@@ -1,0 +1,14 @@
+{
+  "name": "crimson-rails-season-02",
+  "private": true,
+  "type": "module",
+  "description": "Проверки сезона 2: разбор разметки и стилей. Раннер — встроенный node --test.",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "css-tree": "^3.0.0",
+    "parse5": "^7.2.0"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

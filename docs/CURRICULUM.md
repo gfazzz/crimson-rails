@@ -28,7 +28,24 @@
 
 ## Season 2 — Лондон, Сент-Панкрас · HTML и CSS
 
-Не написан. План — в [CONCEPT.md](../CONCEPT.md), маршрут — в [ROUTE.md](ROUTE.md).
+серий: 12 · время: 12 ч 15 мин · проверок: 195 (не измерены без браузера: s02e07, s02e08)
+
+| Серия | Концепт | Артефакт | ⏱ | |
+|---|---|---|---|---|
+| [s02e01](../season-02-st-pancras/s02e01-markup-is-a-claim/) — Разметка — это утверждение | разметка описывает содержание, а не вид | `bradshaw.html` | ~50 мин | ⭐ |
+| [s02e02](../season-02-st-pancras/s02e02-read-aloud/) — Таблица, которую читают вслух | таблица — это связи, а не клетки: `caption`, `thead`, `th scope` | `bradshaw.html` | ~60 мин | ⭐⭐ |
+| [s02e03](../season-02-st-pancras/s02e03-a-form-without-code/) — Форма без единой строки кода | подписи, типы полей, встроенная проверка браузера | `search.html` | ~55 мин | ⭐⭐ |
+| [s02e04](../season-02-st-pancras/s02e04-what-the-proofreader-hears/) — Что слышит корректор | доступность — следствие тегов, а не надстройка над ними | `bradshaw.html` | ~55 мин | ⭐⭐ |
+| [s02e05](../season-02-st-pancras/s02e05-where-the-value-comes-from/) — Откуда берётся итоговое значение | каскад — важность, специфичность, порядок; наследование | `bradshaw.css` | ~60 мин | ⭐⭐ |
+| [s02e06](../season-02-st-pancras/s02e06-a-box-wider-than-written/) — Коробка, которая шире, чем написано | блочная модель, border-box, схлопывание полей, логические стороны | `bradshaw.css` | ~60 мин | ⭐⭐ |
+| [s02e07](../season-02-st-pancras/s02e07-a-row-that-decides/) — Ряд, который сам решает | Flexbox — ряд, перенос, зазор вместо полей | `bradshaw.css` | ~65 мин | ⭐⭐⭐ |
+| [s02e08](../season-02-st-pancras/s02e08-a-grid-that-counts/) — Макет, где у мест есть имена | Grid — области с именами, две оси сразу, зазор, выравнивание | `bradshaw.css` | ~65 мин | ⭐⭐⭐ |
+| [s02e09](../season-02-st-pancras/s02e09-where-rem-comes-from/) — Откуда берётся rem | единицы — кегль, знак, доля окна; шкала; clamp; мера строки | `bradshaw.css` | ~55 мин | ⭐⭐ |
+| [s02e10](../season-02-st-pancras/s02e10-when-to-change-the-layout/) — Когда менять раскладку | медиазапросы, «сперва узкое», перелом по содержимому, печать | `bradshaw.css` | ~60 мин | ⭐⭐ |
+| [s02e11](../season-02-st-pancras/s02e11-the-dark-setting/) — Тёмный набор | палитра, prefers-color-scheme, коэффициент контраста, не только цвет | `bradshaw.css` | ~60 мин | ⭐⭐ |
+| [s02e12](../season-02-st-pancras/s02e12-the-template-that-prints/) — Образец, который печатает полосу | шаблон ERB — данные отдельно, образец отдельно | `bradshaw.html.erb` | ~90 мин | ⭐⭐⭐ |
+
+---
 
 ## Season 3 — Нью-Йорк · JavaScript
 

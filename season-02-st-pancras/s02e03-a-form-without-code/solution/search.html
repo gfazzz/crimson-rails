@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Справочная контора — подбор поезда — Брэдшоу</title>
+</head>
+<body>
+  <header>
+    <h1>Справочная контора</h1>
+    <p>Мидлендская линия, выпуск за <time datetime="1891-04">апрель 1891 года</time></p>
+  </header>
+
+  <main>
+    <h2>Подбор поезда</h2>
+
+    <form action="/spravka" method="get">
+      <fieldset>
+        <legend>Поездка</legend>
+
+        <p>
+          <label for="from">Станция отправления</label>
+          <select id="from" name="from" required>
+            <option value="">— выберите станцию —</option>
+            <option value="derby">Дерби</option>
+            <option value="nottingham">Ноттингем</option>
+            <option value="leicester">Лестер</option>
+            <option value="bedford">Бедфорд</option>
+            <option value="st-pancras">Лондон, Сент-Панкрас</option>
+          </select>
+        </p>
+
+        <p>
+          <label for="to">Станция назначения</label>
+          <select id="to" name="to" required>
+            <option value="">— выберите станцию —</option>
+            <option value="derby">Дерби</option>
+            <option value="nottingham">Ноттингем</option>
+            <option value="leicester">Лестер</option>
+            <option value="bedford">Бедфорд</option>
+            <option value="st-pancras">Лондон, Сент-Панкрас</option>
+          </select>
+        </p>
+
+        <p>
+          <label for="date">День поездки</label>
+          <input type="date" id="date" name="date" required
+                 min="1891-04-01" max="1891-04-30"
+                 aria-describedby="date-hint">
+          <span id="date-hint">Выпуск действует с 1 по 30 апреля.</span>
+        </p>
+
+        <p>
+          <label for="after">Отправление не раньше</label>
+          <input type="time" id="after" name="after" value="06:00">
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Класс вагона</legend>
+        <p>
+          <input type="radio" id="class-1" name="class" value="1">
+          <label for="class-1">Первый</label>
+        </p>
+        <p>
+          <input type="radio" id="class-2" name="class" value="2">
+          <label for="class-2">Второй</label>
+        </p>
+        <p>
+          <input type="radio" id="class-3" name="class" value="3" checked>
+          <label for="class-3">Третий</label>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Прочее</legend>
+        <p>
+          <label for="seats">Число мест</label>
+          <input type="number" id="seats" name="seats" value="1" min="1" max="6" step="1">
+        </p>
+        <p>
+          <input type="checkbox" id="direct" name="direct" value="yes">
+          <label for="direct">Только без пересадок</label>
+        </p>
+        <p>
+          <label for="code">Код станции в указателе</label>
+          <input type="text" id="code" name="code" pattern="[A-Z]{3}"
+                 aria-describedby="code-hint" autocomplete="off">
+          <span id="code-hint">Три заглавные латинские буквы, например MID.</span>
+        </p>
+      </fieldset>
+
+      <p><button type="submit">Подобрать поезд</button></p>
+    </form>
+  </main>
+</body>
+</html>

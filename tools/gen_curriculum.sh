@@ -17,7 +17,11 @@ cd "$(dirname "$0")/.."
   echo
   echo "## Season 2 — Лондон, Сент-Панкрас · HTML и CSS"
   echo
-  echo "Не написан. План — в [CONCEPT.md](../CONCEPT.md), маршрут — в [ROUTE.md](ROUTE.md)."
+  tools/season_table.py 02 --stats
+  echo
+  tools/season_table.py 02 --prefix=../season-02-st-pancras/
+  echo
+  echo "---"
   echo
   echo "## Season 3 — Нью-Йорк · JavaScript"
   echo
