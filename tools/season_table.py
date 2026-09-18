@@ -51,20 +51,25 @@ def stats(season):
     unmeasured = []
     environment = dict(os.environ, FORCE_SOLUTION="1")
     for item in items:
+        # Серии с браузером в обычный подсчёт не входят: без установленного
+        # chromium их прогон не падает, а ждёт. VISUAL=1 включает их обратно.
+        if os.path.exists(f"{item['path']}/NEEDS_BROWSER") and not os.environ.get("VISUAL"):
+            unmeasured.append(item["code"])
+            continue
         ruby_tests = sorted(glob.glob(f"{item['path']}/tests/*.rb"))
         node_tests = sorted(glob.glob(f"{item['path']}/tests/*.test.mjs"))
         if ruby_tests:
             out = subprocess.run(
                 ["ruby", os.path.basename(ruby_tests[0])],
                 cwd=os.path.dirname(ruby_tests[0]), capture_output=True, text=True,
-                env=environment,
+                env=environment, timeout=600,
             ).stdout
             found = re.search(r"(\d+) runs, (\d+) assertions, 0 failures, 0 errors", out)
         elif node_tests:
             out = subprocess.run(
                 ["node", "--test", *[os.path.basename(t) for t in node_tests]],
                 cwd=os.path.dirname(node_tests[0]), capture_output=True, text=True,
-                env=environment,
+                env=environment, timeout=600,
             ).stdout
             found = re.search(r"^# pass (\d+)$", out, re.M)
             if not re.search(r"^# fail 0$", out, re.M):

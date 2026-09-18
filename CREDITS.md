@@ -116,7 +116,13 @@ Rails»](https://eurecable.com/ideas/972)**, опубликованной на e
 | Zakas N. — **Professional JavaScript for Web Developers** (3rd ed.); рус. Закас (2015) | ✓ |
 | Freeman E., Robson E. — **Head First JavaScript Programming** (2nd ed., 2024) | ✓ |
 | Свекис Л. Л., ван Путтен М., Персиваль Р. — **JavaScript с нуля до профи** (2023) | ✓ |
-| **Hotwire Handbook** — hotwired.dev — граница «где свой JS не писать» | — |
+| **Hotwire Handbook** — hotwired.dev — граница «где свой JS не писать»; Turbo Drive и история, жизненный цикл контроллера Stimulus; серии s03e09, s03e10 | — |
+| **MDN Web Docs** — developer.mozilla.org — основной справочник по DOM, событиям, `fetch`, `<template>`, своим элементам, `URL` и History API | — |
+| **DOM Living Standard** — dom.spec.whatwg.org — первоисточник по событиям и всплытию, нужен там, где MDN упрощает; серия s03e03 | — |
+| **OWASP Cross Site Scripting Prevention Cheat Sheet** — cheatsheetseries.owasp.org — правила по местам вставки: содержимое, атрибут, адрес; серия s03e08 | — |
+| **Rails Guides: Securing Rails Applications** — разделы про XSS и `html_safe`; серия s03e08 | — |
+| **WAI-ARIA Authoring Practices: Live Regions** — w3.org/WAI/ARIA/apg — живая область и фокус; серии s03e04, s03e09 | — |
+| **RFC 9110 (HTTP Semantics)** — коды ответа и идемпотентность; серия s03e07 | — |
 
 ## HTTP, API, интеграции
 

@@ -1,0 +1,13 @@
+{
+  "name": "crimson-rails-season-03",
+  "private": true,
+  "type": "module",
+  "description": "Проверки сезона 3: поведение модулей ES и реакция DOM. Раннер — встроенный node --test.",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "jsdom": "^25.0.0"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

@@ -49,7 +49,22 @@
 
 ## Season 3 — Нью-Йорк · JavaScript
 
-Не написан.
+серий: 10 · время: 11 ч 00 мин · проверок: 154 (не измерены без браузера: s03e04, s03e09)
+
+| Серия | Концепт | Артефакт | ⏱ | |
+|---|---|---|---|---|
+| [s03e01](../season-03-manhattan/s03e01-an-improvement-not-a-foundation/) — Улучшение, а не основание | скрипт улучшает то, что уже работает; модуль ES | `telegraph.html` + `telegraph.js` | ~55 мин | ⭐ |
+| [s03e02](../season-03-manhattan/s03e02-a-tree-not-a-string/) — Дерево, а не текст | дерево документа — узлы, а не строка разметки | `telegraph.js` | ~60 мин | ⭐⭐ |
+| [s03e03](../season-03-manhattan/s03e03-an-event-bubbles/) — Событие всплывает | события, объект события, всплытие, делегирование | `telegraph.js` | ~60 мин | ⭐⭐ |
+| [s03e04](../season-03-manhattan/s03e04-a-form-with-two-ways/) — Форма, у которой два пути | отправка формы, проверка на месте, доступное сообщение об ошибке | `telegraph.js` | ~65 мин | ⭐⭐⭐ |
+| [s03e05](../season-03-manhattan/s03e05-state-in-one-place/) — Состояние в одном месте | модули ES; состояние отдельно от отрисовки | `state.js` + `render.js` + `telegraph.js` | ~70 мин | ⭐⭐⭐ |
+| [s03e06](../season-03-manhattan/s03e06-a-promise/) — Обещание | обещания, async/await, отказы, срок ожидания, параллельность | `office.js` | ~65 мин | ⭐⭐⭐ |
+| [s03e07](../season-03-manhattan/s03e07-a-request-on-the-wire/) — Запрос по проводу | fetch, коды ответа, отмена, повтор без задвоения | `office.js` | ~70 мин | ⭐⭐⭐ |
+| [s03e08](../season-03-manhattan/s03e08-someone-elses-text/) — Чужой текст | данные — не разметка; <template>, textContent, список разрешённого | `render.js` | ~60 мин | ⭐⭐⭐ |
+| [s03e09](../season-03-manhattan/s03e09-an-element-of-your-own/) — Свой элемент | свой тег и его жизненный цикл; живая область; фокус читателя | `elements.js` | ~80 мин | ⭐⭐⭐⭐ |
+| [s03e10](../season-03-manhattan/s03e10-a-register-that-survives-a-reload/) — Реестр, который переживает перезагрузку | адрес как состояние — URLSearchParams, pushState, popstate | `address.js` | ~75 мин | ⭐⭐⭐ |
+
+---
 
 ## Season 4–8 — Rails 8
 

@@ -1,0 +1,73 @@
+/* telegraph.css — журнал приёма. Дан готовым и за весь сезон не меняется:
+   сезон 3 не про стили. Свод правил из сезона 2 здесь сокращён до необходимого.
+
+   Одно место, на которое стоит посмотреть, — состояния записи. Они объявлены
+   от атрибута data-state, а не от класса: состояние приходит из данных, и
+   пусть оно и в разметке останется данными. */
+
+:where(*, *::before, *::after) { box-sizing: border-box; }
+:where(body, h1, h2, p, ol, ul, form, figure) { margin: 0; }
+
+html {
+  color-scheme: light dark;
+  --paper: #f7f4ee;
+  --ink: #1b1a18;
+  --ink-soft: #57503f;
+  --rule: #8a8272;
+  --crimson: #8b1a1a;
+  --on-crimson: #f7f4ee;
+  --spark: #2f5d8a;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --paper: #15171a;
+    --ink: #e6e2d8;
+    --ink-soft: #ada593;
+    --rule: #7b7466;
+    --crimson: #f09090;
+    --on-crimson: #15171a;
+    --spark: #9ec6ea;
+  }
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  color: var(--ink);
+  background-color: var(--paper);
+  max-inline-size: 46rem;
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+h1 { font-size: 1.9rem; margin-block-end: 0.4rem; }
+h2 { font-size: 1.3rem; margin-block-end: 0.6rem; }
+p { margin-block-end: 0.8rem; max-inline-size: 64ch; }
+a { color: var(--crimson); text-decoration-thickness: 1px; }
+
+label { display: block; font-size: 0.9rem; color: var(--ink-soft); }
+select, textarea, input { font: inherit; inline-size: 100%; padding: 0.3rem 0.45rem; border: 1px solid var(--rule); background-color: transparent; color: inherit; }
+textarea { min-block-size: 3.5rem; resize: vertical; }
+button { font: inherit; padding: 0.35rem 0.9rem; border: 1px solid var(--rule); background-color: var(--crimson); color: var(--on-crimson); cursor: pointer; }
+
+.register { list-style: none; padding-inline-start: 0; display: grid; gap: 0.5rem; }
+.register li { border: 1px solid var(--rule); border-inline-start-width: 4px; padding: 0.45rem 0.7rem; }
+.register li[data-state="sent"] { border-inline-start-color: var(--spark); }
+.register li[data-state="held"] { border-inline-start-color: var(--ink-soft); }
+.register li[data-state="failed"] { border-inline-start-color: var(--crimson); }
+.register li[data-state="sending"] { border-inline-start-color: var(--ink-soft); border-inline-start-style: dashed; }
+.register li[aria-busy="true"] .hand::after { content: " — ждём подтверждения"; }
+.register .hand { font-size: 0.85rem; color: var(--ink-soft); }
+.register li[data-unsigned] .hand { color: var(--crimson); }
+.register li[data-chalk] { outline: 2px dashed var(--crimson); outline-offset: 2px; }
+.register li[hidden] { display: none; }
+
+.skip { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip:focus { inset-block-start: 0.5rem; inset-inline-start: 0.5rem; inline-size: auto; block-size: auto; padding: 0.35rem 0.6rem; overflow: visible; clip-path: none; }
+
+.notice { border: 1px solid var(--rule); padding: 0.5rem 0.75rem; }
+.notice[hidden] { display: none; }

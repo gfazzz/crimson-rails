@@ -25,7 +25,11 @@ cd "$(dirname "$0")/.."
   echo
   echo "## Season 3 — Нью-Йорк · JavaScript"
   echo
-  echo "Не написан."
+  tools/season_table.py 03 --stats
+  echo
+  tools/season_table.py 03 --prefix=../season-03-manhattan/
+  echo
+  echo "---"
   echo
   echo "## Season 4–8 — Rails 8"
   echo

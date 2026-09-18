@@ -144,4 +144,4 @@ bradshaw/
 - ▲ Курс: [CRIMSON RAILS](../README.md) · [маршрут](../docs/ROUTE.md)
 - ◀ Предыдущий сезон: [Season 1 — Йокогама](../season-01-yokohama/)
 - ▶ Первая серия: **[s02e01 — Разметка — это утверждение](s02e01-markup-is-a-claim/)**
-- ▶ Следующий сезон: **Season 3 — Вена**
+- ▶ Следующий сезон: **[Season 3 — Манхэттен](../season-03-manhattan/)**

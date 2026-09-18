@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Журнал приёма — Третья авеню</title>
+  <link rel="stylesheet" href="telegraph.css">
+  <script type="module" src="telegraph.js"></script>
+</head>
+<body data-office="/entries">
+  <a href="#register" class="skip">К журналу</a>
+
+  <header>
+    <p>Манхэттенская надземная дорога</p>
+    <h1>Журнал приёма — Третья авеню</h1>
+    <p>Смена за <time datetime="1891-06-08">8 июня 1891 года</time></p>
+  </header>
+
+  <main>
+    <h2 id="compose">Подать запись</h2>
+    <form class="compose" method="post" action="/entries">
+      <p>
+        <label for="from">Пост</label>
+        <select id="from" name="from" required>
+          <option value="">— выберите —</option>
+          <option value="14">14-я улица</option>
+          <option value="23">23-я улица</option>
+          <option value="42">42-я улица</option>
+          <option value="59">59-я улица</option>
+          <option value="129">129-я улица</option>
+        </select>
+      </p>
+      <p>
+        <label for="text">Текст</label>
+        <textarea id="text" name="text" required maxlength="120"></textarea>
+      </p>
+      <p><button type="submit">Передать</button></p>
+    </form>
+
+    <h2 id="register">Журнал</h2>
+
+    <shift-notice id="shift-notice" class="notice" role="status" hidden></shift-notice>
+
+    <!-- TODO: без скрипта форма отбора обязана вести на саму страницу, а не в
+         контору: читателю нужен журнал, а не ответ конторы. Имя поля — это
+         имя параметра в адресе. -->
+    <form class="sift" method="get" action="/entries">
+      <p>
+        <label for="state">Показывать</label>
+        <select id="state" name="state">
+          <option value="">все записи</option>
+          <option value="sent">переданные</option>
+          <option value="held">задержанные</option>
+          <option value="failed">непрошедшие</option>
+        </select>
+      </p>
+      <p><button type="submit" data-without-script>Показать</button></p>
+    </form>
+
+
+    <template id="entry-template">
+      <li>
+        <p data-part="text"></p>
+        <p class="hand">
+          <span data-part="hand"></span>
+          <time-ago data-part="at"></time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+    </template>
+
+    <ol class="register" id="entries" tabindex="-1">
+      <li data-id="1" data-state="sent" data-hand="Дарнелл">
+        <p data-part="text">14-я улица: путь свободен, состав 7 прошёл 6:12.</p>
+        <p class="hand">
+          <span data-part="hand">принято: Дарнелл</span>
+          <time-ago data-part="at">6:13</time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+      <li data-id="2" data-state="sent" data-hand="Дарнелл">
+        <p data-part="text">23-я улица: стрелка переведена вручную, монтёр на месте.</p>
+        <p class="hand">
+          <span data-part="hand">принято: Дарнелл</span>
+          <time-ago data-part="at">6:31</time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+      <li data-id="3" data-state="held" data-hand="Финнерти">
+        <p data-part="text">42-я улица: задержка две минуты, впереди состав 4.</p>
+        <p class="hand">
+          <span data-part="hand">принято: Финнерти</span>
+          <time-ago data-part="at">6:44</time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+      <li data-id="4" data-state="sent">
+        <p data-part="text">59-я улица: отметка сверки за смену.</p>
+        <p class="hand">
+          <span data-part="hand">принято: —</span>
+          <time-ago data-part="at">—</time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+      <li data-id="5" data-state="failed" data-hand="Финнерти">
+        <p data-part="text">129-я улица: линия оборвана у эстакады, передача не прошла.</p>
+        <p class="hand">
+          <span data-part="hand">принято: Финнерти</span>
+          <time-ago data-part="at">7:02</time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+      <li data-id="6" data-state="sent" data-hand="Дарнелл">
+        <p data-part="text">14-я улица: линия восстановлена, движение по расписанию.</p>
+        <p class="hand">
+          <span data-part="hand">принято: Дарнелл</span>
+          <time-ago data-part="at">7:20</time-ago>
+          <a data-part="source" hidden>источник</a>
+        </p>
+      </li>
+    </ol>
+  </main>
+
+  <footer>
+    <p>
+      Журнал ведётся при диспетчерской Третьей авеню.
+      Записи хранятся до <a href="#register">конца смены</a>.
+    </p>
+  </footer>
+</body>
+</html>
