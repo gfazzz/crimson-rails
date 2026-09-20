@@ -55,11 +55,14 @@ Active Record и схему в объёме, после которого баз�
 | [s04e03](s04e03-a-record/) — Запись | Active Record как объект — new/save/save!, валидации, что изменилось | `app/models/*.rb` | ~60 мин | ⭐⭐ |
 | [s04e04](s04e04-uniqueness-with-an-index-behind-it/) — Уникальность, за которой стоит индекс | уникальность; чего не умеет validates :uniqueness; уникальный индекс | `db/migrate/*`, `app/models/company.rb` | ~65 мин | ⭐⭐⭐ |
 | [s04e05](s04e05-a-link-that-leaves-no-orphans/) — Связь, которая не оставляет сирот | belongs_to и has_many; внешний ключ в схеме; dependent | `db/migrate/*`, `app/models/*` | ~60 мин | ⭐⭐⭐ |
+| [s04e06](s04e06-an-obligation-between-two/) — Обязательство между двумя | многие ко многим через свою ведомость; составной уникальный индекс | `db/migrate/*`, `app/models/leg.rb` | ~65 мин | ⭐⭐⭐ |
+| [s04e07](s04e07-a-question-to-the-ledger/) — Вопрос к ведомости | отбор как кусок запроса; ленивость; N+1 и как его не делать | `app/models/*.rb` | ~70 мин | ⭐⭐⭐ |
+| [s04e08](s04e08-a-condition-the-base-checks/) — Условие, проверенное базой | CHECK, частичный индекс, enum — и что из этого гарантия | `db/migrate/*`, `app/models/leg.rb` | ~60 мин | ⭐⭐⭐ |
 
 Таблица собирается из шапок самих серий: `tools/season_table.py 04`.
 Хронометраж и число проверок — `tools/season_table.py 04 --stats`.
 
-Написаны пять серий из десяти.
+Написаны восемь серий из десяти.
 
 ---
 

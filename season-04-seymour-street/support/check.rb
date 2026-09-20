@@ -236,11 +236,12 @@ module Crimson
 
     # Сколько запросов к таблице ушло в базу за время блока. Считается по
     # уведомлениям Active Record — тем же, по которым работает журнал запросов.
-    def queries(table, kind: "SELECT")
+    def queries(table = nil, kind: "SELECT")
       seen = []
       probe = ->(*, payload) do
         sql = payload[:sql].to_s
-        seen << sql if sql.start_with?(kind) && sql.include?(%("#{table}"))
+        next unless sql.start_with?(kind)
+        seen << sql if table.nil? || sql.include?(%("#{table}"))
       end
       ActiveSupport::Notifications.subscribed(probe, "sql.active_record") { yield }
       seen
