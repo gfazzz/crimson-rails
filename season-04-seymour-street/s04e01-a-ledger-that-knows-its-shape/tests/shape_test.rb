@@ -21,7 +21,8 @@ class ShapeTest < Crimson::Test
   end
 
   def test_ledger_has_exactly_what_was_declared
-    assert_equal %w[code created_at id name registered_on updated_at], column_names("companies").sort,
+    assert_equal %w[code created_at id name registered_on updated_at],
+                 columns_after("AddRegisteredOnToCompanies", "companies"),
                  "Состав столбцов не тот. В ведомости членов Палаты нужны название, код, дата " \
                  "вступления и две даты, которые Rails ведёт сам."
   end

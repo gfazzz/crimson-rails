@@ -8,15 +8,10 @@ require_relative "../../support/check.rb"
 
 class TypesTest < Crimson::Test
   def setup
-    wipe!("consignments") if table?("consignments")
+    wipe!("consignments", "companies")
   end
 
-  def good(**over)
-    {
-      reference: "B-1041", description: "чай, ящиков 12",
-      sent_on: "1891-08-19", pence: 787, weight_lb: 336,
-    }.merge(over)
-  end
+  def good(**over) = bill(reference: "B-1041", pence: 787, **over)
 
   # ─── форма ведомости перевозок ──────────────────────────────────────────
 
@@ -27,7 +22,7 @@ class TypesTest < Crimson::Test
 
   def test_columns_are_exactly_these
     assert_equal %w[created_at description id pence reference sent_on settled updated_at weight_lb],
-                 column_names("consignments").sort,
+                 columns_after("CreateConsignments", "consignments"),
                  "Состав столбцов не тот: номер бланка, груз, дата отправки, плата, вес, " \
                  "признак расчёта и две даты, которые Rails ведёт сам."
   end
@@ -86,7 +81,8 @@ class TypesTest < Crimson::Test
   end
 
   def test_a_thousand_payments_add_up_exactly
-    1000.times { |i| insert("consignments", **good(reference: "B-#{i}", pence: 7)) }
+    row = good(pence: 7)
+    1000.times { |i| insert("consignments", **row.merge(reference: "B-#{i}")) }
     total = db.select_value("SELECT SUM(pence) FROM consignments")
     assert_kind_of Integer, total,
                    "Сумма вернулась дробным числом. Значит плата хранится не целым, и счёт " \

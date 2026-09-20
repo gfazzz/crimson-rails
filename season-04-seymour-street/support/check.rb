@@ -119,6 +119,25 @@ module Crimson
       db.insert("INSERT INTO #{db.quote_table_name(table)} (#{names}) VALUES (#{items})")
     end
 
+    # ─── готовые строки ───────────────────────────────────────────────────
+    #
+    # Сезон кумулятивен: у перевозки в s04e05 появится отправитель, в s04e08 —
+    # состояние. Проверки прежних серий обязаны остаться зелёными, поэтому
+    # готовая строка собирается по той схеме, которая есть сейчас, а не по той,
+    # которая была, когда серию писали.
+
+    def a_company(code: "MID", name: "Мидлендская дорога")
+      db.select_value("SELECT id FROM companies WHERE code = #{db.quote(code)}") ||
+        insert("companies", name: name, code: code)
+    end
+
+    def bill(**over)
+      row = { reference: "B-0992", description: "чай, ящиков 12",
+              sent_on: "1891-08-19", pence: 960, weight_lb: 336 }
+      row[:company_id] = a_company if column_names("consignments").include?("company_id")
+      row.merge(over)
+    end
+
     def count(table)
       flunk missing(table) unless table?(table)
       db.select_value("SELECT COUNT(*) FROM #{db.quote_table_name(table)}").to_i
@@ -182,6 +201,49 @@ module Crimson
 
     def scratch_tables
       ActiveRecord::Base.lease_connection.tables.sort - SERVICE_TABLES
+    end
+
+    def scratch_indexes(table)
+      connection = ActiveRecord::Base.lease_connection
+      connection.table_exists?(table.to_s) ? connection.indexes(table.to_s) : []
+    end
+
+    # Версия миграции по имени её класса. Нужна там, где серия спрашивает про
+    # свой собственный слой, а не про последний: сезон кумулятивен, и «последняя
+    # миграция» к финалу означает совсем другое.
+    def version_of(name)
+      found = ActiveRecord::MigrationContext.new(Crimson.migration_paths)
+                                            .migrations.find { |item| item.name == name.to_s }
+      flunk "Миграции #{name} в db/migrate нет." if found.nil?
+      found.version
+    end
+
+    def version_before(name)
+      versions = migration_versions.sort
+      place = versions.index(version_of(name))
+      place.to_i.zero? ? 0 : versions[place - 1]
+    end
+
+    # Состав столбцов таблицы на момент своей миграции. Сезон кумулятивен:
+    # «ровно эти столбцы и ничего лишнего» — правда только там, где серия
+    # закончилась, и проверять это надо там же.
+    def columns_after(migration, table)
+      on_scratch do |context|
+        context.migrate(version_of(migration))
+        (scratch_columns(table) || []).sort
+      end
+    end
+
+    # Сколько запросов к таблице ушло в базу за время блока. Считается по
+    # уведомлениям Active Record — тем же, по которым работает журнал запросов.
+    def queries(table, kind: "SELECT")
+      seen = []
+      probe = ->(*, payload) do
+        sql = payload[:sql].to_s
+        seen << sql if sql.start_with?(kind) && sql.include?(%("#{table}"))
+      end
+      ActiveSupport::Notifications.subscribed(probe, "sql.active_record") { yield }
+      seen
     end
 
     def scratch_columns(table)

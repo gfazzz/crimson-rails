@@ -12,8 +12,7 @@ class RecordTest < Crimson::Test
     wipe!("consignments", "companies")
   end
 
-  def good = { reference: "b-1041", description: "чай, ящиков 12",
-               sent_on: "1891-08-19", pence: 787, weight_lb: 336 }
+  def good = bill(reference: "b-1041", pence: 787)
 
   # ─── модель и таблица ───────────────────────────────────────────────────
 
