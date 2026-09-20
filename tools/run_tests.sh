@@ -20,6 +20,13 @@ for dir in season-*/s[0-9][0-9]e[0-9][0-9]-*/; do
     [ -n "$visual" ] && continue
   fi
 
+  # сезоны на Rails прогоняются только там, где гемы приложения поставлены
+  season_dir="$(dirname "$dir")"
+  if [ -f "$season_dir/app/Gemfile" ] && ! ( cd "$season_dir/app" && bundle check >/dev/null 2>&1 ); then
+    echo "·· $name — гемы приложения не поставлены (cd $season_dir/app && bundle install), пропуск"
+    skip=$((skip+1)); continue
+  fi
+
   [ -f "$dir/Makefile" ] || { echo "·· $name — нет Makefile, пропуск"; skip=$((skip+1)); continue; }
   if make -s -C "$dir" test; then pass=$((pass+1)); else fail=$((fail+1)); failed+=("$name"); fi
   echo
