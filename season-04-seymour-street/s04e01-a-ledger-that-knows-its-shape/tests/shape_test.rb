@@ -26,10 +26,18 @@ class ShapeTest < Crimson::Test
                  "вступления и две даты, которые Rails ведёт сам."
   end
 
-  def test_only_one_ledger_so_far
-    assert_equal %w[companies], tables,
-                 "Сезон начинается с одной ведомости. Лишние таблицы — это или чужая миграция, " \
-                 "или миграция, прогнанная дважды."
+  # Сезон кумулятивен: дальше таблиц станет больше, и проверять «их ровно одна»
+  # можно только там, где это правда, — на первых двух карточках.
+  def test_the_first_two_cards_make_exactly_one_ledger
+    made = on_scratch do |context|
+      versions = context.migrations.map(&:version).sort
+      flunk "Миграций меньше двух." if versions.length < 2
+      context.migrate(versions[1])
+      scratch_tables
+    end
+    assert_equal %w[companies], made,
+                 "Первые две миграции должны дать ровно одну ведомость. Лишняя таблица — это " \
+                 "или чужая миграция, или миграция, прогнанная дважды."
   end
 
   # ─── что объявлено обязательным ─────────────────────────────────────────
@@ -105,18 +113,13 @@ class ShapeTest < Crimson::Test
                  "миграция не прогнана, она ничего не значит. Прогони bin/rails db:prepare."
   end
 
-  def test_two_layers_not_one
-    assert_equal 2, migration_versions.length,
-                 "Миграций должно быть две. Столбец, понадобившийся после первой, добавляют " \
-                 "второй — а не дописывают в первую."
-  end
-
   def test_the_added_column_came_in_its_own_layer
     before, after = on_scratch do |context|
       versions = context.migrations.map(&:version).sort
-      context.migrate(versions[-2])
+      flunk "Миграций меньше двух: столбец добавляют своей карточкой." if versions.length < 2
+      context.migrate(versions[0])
       early = scratch_columns("companies")
-      context.migrate
+      context.migrate(versions[1])
       [early, scratch_columns("companies")]
     end
 
@@ -131,13 +134,6 @@ class ShapeTest < Crimson::Test
   # ─── обратимость ────────────────────────────────────────────────────────
 
   def test_migrations_go_down_and_up_again
-    steps = migrate_down_and_up
-    assert_equal %w[companies], steps[:up]
-    assert_equal [], steps[:down],
-                 "После отката таблица осталась. Миграция, которую нельзя откатить, превращает " \
-                 "любую ошибку в схеме в ручную работу на живой базе."
-    assert_equal %w[companies], steps[:again],
-                 "Обратно вверх не поднялось. Откат обязан возвращать ровно то состояние, из " \
-                 "которого откатывали."
+    assert_reversible "companies"
   end
 end
