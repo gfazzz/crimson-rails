@@ -13,3 +13,6 @@ node_modules/
 # перенос между контейнером и машиной — в репозиторий не идёт
 _transfer/
 _to_delete/
+
+# Ruby для Linux-виртуалки Claude
+/.vm/
