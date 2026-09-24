@@ -1,0 +1,11 @@
+<% content_for :title, @company.code %>
+
+<h1><%= @company.code %></h1>
+
+<p><%= @company.name %></p>
+
+<% if @company.registered_on %>
+  <p>В реестре с <%= @company.registered_on %>.</p>
+<% end %>
+
+<p><%= link_to "Весь реестр", companies_path %></p>

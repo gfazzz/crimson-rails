@@ -1,0 +1,13 @@
+<% content_for :title, "Реестр дорог" %>
+
+<h1>Реестр дорог</h1>
+
+<% if @companies.any? %>
+  <%# TODO: список — это список. Строка дороги — в частичном шаблоне
+            companies/_company, и отрисовать их все — одна строка кода. %>
+  <% @companies.each do |company| %>
+    <p><%= link_to company.code, company_path(company) %> — <%= company.name %></p>
+  <% end %>
+<% else %>
+  <p>В реестре пока нет ни одной дороги.</p>
+<% end %>

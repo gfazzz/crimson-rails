@@ -1,0 +1,13 @@
+<% content_for :title, "Реестр дорог" %>
+
+<h1>Реестр дорог</h1>
+
+<% if @companies.any? %>
+  <ul>
+    <% @companies.each do |company| %>
+      <li><%= link_to company.code, company_path(company) %> — <%= company.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>В реестре пока нет ни одной дороги.</p>
+<% end %>
