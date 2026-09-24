@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<%# Язык страницы — первое, что читает тот, кто читает вслух: машина для
+    слепых, переводчик, поисковик. Без него русская страница читается
+    английским произношением. %>
+<html lang="ru">
+  <head>
+    <title><%= [content_for(:title), "Окно реестра"].compact.join(" · ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%# Макет — то, что одинаково на каждой странице. Шапка с путём в реестр —
+        здесь, а не в каждом шаблоне: одно решение в одном месте. %>
+    <header>
+      <nav aria-label="Окно реестра">
+        <%= link_to "Реестр дорог", companies_path %>
+      </nav>
+
+      <%# TODO: черновик телеграммы — поле с подписью «Черновик телеграммы».
+                Эшворт пишет в нём ответ Лондону, пока ходит по окну, и
+                черновик обязан пережить переход: Turbo заменяет тело страницы
+                целиком. Что сказать Turbo, чтобы этот элемент он перенёс со
+                старой страницы на новую как есть, с тем, что в нём набрано? %>
+    </header>
+
+    <main>
+      <%# Что случилось после перенаправления. Сообщение о сделанном — живая
+          область: читающий вслух услышит его, не ища на странице (s03e04). %>
+      <%# TODO: уходя со страницы, Turbo кладёт её снимок в кеш, и «назад»
+                показывает снимок. Сообщение «Бланк внесён» в снимке — это
+                сообщение о бланке, внесённом час назад. Скажи Turbo, что эти
+                элементы — только для этого показа. %>
+      <% if notice %><p role="status"><%= notice %></p><% end %>
+      <% if alert %><p role="alert"><%= alert %></p><% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

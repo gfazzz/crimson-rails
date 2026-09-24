@@ -23,5 +23,10 @@ module Ledger
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Окно читают в Дерби: отказы моделей и подписи форм — по-русски.
+    # Локаль ведёт курс (config/locales/ru.yml), а не студент.
+    config.i18n.default_locale = :ru
+    config.i18n.available_locales = %i[ru en]
   end
 end

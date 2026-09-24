@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<%# Язык страницы — первое, что читает тот, кто читает вслух: машина для
+    слепых, переводчик, поисковик. Без него русская страница читается
+    английским произношением. %>
+<html lang="ru">
+  <head>
+    <title><%= [content_for(:title), "Окно реестра"].compact.join(" · ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%# Макет — то, что одинаково на каждой странице. Шапка с путём в реестр —
+        здесь, а не в каждом шаблоне: одно решение в одном месте. %>
+    <header>
+      <nav aria-label="Окно реестра">
+        <%= link_to "Реестр дорог", companies_path %>
+      </nav>
+
+      <%# Черновик телеграммы переживает переходы по окну. Turbo заменяет тело
+          страницы целиком — кроме элементов с `data-turbo-permanent`: элемент
+          с тем же `id` он переносит из старой страницы в новую как есть, с
+          тем, что в нём набрано. Без этого Эшворт теряла бы ответ Лондону на
+          каждом переходе. %>
+      <div id="telegram-draft" data-turbo-permanent>
+        <label for="telegram-draft-text">Черновик телеграммы</label>
+        <textarea id="telegram-draft-text" rows="3"></textarea>
+      </div>
+    </header>
+
+    <main>
+      <%# Что случилось после перенаправления. Сообщение о сделанном — живая
+          область: читающий вслух услышит его, не ища на странице (s03e04). %>
+      <%# `data-turbo-temporary`: Turbo убирает элемент из снимка страницы,
+          который кладёт в кеш при уходе. Без этого «назад» показало бы
+          «Бланк внесён» ещё раз — о бланке, внесённом час назад. %>
+      <% if notice %><p role="status" data-turbo-temporary><%= notice %></p><% end %>
+      <% if alert %><p role="alert" data-turbo-temporary><%= alert %></p><% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

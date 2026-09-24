@@ -1,0 +1,6 @@
+<tr>
+  <th scope="row"><%= leg.position %></th>
+  <td><%= link_to leg.company.code, company_path(leg.company) %></td>
+  <td><%= leg_role(leg) %></td>
+  <td><%= leg.miles %></td>
+</tr>

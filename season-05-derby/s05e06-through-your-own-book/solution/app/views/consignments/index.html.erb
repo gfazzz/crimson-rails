@@ -1,0 +1,31 @@
+<% content_for :title, "Книга перевозок #{@company.code}" %>
+
+<h1>Книга перевозок <%= @company.code %></h1>
+
+<% if @consignments.any? %>
+  <table>
+    <caption>Перевозки, отправленные дорогой <%= @company.code %></caption>
+    <thead>
+      <tr>
+        <th scope="col">Номер бланка</th>
+        <th scope="col">Дата отправки</th>
+        <th scope="col">Груз</th>
+        <th scope="col">Плата</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @consignments.each do |consignment| %>
+        <tr>
+          <th scope="row"><%= link_to consignment.reference, company_consignment_path(@company, consignment) %></th>
+          <td><%= consignment.sent_on %></td>
+          <td><%= consignment.description %></td>
+          <td><%= money(consignment.pence) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>В книге дороги пока нет ни одной перевозки.</p>
+<% end %>
+
+<p><%= link_to "Страница дороги #{@company.code}", company_path(@company) %></p>

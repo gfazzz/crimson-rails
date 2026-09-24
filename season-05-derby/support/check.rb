@@ -128,6 +128,89 @@ module Crimson
     # Ссылки ответа: адреса, без хоста.
     def hrefs(doc = page) = doc.css("a[href]").map { |node| URI(node["href"]).path }
 
+    # ─── формы ────────────────────────────────────────────────────────────
+    #
+    # Форма проверяется не тем, какие поля в шаблоне, а тем, что уйдёт, если
+    # её отправить: форма из ответа отправляется так, как её отправит браузер,
+    # — по её адресу, её глаголом (с учётом скрытого `_method`), со всеми её
+    # скрытыми полями и значениями, которые в ней уже стоят.
+
+    def form_on_page(doc = page)
+      doc.at_css("main form") || flunk("В главной части страницы нет формы.")
+    end
+
+    # Значения поля формы, как их пошлёт браузер.
+    def form_fields(form = form_on_page)
+      form.css("input[name], select[name], textarea[name]").each_with_object({}) do |node, fields|
+        next if %w[submit button image reset file].include?(node["type"])
+        next if %w[checkbox radio].include?(node["type"]) && !node.key?("checked")
+
+        fields[node["name"]] =
+          case node.name
+          when "select" then (node.at_css("option[selected]") || node.at_css("option"))&.[]("value")
+          when "textarea" then node.text
+          else node["value"]
+          end
+      end
+    end
+
+    # Заполнить форму по именам полей и отправить.
+    #
+    #   submit({ reference: "B-0992" }, scope: :consignment)
+    #
+    # Поле, которого в форме нет, — несделанная работа: форма обещает
+    # контроллеру то, что он получит. `inject:` — поля сверх формы: так
+    # подделывают запрос, и сильные параметры обязаны это выдержать.
+    def submit(values = {}, scope: nil, form: form_on_page, inject: {}, headers: {})
+      fields = form_fields(form)
+      values.each do |key, value|
+        name = scope ? "#{scope}[#{key}]" : key.to_s
+        flunk "В форме нет поля #{name}. Форма — обещание контроллеру: что в ней есть, то " \
+              "он и получит." unless fields.key?(name)
+        fields[name] = value.to_s
+      end
+      inject.each { |name, value| fields[name.to_s] = value.to_s }
+
+      verb = (fields.delete("_method") || form["method"] || "get").downcase.to_sym
+      action = form["action"].to_s.empty? ? session.request.path : URI(form["action"]).path
+      public_send(verb, action, params: fields, headers: headers)
+    end
+
+    # ─── сколько спросили у базы ───────────────────────────────────────────
+
+    # Запросы к таблице за время блока — по тем же уведомлениям, по которым
+    # пишет журнал Rails (s04e07).
+    def queries(table = nil, kind: "SELECT")
+      seen = []
+      probe = lambda do |*, payload|
+        sql = payload[:sql].to_s
+        next unless sql.start_with?(kind)
+
+        seen << sql if table.nil? || sql.include?(%("#{table}"))
+      end
+      ActiveSupport::Notifications.subscribed(probe, "sql.active_record") { yield }
+      seen
+    end
+
+    # ─── гонка ────────────────────────────────────────────────────────────
+
+    # Соперник в окне гонки: строка появляется в базе после того, как
+    # проверка уникальности посмотрела и ничего не нашла, и до того, как
+    # запись легла. Ровно то окно, о котором s04e04: валидация его не видит,
+    # индекс — видит.
+    def with_rival(table, column, sql)
+      entered = false
+      probe = lambda do |*, payload|
+        text = payload[:sql].to_s
+        next if entered || !text.start_with?(%(SELECT 1 AS one FROM "#{table}")) || !text.include?(%("#{column}"))
+
+        entered = true
+        ActiveRecord::Base.lease_connection.execute(sql)
+      end
+      ActiveSupport::Notifications.subscribed(probe, "sql.active_record") { yield }
+      flunk "Соперник не вошёл в окно: проверки уникальности по #{table}.#{column} не было." unless entered
+    end
+
     # ─── маршруты ─────────────────────────────────────────────────────────
 
     # Куда маршрут ведёт: «контроллер#действие» или nil, если маршрута нет.

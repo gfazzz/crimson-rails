@@ -1,0 +1,37 @@
+<% content_for :title, @consignment.reference %>
+
+<h1>Бланк <%= @consignment.reference %></h1>
+
+<dl>
+  <dt>Отправитель</dt>
+  <dd><%= link_to @company.code, company_path(@company) %></dd>
+  <dt>Дата отправки</dt>
+  <dd><%= @consignment.sent_on %></dd>
+  <dt>Груз</dt>
+  <dd><%= @consignment.description %></dd>
+  <dt>Плата</dt>
+  <dd><%= money(@consignment.pence) %></dd>
+  <dt>Вес</dt>
+  <dd><%= @consignment.weight_lb %> фунтов</dd>
+</dl>
+
+<% if @legs.any? %>
+  <table>
+    <caption>Участки перевозки <%= @consignment.reference %></caption>
+    <thead>
+      <tr>
+        <th scope="col">Участок</th>
+        <th scope="col">Дорога</th>
+        <th scope="col">Роль</th>
+        <th scope="col">Мили</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @legs %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Участки перевозки ещё не внесены.</p>
+<% end %>
+
+<p><%= link_to "Книга перевозок #{@company.code}", company_consignments_path(@company) %></p>

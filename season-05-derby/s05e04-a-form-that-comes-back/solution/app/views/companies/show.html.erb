@@ -1,0 +1,35 @@
+<% content_for :title, @company.code %>
+
+<h1><%= @company.code %></h1>
+
+<p><%= @company.name %></p>
+
+<% if @company.registered_on %>
+  <p>В реестре с <%= @company.registered_on %>.</p>
+<% end %>
+
+<% if @settlements.any? %>
+  <%# Таблица — это утверждение о связях, а не о клетках (s02e02). Подпись
+      говорит, о чём таблица; заголовок столбца — что в столбце; заголовок
+      строки — о чём строка. Читающий вслух слышит «1891-09, сумма, £801 0s
+      0d», а не три числа подряд. %>
+  <table>
+    <caption>Расчёты с дорогой <%= @company.code %></caption>
+    <thead>
+      <tr>
+        <th scope="col">Месяц</th>
+        <th scope="col">Сумма</th>
+        <th scope="col">Состояние</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @settlements %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Расчётов с дорогой ещё не было.</p>
+<% end %>
+
+<p><%= link_to "Внести бланк этой дороги", new_consignment_path(company: @company.code) %></p>
+
+<p><%= link_to "Весь реестр", companies_path %></p>
