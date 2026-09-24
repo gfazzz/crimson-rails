@@ -1,0 +1,10 @@
+<%# Состояние телеграммы словами конторы. Номер линии — только когда линия его
+    дала: до этого номера нет, и писать на его месте нечего. %>
+<% case telegram.state %>
+<% when "pending" %>
+  <span data-state="pending">в очереди на линию</span>
+<% when "sent" %>
+  <span data-state="sent">принята линией, № <%= telegram.number %></span>
+<% when "failed" %>
+  <span data-state="failed">линия отказала: <%= telegram.error %></span>
+<% end %>

@@ -154,4 +154,5 @@ make solution
 
 - ▲ Курс: [CRIMSON RAILS](../README.md) · [маршрут](../docs/ROUTE.md)
 - ◀ Предыдущий сезон: [Season 4 — Сеймур-стрит](../season-04-seymour-street/)
+- ▶ Следующий сезон: [Season 6 — Владивосток](../season-06-vladivostok/)
 - ▶ Первая серия: **[s05e01 — Маршрут — это обещание](s05e01-a-route-is-a-promise/)**

@@ -125,6 +125,22 @@ jobs:
           working-directory: season-05-derby/app
       - run: make test-visual SEASON=05
 
+  season-06:
+    name: Season 6 — фон и интеграции, Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.3", "3.4", "4.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          working-directory: season-06-vladivostok/app
+      - run: make test SEASON=06
+
   links:
     runs-on: ubuntu-latest
     steps:

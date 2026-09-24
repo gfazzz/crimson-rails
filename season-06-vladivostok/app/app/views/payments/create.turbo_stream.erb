@@ -1,0 +1,12 @@
+<%# Три действия, три цели. Каждая цель — id, который уже есть на странице
+    листа расчётов: строка расчёта, журнал подтверждений, живая область.
+    Цели, которой нет, Turbo не найдёт и ничего не скажет. %>
+<%= turbo_stream.replace @settlement %>
+
+<%= turbo_stream.append dom_id(@company, :payments) do %>
+  <li><%= @settlement.period %>: <%= money(@settlement.pence) %> — оплачено.</li>
+<% end %>
+
+<%= turbo_stream.update dom_id(@company, :payment_status) do %>
+  Расчёт <%= @settlement.period %> с <%= @company.code %> оплачен.
+<% end %>

@@ -1,0 +1,13 @@
+<% content_for :title, "Реестр дорог" %>
+
+<h1>Реестр дорог</h1>
+
+<% if @companies.any? %>
+  <%# `render @companies` — по строке на дорогу, каждая из companies/_company.
+      Список — это список: `ul`, а не абзацы подряд. %>
+  <ul>
+    <%= render @companies %>
+  </ul>
+<% else %>
+  <p>В реестре пока нет ни одной дороги.</p>
+<% end %>

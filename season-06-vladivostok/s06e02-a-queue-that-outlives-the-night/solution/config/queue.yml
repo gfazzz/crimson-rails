@@ -1,0 +1,30 @@
+# Работники очереди конторы (bin/jobs).
+#
+# Работник слушает перечисленные очереди. Записка в очереди, которую не
+# слушает никто, пролежит вечно — и никто этого не заметит.
+default: &default
+  dispatchers:
+    - polling_interval: 1
+      batch_size: 500
+  workers:
+    # Телеграф — один работник в один поток. Линия принимает телеграммы по
+    # одной, и порядок, в котором их отдали, — порядок, в котором их передадут.
+    - queues: telegraph
+      threads: 1
+      processes: 1
+      polling_interval: 1
+    # Всё прочее. Не "*": звёздочка слушает и телеграф, и тогда у телеграфа
+    # окажется четыре потока вместо одного.
+    - queues: default
+      threads: 3
+      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
+      polling_interval: 1
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

@@ -1,0 +1,29 @@
+<% content_for :title, "Новая телеграмма" %>
+
+<h1>Новая телеграмма</h1>
+
+<%= form_with model: @telegram do |form| %>
+  <% if @telegram.errors.any? %>
+    <div role="alert">
+      <p>Телеграмма не принята:</p>
+      <ul>
+        <% @telegram.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :addressee %>
+    <%= form.text_field :addressee %>
+  </p>
+  <p>
+    <%= form.label :body %>
+    <%= form.text_area :body, rows: 4 %>
+  </p>
+
+  <p><%= form.submit "Отдать на линию" %></p>
+<% end %>
+
+<p><%= link_to "Все телеграммы", telegrams_path %></p>

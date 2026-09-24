@@ -1,0 +1,122 @@
+# Русская локаль окна в реестр.
+#
+# Её ведёт курс, а не студент: контора в Дерби читает по-русски, и отказ
+# модели обязан быть словами, которые прочтёт кассир. Сюда вписано ровно то,
+# что говорят модели сезонов 4 и 6 и формы сезонов 5 и 6; всё прочее Rails отвечает
+# по-английски, и это видно сразу.
+ru:
+  activerecord:
+    models:
+      company: "Дорога"
+      consignment: "Перевозка"
+      leg: "Участок"
+      settlement: "Расчёт"
+      entry: "Строка архива"
+      delivery: "Поставка"
+      telegram: "Телеграмма"
+      acceptance: "Квитанция о приёмке"
+      disbursement: "Выплата казны"
+    attributes:
+      company:
+        code: "Код"
+        name: "Название"
+        registered_on: "Дата вступления"
+        consignments: "перевозки"
+        legs: "участки"
+        settlements: "расчёты"
+      consignment:
+        reference: "Номер бланка"
+        description: "Описание груза"
+        sent_on: "Дата отправки"
+        pence: "Плата, пенсов"
+        weight_lb: "Вес, фунтов"
+        company: "Дорога-отправитель"
+        company_id: "Дорога-отправитель"
+        settled: "Отметка о расчёте"
+        legs: "участки"
+      leg:
+        consignment: "Перевозка"
+        company: "Дорога"
+        position: "Номер участка"
+        miles: "Мили"
+        role: "Роль"
+      settlement:
+        company: "Дорога"
+        period: "Месяц"
+        pence: "Сумма"
+        state: "Состояние"
+      delivery:
+        reference: "Номер отгрузки"
+        steamer: "Пароход"
+        sleepers: "Шпал"
+        kopecks: "Цена, копеек"
+        arrived_on: "У причала"
+        acceptances: "квитанции"
+        disbursements: "выплаты"
+      telegram:
+        addressee: "Адресат"
+        body: "Текст"
+        state: "Состояние"
+        number: "Номер линии"
+        key: "Номер отправления"
+      acceptance:
+        delivery: "Поставка"
+        line_number: "Номер линии"
+        route: "Путь"
+        signed_by: "Подпись"
+        accepted_on: "Дата приёмки"
+        disbursements: "выплаты"
+      disbursement:
+        delivery: "Поставка"
+        acceptance: "Квитанция"
+        kopecks: "Сумма, копеек"
+        paid_at: "Выплачено"
+    errors:
+      messages:
+        record_invalid: "Проверка не пройдена: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Нельзя убрать из реестра: есть %{record}"
+          has_many: "Нельзя убрать из реестра: есть %{record}"
+
+  errors:
+    # Род поля сообщение не знает: «Дата отправки не может быть пустым» — ошибка
+    # в ошибке. Поэтому сообщения безличные, через двоеточие.
+    format: "%{attribute}: %{message}"
+    messages:
+      accepted: "нужно подтвердить"
+      blank: "нужно заполнить"
+      confirmation: "не совпадает"
+      empty: "нужно заполнить"
+      equal_to: "нужно ровно %{count}"
+      even: "нужно чётное число"
+      exclusion: "это значение занято"
+      greater_than: "нужно больше %{count}"
+      greater_than_or_equal_to: "нужно не меньше %{count}"
+      inclusion: "недопустимое значение"
+      invalid: "неверный вид"
+      less_than: "нужно меньше %{count}"
+      less_than_or_equal_to: "нужно не больше %{count}"
+      not_a_number: "нужно число"
+      not_an_integer: "нужно целое число"
+      odd: "нужно нечётное число"
+      other_than: "нужно не %{count}"
+      present: "здесь ничего не должно быть"
+      required: "нет в реестре"
+      taken: "такой уже есть в реестре"
+      too_long:
+        one: "не больше %{count} знака"
+        other: "не больше %{count} знаков"
+      too_short:
+        one: "не меньше %{count} знака"
+        other: "не меньше %{count} знаков"
+      wrong_length:
+        one: "нужно ровно %{count} знак"
+        other: "нужно ровно %{count} знаков"
+
+  helpers:
+    select:
+      prompt: "Выберите"
+    submit:
+      create: "Внести"
+      update: "Сохранить"
+      submit: "Отправить"

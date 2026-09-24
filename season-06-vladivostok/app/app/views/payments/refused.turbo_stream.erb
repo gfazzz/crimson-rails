@@ -1,0 +1,7 @@
+<%# Страница устарела. Строка — в том виде, в каком она есть на самом деле;
+    причина — в область для отказов. %>
+<%= turbo_stream.replace @settlement %>
+
+<%= turbo_stream.update dom_id(@company, :payment_alert) do %>
+  <%= @refusal %>
+<% end %>

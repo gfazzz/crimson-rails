@@ -1,0 +1,18 @@
+<% content_for :title, "Телеграммы конторы" %>
+
+<h1>Телеграммы конторы</h1>
+
+<p><%= link_to "Новая телеграмма", new_telegram_path %></p>
+
+<% if @telegrams.any? %>
+  <ul>
+    <% @telegrams.each do |telegram| %>
+      <li>
+        <%= link_to telegram.addressee, telegram %> —
+        <%= render "state", telegram: telegram %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Телеграмм пока нет.</p>
+<% end %>

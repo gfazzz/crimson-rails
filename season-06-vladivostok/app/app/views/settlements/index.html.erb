@@ -1,0 +1,41 @@
+<% content_for :title, "Расчёты #{@company.code}" %>
+
+<h1>Расчёты с дорогой <%= @company.code %></h1>
+
+<%# Фрейм с тем же id, что на странице дороги. На запрос фрейма Turbo возьмёт
+    из этого ответа только его; на обычный запрос — вся страница вокруг. %>
+<%= turbo_frame_tag dom_id(@company, :settlements) do %>
+  <% if @settlements.any? %>
+    <table>
+      <caption>Расчёты с дорогой <%= @company.code %></caption>
+      <thead>
+        <tr>
+          <th scope="col">Месяц</th>
+          <th scope="col">Сумма</th>
+          <th scope="col">Состояние</th>
+          <th scope="col">Оплата</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @settlements %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>Расчётов с дорогой ещё не было.</p>
+  <% end %>
+
+  <%# Живые области стоят на странице заранее, пустыми: читающий вслух
+      услышит то, что в них появится, только если область была до того, как
+      появилось (s03e04). %>
+  <p id="<%= dom_id(@company, :payment_status) %>" role="status"></p>
+  <p id="<%= dom_id(@company, :payment_alert) %>" role="alert"></p>
+
+  <h2>Журнал подтверждений</h2>
+  <ul id="<%= dom_id(@company, :payments) %>"></ul>
+<% end %>
+
+<%# Файл, а не страница: Turbo не должен его перехватывать и рисовать —
+    `download` говорит браузеру «сохранить», и Turbo такую ссылку не трогает. %>
+<p><%= link_to "Лист расчётов для кассы (CSV)", company_settlements_path(@company, format: :csv), download: "" %></p>
+
+<p><%= link_to "Страница дороги #{@company.code}", company_path(@company) %></p>
