@@ -105,6 +105,28 @@ module Crimson
       public_send(verb, path, params: params, headers: { "Accept" => TURBO_ACCEPT })
     end
 
+    # Обещание фрейма. Ссылка или форма внутри фрейма по умолчанию ведут его
+    # же: Turbo запросит адрес с заголовком `Turbo-Frame` и ждёт в ответе фрейм
+    # с тем же id. Не найдёт — вместо содержимого напишет «Content missing».
+    #
+    # Проверяется каждая ссылка каждого фрейма на странице: либо она уводит
+    # всю страницу (`data-turbo-frame="_top"` или `target="_top"` у фрейма),
+    # либо её адрес отвечает фреймом с тем же id.
+    def broken_frame_links(doc = page)
+      doc.css("turbo-frame[id]").flat_map do |frame|
+        frame.css("a[href]").filter_map do |link|
+          nearest = link.ancestors("turbo-frame").first
+          target = link["data-turbo-frame"] || nearest["target"] || nearest["id"]
+          next if target == "_top" || link["data-turbo"] == "false"
+
+          href = URI(link["href"]).request_uri rescue link["href"]
+          next if frame_content(href, target)
+
+          "#{link.text.squish} → #{href} (фрейм #{target})"
+        end
+      end
+    end
+
     # Действия потока из ответа: что сделать и с чем.
     #
     # Цель у действия либо одна (`target` — идентификатор), либо набор
@@ -114,14 +136,82 @@ module Crimson
       Nokogiri::HTML5.fragment(body).css("turbo-stream").map do |node|
         template = node.at_css("template")
         { action: node["action"], target: node["target"], targets: node["targets"],
-          template: template && Nokogiri::HTML5.fragment(template.inner_html) }
+          # Содержимое `<template>` разбирается в его собственном режиме: там
+          # допустимо то, чего нет вне таблицы, — строка `<tr>` в том числе.
+          template: template && Nokogiri::HTML5.fragment(template.inner_html, context: "template") }
       end
+    end
+
+    # Цели потока, которых нет на странице. Turbo на такую цель не жалуется —
+    # он молча ничего не делает, и человек видит, что «ничего не произошло».
+    def missing_stream_targets(doc, list = streams)
+      list.filter_map do |item|
+        found = item[:target] ? doc.css("[id='#{item[:target]}']") : doc.css(item[:targets].to_s)
+        next if found.any? || item[:action] == "refresh"
+
+        "#{item[:action]} → #{item[:target] || item[:targets]}"
+      end
+    end
+
+    # Приложить поток к странице так, как это делает Turbo, и вернуть то, что
+    # стало. Проверка после этого спрашивает не «что пришло», а «что теперь
+    # на странице».
+    def apply_streams(doc, list = streams)
+      doc = doc.dup
+      list.each do |item|
+        found = item[:target] ? doc.css("[id='#{item[:target]}']") : doc.css(item[:targets].to_s)
+        found.each do |node|
+          content = item[:template]&.dup
+          case item[:action]
+          when "append" then node.add_child(content.to_html) if content
+          when "prepend" then node.prepend_child(content.to_html) if content
+          when "update" then node.inner_html = content.to_html if content
+          when "replace" then node.replace(content.to_html) if content
+          when "before" then node.add_previous_sibling(content.to_html) if content
+          when "after" then node.add_next_sibling(content.to_html) if content
+          when "remove" then node.remove
+          end
+        end
+      end
+      doc
     end
 
     # ─── что пришло ───────────────────────────────────────────────────────
 
-    # Разбор ответа по тем же правилам, по каким его разбирает браузер.
-    def page(body = response.body) = Nokogiri::HTML5(body)
+    # Страница — такой, какой её увидит читающий: ответ разобран по правилам
+    # браузера, а фреймы с `src` подгружены так, как их подгрузит Turbo, —
+    # своим запросом с заголовком `Turbo-Frame`, и их содержимое стоит на
+    # месте заглушки (s05e08).
+    def page(body = response.body)
+      @pages ||= {}
+      @pages[body] ||= Nokogiri::HTML5(body).tap { |doc| load_frames(doc) }
+    end
+
+    # Ответ как он есть, без подгруженных фреймов.
+    def raw_page(body = response.body) = Nokogiri::HTML5(body)
+
+    # Содержимое фрейма, как его получит Turbo: ответ на запрос с заголовком
+    # `Turbo-Frame` и из него — фрейм с тем же id. Отдельной сессией, чтобы
+    # не затереть ответ, который проверяется.
+    def frame_content(src, id)
+      side = ActionDispatch::Integration::Session.new(Rails.application)
+      side.get(src, headers: { "Turbo-Frame" => id })
+      return nil unless side.response.status == 200
+
+      Nokogiri::HTML5(side.response.body).at_css("turbo-frame[id='#{id}']")
+    end
+
+    def load_frames(doc, depth = 0)
+      pending = doc.css("turbo-frame[src]")
+      return if pending.empty? || depth > 3
+
+      pending.each do |frame|
+        loaded = frame_content(frame["src"], frame["id"])
+        frame.remove_attribute("src")
+        frame.inner_html = loaded.inner_html if loaded
+      end
+      load_frames(doc, depth + 1)
+    end
 
     def texts(selector, doc = page) = doc.css(selector).map { |node| node.text.squish }
 

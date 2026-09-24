@@ -1,0 +1,35 @@
+<% content_for :title, "Расчёты #{@company.code}" %>
+
+<h1>Расчёты с дорогой <%= @company.code %></h1>
+
+<%# Фрейм с тем же id, что на странице дороги. На запрос фрейма Turbo возьмёт
+    из этого ответа только его; на обычный запрос — вся страница вокруг. %>
+<%= turbo_frame_tag dom_id(@company, :settlements) do %>
+  <% if @settlements.any? %>
+    <table>
+      <caption>Расчёты с дорогой <%= @company.code %></caption>
+      <thead>
+        <tr>
+          <th scope="col">Месяц</th>
+          <th scope="col">Сумма</th>
+          <th scope="col">Состояние</th>
+          <%# TODO: столбец «Оплата» — для кнопки. %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @settlements %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>Расчётов с дорогой ещё не было.</p>
+  <% end %>
+
+  <%# TODO: куда лягут ответы потока — заранее, пустыми:
+              живая область для «оплачен» (role="status");
+              живая область для отказа (role="alert");
+              журнал подтверждений — список под заголовком.
+            У каждого — свой id, от dom_id дороги. Читающий вслух услышит то,
+            что появится в области, только если она была до того (s03e04). %>
+<% end %>
+
+<p><%= link_to "Страница дороги #{@company.code}", company_path(@company) %></p>

@@ -22,6 +22,10 @@ gem "jbuilder"
 # пока Rails не догонит.
 gem "json", "~> 2.21"
 
+# CSV — лист расчётов для кассы (s05e11). С Ruby 3.4 он не встроен, и без
+# этой строки `require "csv"` на новом Ruby не найдётся.
+gem "csv"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 

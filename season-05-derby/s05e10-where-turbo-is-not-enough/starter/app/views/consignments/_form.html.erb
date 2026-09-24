@@ -1,0 +1,55 @@
+<%# Форма — обещание контроллеру: какие поля в ней есть, то он и получит.
+    `form_with model:` сам выбирает адрес и глагол: для нового бланка —
+    POST /consignments. %>
+<%= form_with model: consignment do |form| %>
+  <% if consignment.errors.any? %>
+    <%# Причины отказа — словами модели, над формой, и объявлены так, что
+        читающий вслух услышит их первыми (s03e04). %>
+    <div role="alert">
+      <p>Бланк не внесён:</p>
+      <ul>
+        <% consignment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :company_id %>
+    <%= form.collection_select :company_id, roads, :id, :code, prompt: true %>
+  </p>
+  <p>
+    <%= form.label :reference %>
+    <%= form.text_field :reference %>
+  </p>
+  <p>
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </p>
+  <p>
+    <%= form.label :sent_on %>
+    <%= form.date_field :sent_on %>
+  </p>
+
+  <%# TODO: сумма фунтами — пока набирают пенсы.
+
+            Подключить контроллер `money` к куску формы с полем платы; числа
+            правила — значениями контроллера, из констант ApplicationHelper.
+            Поле — его цель, и на каждый ввод оно зовёт показ.
+
+            Рядом — место для чтения: оно описывает поле (`aria-describedby`)
+            и само — живая область, чтобы «£3 4s 7d» было слышно, не уходя из
+            поля. Без скрипта на его месте — прочерк. %>
+  <p>
+    <%= form.label :pence %>
+    <%= form.number_field :pence, min: 1, step: 1 %>
+  </p>
+
+  <p>
+    <%= form.label :weight_lb %>
+    <%= form.number_field :weight_lb, min: 1, step: 1 %>
+  </p>
+
+  <p><%= form.submit "Внести бланк" %></p>
+<% end %>

@@ -1,0 +1,59 @@
+<%# Форма — обещание контроллеру: какие поля в ней есть, то он и получит.
+    `form_with model:` сам выбирает адрес и глагол: для нового бланка —
+    POST /consignments. %>
+<%= form_with model: consignment do |form| %>
+  <% if consignment.errors.any? %>
+    <%# Причины отказа — словами модели, над формой, и объявлены так, что
+        читающий вслух услышит их первыми (s03e04). %>
+    <div role="alert">
+      <p>Бланк не внесён:</p>
+      <ul>
+        <% consignment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :company_id %>
+    <%= form.collection_select :company_id, roads, :id, :code, prompt: true %>
+  </p>
+  <p>
+    <%= form.label :reference %>
+    <%= form.text_field :reference %>
+  </p>
+  <p>
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </p>
+  <p>
+    <%= form.label :sent_on %>
+    <%= form.date_field :sent_on %>
+  </p>
+
+  <%# Сумма фунтами — пока набирают пенсы. Поведение подключает Stimulus по
+      `data-controller`; числа правила приходят с сервера значениями, чтобы
+      не писать их в скрипте второй раз.
+
+      Чтение — описание поля (`aria-describedby`), и `<output>` — живая
+      область: читающий вслух услышит «£3 4s 7d», не уходя из поля. Без
+      скрипта поле работает как было, а на месте чтения — прочерк. %>
+  <p data-controller="money"
+     data-money-pence-in-shilling-value="<%= ApplicationHelper::PENCE_IN_SHILLING %>"
+     data-money-shillings-in-pound-value="<%= ApplicationHelper::SHILLINGS_IN_POUND %>">
+    <%= form.label :pence %>
+    <%= form.number_field :pence, min: 1, step: 1,
+                          aria: { describedby: "pence-reading" },
+                          data: { money_target: "pence", action: "input->money#show" } %>
+    <output id="pence-reading" for="consignment_pence" aria-live="polite"
+            data-money-target="reading">—</output>
+  </p>
+
+  <p>
+    <%= form.label :weight_lb %>
+    <%= form.number_field :weight_lb, min: 1, step: 1 %>
+  </p>
+
+  <p><%= form.submit "Внести бланк" %></p>
+<% end %>

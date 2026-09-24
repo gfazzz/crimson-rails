@@ -54,6 +54,18 @@ def rails_runs(season):
     if not script:
         return None
     out = subprocess.run([script[0]], capture_output=True, text=True, timeout=1800).stdout
+    # Если прогон называет серии («серия: s05e03»), проверки складываются по
+    # сериям: серия с двумя файлами даёт две строки, а серия с браузером в
+    # обычном прогоне не даёт ни одной. Иначе — по порядку, как в сезоне 4.
+    if re.search(r"^серия: s\d\de\d\d", out, re.M):
+        totals = {}
+        for code, runs, checks in re.findall(
+                r"^серия: (s\d\de\d\d).*?(\d+) runs, (\d+) assertions, 0 failures, 0 errors",
+                out, re.M | re.S):
+            pair = totals.setdefault(code, [0, 0])
+            pair[0] += int(runs)
+            pair[1] += int(checks)
+        return totals
     return re.findall(r"(\d+) runs, (\d+) assertions, 0 failures, 0 errors", out)
 
 
@@ -70,9 +82,11 @@ def stats(season):
         # Сезон с приложением уже посчитан одним прогоном: серии кумулятивны,
         # и по отдельности их не запустить.
         if prepared is not None:
-            if index < len(prepared):
-                runs += int(prepared[index][0])
-                checks += int(prepared[index][1])
+            found = prepared.get(item["code"]) if isinstance(prepared, dict) else (
+                prepared[index] if index < len(prepared) else None)
+            if found:
+                runs += int(found[0])
+                checks += int(found[1])
             else:
                 unmeasured.append(item["code"])
             continue

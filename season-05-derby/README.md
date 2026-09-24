@@ -45,7 +45,24 @@ Stimulus ровно в одной серии: там, где Turbo мало.
 
 ## Серии
 
+| Серия | Концепт | Артефакт | ⏱ | |
+|---|---|---|---|---|
+| [s05e01](s05e01-a-route-is-a-promise/) — Маршрут — это обещание | маршрут и контроллер; `resources` и `rails routes`; 404 там, где маршрута нет | `config/routes.rb`, `app/controllers/companies_controller.rb`, `app/views/companies/*` | ~60 мин | ⭐⭐ |
+| [s05e02](s05e02-one-decision-in-one-place/) — Одно решение в одном месте | параметры маршрута; адрес по коду; ограничение на параметр; `before_action` | `config/routes.rb`, `app/controllers/companies_controller.rb`, `app/models/company.rb` | ~55 мин | ⭐⭐ |
+| [s05e03](s05e03-a-page-read-aloud/) — Страница, которую читают вслух | представление: макет, частичные шаблоны, помощники; разметка из сезона 2 | `app/views/*`, `app/helpers/*`, `app/controllers/companies_controller.rb` | ~65 мин | ⭐⭐⭐ |
+| [s05e04](s05e04-a-form-that-comes-back/) — Форма, которая возвращается | форма: `form_with`, сильные параметры, 303 и 422, отказ базы словами | `app/controllers/consignments_controller.rb`, `app/views/consignments/*`, `config/routes.rb` | ~70 мин | ⭐⭐⭐ |
+| [s05e05](s05e05-an-edit-and-a-refusal/) — Правка и отказ | правка и удаление: `edit`, `update`, `destroy`; отказ с причиной; 303 после `DELETE` | `app/controllers/companies_controller.rb`, `app/views/companies/*`, `config/routes.rb` | ~60 мин | ⭐⭐⭐ |
+| [s05e06](s05e06-through-your-own-book/) — Через свою книгу | вложенные маршруты; поиск в пределах родителя; чужая запись через свою книгу — 404 | `config/routes.rb`, `app/controllers/consignments_controller.rb`, `app/views/consignments/*` | ~60 мин | ⭐⭐⭐ |
+| [s05e07](s05e07-a-page-that-does-not-reload/) — Страница, которая не перезагружается | Turbo Drive: переход без перезагрузки, снимок в кеше, постоянный элемент | `app/views/layouts/application.html.erb` | ~55 мин | ⭐⭐⭐ |
+| [s05e08](s05e08-a-part-that-answers-for-itself/) — Кусок, который отвечает за себя | Turbo Frames: кусок страницы со своим адресом; ленивый фрейм; правка на месте | `app/views/companies/*`, `app/views/settlements/*`, `app/controllers/settlements_controller.rb`, `config/routes.rb` | ~65 мин | ⭐⭐⭐⭐ |
+| [s05e09](s05e09-where-they-are-waiting/) — Туда, где ждут | Turbo Streams: ответ формы — действия над страницей; цели, которые есть; ответ без Turbo | `app/controllers/payments_controller.rb`, `app/views/payments/*`, `app/views/settlements/*`, `config/routes.rb` | ~75 мин | ⭐⭐⭐⭐ |
+| [s05e10](s05e10-where-turbo-is-not-enough/) — Где Turbo мало | Stimulus: поведение у разметки; цели, значения, действия; подключение после визита | `app/javascript/controllers/money_controller.js`, `app/views/consignments/_form.html.erb` | ~65 мин | ⭐⭐⭐⭐ |
+| [s05e11](s05e11-an-answer-the-telegraph-understands/) — Ответ, который понимает телеграф | форматы ответа: HTML, JSON, CSV; `Accept` и расширение; 406; отказ в формате спрашивающего | `app/controllers/*`, `app/views/**/*.jbuilder`, `app/views/settlements/index.html.erb` | ~90 мин | ⭐⭐⭐⭐⭐ |
+
 Таблица собирается из шапок самих серий: `tools/season_table.py 05`.
+Хронометраж и число проверок — `tools/season_table.py 05 --stats`.
+
+Всего: 11 серий, 12 ч 00 мин, 142 проверки (из них 20 — в браузере).
 
 ---
 

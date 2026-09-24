@@ -1,0 +1,35 @@
+<% content_for :title, @company.code %>
+
+<h1><%= @company.code %></h1>
+
+<%# Карточка дороги — фрейм. «Править» внутри него открывает форму здесь же,
+    на месте карточки: Turbo запросит страницу правки с заголовком
+    `Turbo-Frame` и возьмёт из ответа фрейм с тем же id. Остальная страница
+    стоит, как стояла. %>
+<%= turbo_frame_tag dom_id(@company, :card) do %>
+  <p><%= @company.name %></p>
+
+  <% if @company.registered_on %>
+    <p>В реестре с <%= @company.registered_on %>.</p>
+  <% end %>
+
+  <p><%= link_to "Править", edit_company_path(@company) %></p>
+<% end %>
+
+<%# Расчёты — вклеенный лист: у него свой адрес, и страница дороги его не
+    считает. Turbo подгрузит его, когда до него дойдут глазами (`lazy`);
+    без Turbo на месте фрейма останется ссылка на тот же лист. %>
+<%= turbo_frame_tag dom_id(@company, :settlements), src: company_settlements_path(@company), loading: :lazy do %>
+  <p><%= link_to "Расчёты с дорогой #{@company.code}", company_settlements_path(@company), data: { turbo_frame: "_top" } %></p>
+<% end %>
+
+<p><%= link_to "Книга перевозок", company_consignments_path(@company) %></p>
+
+<p><%= link_to "Внести бланк этой дороги", new_consignment_path(company: @company.code) %></p>
+
+<%# Удаление — не ссылка, а форма: ссылка — это GET, а GET обещает ничего не
+    менять. `button_to` делает форму с кнопкой и скрытым `_method=delete`. %>
+<%= button_to "Убрать из реестра", company_path(@company), method: :delete,
+              form: { data: { turbo_confirm: "Убрать дорогу #{@company.code} из реестра?" } } %>
+
+<p><%= link_to "Весь реестр", companies_path %></p>

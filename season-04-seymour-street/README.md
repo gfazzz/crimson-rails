@@ -162,4 +162,5 @@ cd ../app && bin/rails db:migrate:reset
 
 - ▲ Курс: [CRIMSON RAILS](../README.md) · [маршрут](../docs/ROUTE.md)
 - ◀ Предыдущий сезон: [Season 3 — Манхэттен](../season-03-manhattan/)
+- ▶ Следующий сезон: [Season 5 — Дерби](../season-05-derby/)
 - ▶ Первая серия: **[s04e01 — Ведомость, которая знает свою форму](s04e01-a-ledger-that-knows-its-shape/)**

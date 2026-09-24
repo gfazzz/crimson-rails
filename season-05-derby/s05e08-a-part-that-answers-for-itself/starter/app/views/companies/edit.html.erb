@@ -1,0 +1,38 @@
+<% content_for :title, "Правка #{@company.code}" %>
+
+<h1>Правка дороги <%= @company.code %></h1>
+
+<%# TODO: та же карточка, что на странице дороги: форма и «Отмена» — внутри
+          фрейма с тем же id. Открытая через «Править» из карточки, форма
+          встанет на её место; открытая сама по себе — будет страницей. %>
+
+<%# Существующая запись — `form_with` сам шлёт `PATCH` на адрес дороги. %>
+<%= form_with model: @company do |form| %>
+  <% if @company.errors.any? %>
+    <div role="alert">
+      <p>Изменения не внесены:</p>
+      <ul>
+        <% @company.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# Код не правится: это адрес дороги. Ключ, который меняют, ломает все
+      ссылки, журналы и закладки сразу (s05e02). %>
+  <p>Код: <%= @company.code %></p>
+
+  <p>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.label :registered_on %>
+    <%= form.date_field :registered_on %>
+  </p>
+
+  <p><%= form.submit "Сохранить" %></p>
+<% end %>
+
+<p><%= link_to "Отмена", company_path(@company) %></p>

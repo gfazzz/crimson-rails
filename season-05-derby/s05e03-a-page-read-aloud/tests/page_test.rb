@@ -118,7 +118,7 @@ class PageTest < Crimson::Test
     samples.each_with_index { |pence, index| settle(@mid, format("18%02d-01", 60 + index), pence) }
     get path(:company, @mid)
 
-    shown = settlements_table.css("tbody tr").map { |row| row.css("td").first&.text&.squish }
+    shown = column(settlements_table, "Сумма")
     samples.zip(shown).each do |pence, text|
       found = text.to_s.match(/\A£(\d+) (\d{1,2})s (\d{1,2})d\z/)
       refute_nil found,
@@ -136,7 +136,7 @@ class PageTest < Crimson::Test
     settle(@mid, "1891-07", 240, state: :paid)
     settle(@mid, "1891-08", 240)
     get path(:company, @mid)
-    cells = settlements_table.css("tbody tr").map { |row| row.css("td").last.text.squish }
+    cells = column(settlements_table, "Состояние")
     assert_equal %w[оплачен посчитан], cells,
                  "Состояние расчёта названо не словом. Имена `pending` и `paid` — для кода; " \
                  "вслух их не читают."
@@ -163,6 +163,14 @@ class PageTest < Crimson::Test
   end
 
   private
+
+  # Клетки столбца — по его заголовку, а не по месту: столбцы добавляются, и
+  # «последний» сегодня — не последний завтра.
+  def column(table, header)
+    headers = table.css("thead th").map { |node| node.text.squish }
+    index = headers.index(header) || flunk("У таблицы нет столбца «#{header}». Столбцы: #{headers.join(', ')}.")
+    table.css("tbody tr").map { |row| row.css("th, td")[index]&.text&.squish }
+  end
 
   def main_part
     page.at_css("main") || flunk("На странице нет главной части `<main>`: искать содержание негде.")

@@ -1,0 +1,12 @@
+<%# У строки — id: по нему поток её заменит. Та же строка отрисовывается в
+    таблице и приходит в потоке — один частичный шаблон на оба случая. %>
+<tr id="<%= dom_id(settlement) %>">
+  <th scope="row"><%= settlement.period %></th>
+  <td><%= money(settlement.pence) %></td>
+  <td><%= settlement_state(settlement) %></td>
+  <td>
+    <% if settlement.pending? %>
+      <%= button_to "Оплатить", company_settlement_payment_path(settlement.company, settlement) %>
+    <% end %>
+  </td>
+</tr>

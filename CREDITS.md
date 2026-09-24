@@ -147,6 +147,15 @@ Rails»](https://eurecable.com/ideas/972)**, опубликованной на e
 | Gourley D., Totty B. — **HTTP: The Definitive Guide** (2002) — коды ответов, кеширование, условные запросы; сезон 5 | ✓ |
 | Richardson L., Ruby S. — **RESTful Web Services** (2007) — ресурс и маршрут как понятия, а не как соглашение Rails | ✓ |
 | Lauret A. — **The Design of Web APIs** (2019) — сезон 6: идемпотентность, повторы, версии | ✓ |
+| **Rails Guides: Rails Routing from the Outside In; Action Controller Overview; Layouts and Rendering; Action View Form Helpers** — основа сезона 5 | — |
+| **Turbo Handbook** — turbo.hotwired.dev — Drive, Frames, Streams; коды 303 и 422, заголовок `Turbo-Frame`; серии s05e07–s05e09 | — |
+| **Stimulus Handbook** — stimulus.hotwired.dev — контроллеры, цели, значения; серия s05e10 | — |
+| **turbo-rails** (гем, github.com/hotwired/turbo-rails) — помощники `turbo_frame_tag` и `turbo_stream`; как сервер распознаёт запрос фрейма | — |
+| **jbuilder** (гем, github.com/rails/jbuilder) — README; серия s05e11 | — |
+| **RFC 9110 (HTTP Semantics)** — 12.5.1 `Accept`, 15.4.4 `303 See Other`, 15.5.7 `406`, 15.5.21 `422`; сезон 5 целиком | — |
+| **RFC 6266** — `Content-Disposition`; серия s05e11 | — |
+| **WAI Tables Tutorial**, **WAI-ARIA Live Regions** — w3.org/WAI — таблица и живая область в шаблонах Rails; серии s05e03, s05e09 | — |
+| **OWASP Authorization Cheat Sheet** (раздел IDOR) — cheatsheetseries.owasp.org — чужая запись через свою книгу; серия s05e06 | — |
 
 ## Ремесло, тесты, рефакторинг
 

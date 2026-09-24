@@ -83,6 +83,19 @@ module Crimson
       browser.execute_script("window.__crimson = #{MARK.to_json}")
     end
 
+    # Скрипты окна — модули: браузер грузит их после разбора страницы, и
+    # Turbo появляется не в ту же миллисекунду, что страница. Ждём, а не
+    # спрашиваем один раз.
+    def turbo_ready?(within: Capybara.default_max_wait_time)
+      deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + within
+      loop do
+        return true if browser.evaluate_script("typeof window.Turbo === 'object'")
+        return false if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
+
+        sleep 0.05
+      end
+    end
+
     def reloaded?
       browser.evaluate_script("window.__crimson") != MARK
     end
@@ -94,7 +107,7 @@ module Crimson
 
     def visit(path)
       browser.visit(path)
-      assert browser.evaluate_script("typeof window.Turbo === 'object'"),
+      assert turbo_ready?,
              "На странице #{path} нет Turbo: окно работает как в прошлом веке. Turbo " \
              "подключается в app/javascript/application.js и в макете (`javascript_importmap_tags`)."
     end
