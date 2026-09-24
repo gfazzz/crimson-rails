@@ -31,7 +31,15 @@ cd "$(dirname "$0")/.."
   echo
   echo "---"
   echo
-  echo "## Season 4–8 — Rails 8"
+  echo "## Season 4 — Лондон, Сеймур-стрит · схема и Active Record"
   echo
-  echo "Не написаны. Артефакты: \`ledger\`, \`signal_box\`, \`dispatch\`, \`keyring\`, \`crimson\`."
+  tools/season_table.py 04 --stats
+  echo
+  tools/season_table.py 04 --prefix=../season-04-seymour-street/
+  echo
+  echo "---"
+  echo
+  echo "## Season 5–8 — Rails 8"
+  echo
+  echo "Не написаны. Артефакты: \`signal_box\`, \`dispatch\`, \`keyring\`, \`crimson\`."
 } > docs/CURRICULUM.md

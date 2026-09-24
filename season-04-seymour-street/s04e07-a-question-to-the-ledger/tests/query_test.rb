@@ -168,8 +168,12 @@ class QueryTest < Crimson::Test
     assert_equal [1, 2], record.legs.map(&:position)
   end
 
-  def test_schema_did_not_change
+  # Серия меняет только модели: миграций в ней нет, и схема должна остаться
+  # той же, что после s04e06.
+  def test_the_schema_is_up_to_date_and_untouched
     assert_equal migration_versions.max, schema_version
-    assert_equal %w[companies consignments legs], tables
+    %w[companies consignments legs].each { |name| assert table?(name) }
+    assert_equal %w[company_id consignment_id created_at id miles position updated_at],
+                 columns_after("CreateLegs", "legs")
   end
 end

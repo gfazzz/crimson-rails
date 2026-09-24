@@ -66,6 +66,25 @@
 
 ---
 
-## Season 4–8 — Rails 8
+## Season 4 — Лондон, Сеймур-стрит · схема и Active Record
 
-Не написаны. Артефакты: `ledger`, `signal_box`, `dispatch`, `keyring`, `crimson`.
+серий: 10 · время: 10 ч 55 мин · проверок: 191 · утверждений: 459
+
+| Серия | Концепт | Артефакт | ⏱ | |
+|---|---|---|---|---|
+| [s04e01](../season-04-seymour-street/s04e01-a-ledger-that-knows-its-shape/) — Ведомость, которая знает свою форму | миграция и схема; форма ведомости объявляется, а не подразумевается | `db/migrate/*` | ~60 мин | ⭐⭐ |
+| [s04e02](../season-04-seymour-street/s04e02-a-type-that-does-not-lie/) — Тип, который не врёт | типы столбцов; деньги целым числом; день против момента; умолчание в базе | `db/migrate/*` | ~55 мин | ⭐⭐ |
+| [s04e03](../season-04-seymour-street/s04e03-a-record/) — Запись | Active Record как объект — new/save/save!, валидации, что изменилось | `app/models/*.rb` | ~60 мин | ⭐⭐ |
+| [s04e04](../season-04-seymour-street/s04e04-uniqueness-with-an-index-behind-it/) — Уникальность, за которой стоит индекс | уникальность; чего не умеет validates :uniqueness; уникальный индекс | `db/migrate/*`, `app/models/company.rb` | ~65 мин | ⭐⭐⭐ |
+| [s04e05](../season-04-seymour-street/s04e05-a-link-that-leaves-no-orphans/) — Связь, которая не оставляет сирот | belongs_to и has_many; внешний ключ в схеме; dependent | `db/migrate/*`, `app/models/*` | ~60 мин | ⭐⭐⭐ |
+| [s04e06](../season-04-seymour-street/s04e06-an-obligation-between-two/) — Обязательство между двумя | многие ко многим через свою ведомость; составной уникальный индекс | `db/migrate/*`, `app/models/leg.rb` | ~65 мин | ⭐⭐⭐ |
+| [s04e07](../season-04-seymour-street/s04e07-a-question-to-the-ledger/) — Вопрос к ведомости | отбор как кусок запроса; ленивость; N+1 и как его не делать | `app/models/*.rb` | ~70 мин | ⭐⭐⭐ |
+| [s04e08](../season-04-seymour-street/s04e08-a-condition-the-base-checks/) — Условие, проверенное базой | CHECK, частичный индекс, enum — и что из этого гарантия | `db/migrate/*`, `app/models/leg.rb` | ~60 мин | ⭐⭐⭐ |
+| [s04e09](../season-04-seymour-street/s04e09-all-or-nothing/) — Всё или ничего | проводка; повтор, который не удваивает; блокировка перед решением | `db/migrate/*`, `app/models/settlement.rb` | ~70 мин | ⭐⭐⭐⭐ |
+| [s04e10](../season-04-seymour-street/s04e10-an-index-that-will-not-lay/) — Индекс, который не ложится | миграция на живых данных: порядок шагов, проход порциями, перезапуск | `db/migrate/*` | ~90 мин | ⭐⭐⭐⭐⭐ |
+
+---
+
+## Season 5–8 — Rails 8
+
+Не написаны. Артефакты: `signal_box`, `dispatch`, `keyring`, `crimson`.

@@ -78,6 +78,22 @@ Rails»](https://eurecable.com/ideas/972)**, опубликованной на e
 | Marshall K. и др. — **Pro Active Record** (2007) — устарела по API, но хороша про отображение схемы на объекты | ✓ |
 | **Ruby on Rails Guides** — guides.rubyonrails.org — единственный источник, актуальный для Rails 8; книги по 7 и раньше сверять с ним | — |
 
+## Базы данных и схема
+
+Сезон 4 держится на этих источниках: Rails Guides объясняют, **как**, остальное —
+**почему** и **что будет на миллионе строк**.
+
+| Книга | |
+|---|---|
+| Kleppmann M. — **Designing Data-Intensive Applications** (2017); рус. Клеппман — «Высоконагруженные приложения» (2018) — глава 7 про транзакции, изоляцию и блокировки | ✓ |
+| Ambler S., Sadalage P. — **Refactoring Databases: Evolutionary Database Design** (2006) — откуда вообще взялась мысль, что схему меняют маленькими обратимыми шагами | ✓ |
+| Sadalage P. — **Recipes for Continuous Database Integration** (2007) — миграции в выкатке, а не в голове | — |
+| Karwin B. — **SQL Antipatterns** (2010; 2nd ed. 2022) — источник красных анти-паттернов сезона: EAV, «ключ без ключа», деньги дробным числом | ✓ |
+| Celko J. — **SQL for Smarties** (5th ed., 2014) — что база умеет считать сама, вместо того чтобы отдавать строки в Ruby | ✓ |
+| **PostgreSQL Documentation** — Constraints, Indexes, Concurrency Control, ALTER TABLE, Building Indexes Concurrently | — |
+| **SQLite Documentation** — CREATE TABLE (раздел CHECK), Partial Indexes, Datatypes In SQLite | — |
+| **strong_migrations** (гем, github.com/ankane/strong_migrations) — список опасных миграций с объяснением, чем именно они опасны; читается как конспект `s04e10` | — |
+
 ## HTML и CSS
 
 | Книга | |

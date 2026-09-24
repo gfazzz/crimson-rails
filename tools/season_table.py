@@ -42,6 +42,21 @@ def table(season, prefix=""):
     return "\n".join(rows)
 
 
+def rails_runs(season):
+    """Пары (проверок, утверждений) по порядку серий — для сезонов, у которых
+    артефакт не файл, а слой приложения.
+
+    Такие сезоны проверяются на копии приложения: `support/reference.sh`
+    кладёт в неё solution всех серий, прогоняет миграции и запускает проверки.
+    Запускать серии по отдельности здесь нельзя — сезон кумулятивен.
+    Возвращает None, если сезон устроен иначе."""
+    script = sorted(glob.glob(f"{ROOT}/season-{season}-*/support/reference.sh"))
+    if not script:
+        return None
+    out = subprocess.run([script[0]], capture_output=True, text=True, timeout=1800).stdout
+    return re.findall(r"(\d+) runs, (\d+) assertions, 0 failures, 0 errors", out)
+
+
 def stats(season):
     """Хронометраж и число проверок. Раннер выбирается по тому, что лежит в
     tests/: minitest у Ruby, встроенный node --test у остального."""
@@ -50,7 +65,17 @@ def stats(season):
     runs = checks = 0
     unmeasured = []
     environment = dict(os.environ, FORCE_SOLUTION="1")
-    for item in items:
+    prepared = rails_runs(season)
+    for index, item in enumerate(items):
+        # Сезон с приложением уже посчитан одним прогоном: серии кумулятивны,
+        # и по отдельности их не запустить.
+        if prepared is not None:
+            if index < len(prepared):
+                runs += int(prepared[index][0])
+                checks += int(prepared[index][1])
+            else:
+                unmeasured.append(item["code"])
+            continue
         # Серии с браузером в обычный подсчёт не входят: без установленного
         # chromium их прогон не падает, а ждёт. VISUAL=1 включает их обратно.
         if os.path.exists(f"{item['path']}/NEEDS_BROWSER") and not os.environ.get("VISUAL"):

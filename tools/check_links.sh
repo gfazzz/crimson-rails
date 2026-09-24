@@ -12,6 +12,8 @@ while IFS= read -r file; do
   done
 done < <(find . -name '*.md' \
            -not -path './_backup*' \
+           -not -path './_transfer/*' \
+           -not -path './_to_delete/*' \
            -not -path './.git/*' \
            -not -path '*/node_modules/*') | tee /tmp/cr_links.$$
 if [ -s /tmp/cr_links.$$ ]; then bad=1; else echo "ссылки: все целы"; fi

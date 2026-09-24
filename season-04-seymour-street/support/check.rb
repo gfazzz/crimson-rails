@@ -247,6 +247,17 @@ module Crimson
       seen
     end
 
+    # Сколько проводок открылось за время блока. Нужна там, где по самому
+    # SQL отличить нельзя: SQLite не умеет SELECT ... FOR UPDATE, и
+    # перечитывание под блокировкой выглядит как обычное чтение — а вот
+    # проводка вокруг него видна.
+    def transactions
+      seen = 0
+      probe = ->(*, payload) { seen += 1 if payload[:sql].to_s.match?(/\Abegin/i) }
+      ActiveSupport::Notifications.subscribed(probe, "sql.active_record") { yield }
+      seen
+    end
+
     def scratch_columns(table)
       connection = ActiveRecord::Base.lease_connection
       connection.table_exists?(table.to_s) ? connection.columns(table.to_s).map(&:name).sort : nil
