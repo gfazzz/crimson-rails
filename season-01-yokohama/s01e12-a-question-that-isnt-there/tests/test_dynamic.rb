@@ -60,7 +60,7 @@ class TestUnknownNames < Minitest::Test
     error = assert_raises(NoMethodError) { finder.find_by_clerk("Ито") }
     assert_includes error.message, "find_by_clerk",
                     "Сообщение должно называть метод, которого нет. " \
-                    "Это даёт super — без него опечатка вернёт nil."
+                    "Это даёт super — без него опечатка вернёт nil"
   end
 
   def test_совсем_чужое_имя_тоже
@@ -97,14 +97,14 @@ class TestSuperInTheChain < Minitest::Test
     assert_equal 350, finder.total_by_road("SJI"),
                  "total_by_* разбирает модуль Totals, который стоит ПОЗАДИ Finder. " \
                  "Если method_missing не передаёт незнакомое имя через super, " \
-                 "модуль не получит ничего и метод исчезнет."
+                 "модуль не получит ничего и метод исчезнет"
     assert_equal 135, finder.total_by_cargo("чай")
   end
 
   def test_respond_to_видит_имена_модуля
     assert_respond_to finder, :total_by_road,
                       "respond_to_missing? тоже обязан звать super: иначе " \
-                      "объект отвечает на вопрос, но отрицает это."
+                      "объект отвечает на вопрос, но отрицает это"
   end
 
   def test_method_объект_для_имени_модуля
@@ -121,7 +121,7 @@ class TestRespondTo < Minitest::Test
     assert_respond_to finder, :find_by_road
     assert_respond_to finder, :count_by_cargo,
                       "Объект отвечает на вопрос — значит, respond_to? обязан " \
-                      "это подтверждать."
+                      "это подтверждать"
   end
 
   def test_respond_to_не_врёт_про_остальные
@@ -133,13 +133,13 @@ class TestRespondTo < Minitest::Test
     m = finder.method(:find_by_road)
     assert_equal ENTRIES.values_at(0, 1), m.call("SJI"),
                  "method() опирается на respond_to_missing?, а не на respond_to?. " \
-                 "Если здесь NameError — переопределён не тот метод."
+                 "Если здесь NameError — переопределён не тот метод"
   end
 
   def test_method_объект_можно_передать_блоком
     m = finder.method(:count_by_road)
     assert_equal [2, 1], %w[SJI NTK].map(&m),
-                 "У Method есть to_proc — приём из s01e02."
+                 "У Method есть to_proc — приём из s01e02"
   end
 
   def test_method_для_неизвестного_имени_падает
@@ -148,9 +148,9 @@ class TestRespondTo < Minitest::Test
 
   def test_служебные_методы_закрыты
     refute_includes finder.public_methods, :method_missing,
-                    "method_missing — служебный метод, его делают приватным."
+                    "method_missing — служебный метод, его делают приватным"
     refute_includes finder.public_methods, :respond_to_missing?,
                     "respond_to_missing? тоже: Ruby зовёт его сам, " \
-                    "а снаружи спрашивают respond_to?."
+                    "а снаружи спрашивают respond_to?"
   end
 end

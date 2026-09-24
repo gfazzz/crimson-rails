@@ -28,14 +28,14 @@ def ledger(count = 37) = Abacus::Ledger.new(build_entries(count))
 class TestEnumerable < Minitest::Test
   def test_ведомость_объявлена_перечислимой
     assert_includes Abacus::Ledger.ancestors, Enumerable,
-                    "Ведомость должна подключать Enumerable: include Enumerable в теле класса."
+                    "Ведомость должна подключать Enumerable: include Enumerable в теле класса"
     assert_kind_of Enumerable, ledger
   end
 
   def test_обход_называется_each
     assert_respond_to ledger, :each,
                       "Enumerable строит сорок методов поверх метода с именем each. " \
-                      "Никакое другое имя ему не подходит."
+                      "Никакое другое имя ему не подходит"
   end
 
   def test_имя_из_первой_серии_продолжает_работать
@@ -43,8 +43,8 @@ class TestEnumerable < Minitest::Test
     seen = []
     result = l.each_entry { |entry| seen << entry }
     assert_equal 5, seen.size,
-                 "each_entry из s01e01 должен работать: договор, опубликованный наружу, не ломают."
-    assert_same l, result, "И по-прежнему возвращать саму ведомость."
+                 "each_entry из s01e01 должен работать: договор, опубликованный наружу, не ломают"
+    assert_same l, result, "И по-прежнему возвращать саму ведомость"
   end
 
   def test_each_без_блока_перечислитель
@@ -76,15 +76,15 @@ class TestFreeMethods < Minitest::Test
     result = @ledger.select { |e| e[:road] == "SJI" }
     assert_kind_of Array, result,
                    "Enumerable не знает, как собрать твой класс обратно, и отдаёт массив. " \
-                   "Это не недочёт, это граница модуля — в s01e08 разберём, что с этим делают."
+                   "Это не недочёт, это граница модуля — в s01e08 разберём, что с этим делают"
     refute_kind_of Abacus::Ledger, result
   end
 
   def test_each_slice_на_неполном_последнем_куске
     slices = @ledger.each_slice(8).to_a
-    assert_equal 5, slices.size, "37 записей по 8 — это пять кусков."
-    assert_equal 5, slices.last.size, "Последний кусок неполный, и это нормально."
-    assert_equal @entries, slices.flatten(1), "Ни одна запись не потерялась."
+    assert_equal 5, slices.size, "37 записей по 8 — это пять кусков"
+    assert_equal 5, slices.last.size, "Последний кусок неполный, и это нормально"
+    assert_equal @entries, slices.flatten(1), "Ни одна запись не потерялась"
   end
 
   def test_ленивый_обход_не_перебирает_всё
@@ -100,10 +100,10 @@ class TestFreeMethods < Minitest::Test
     # yielded замкнут на локальную переменную теста — приём из s01e02
 
     result = counting.new(build_entries(1000)).lazy.map { |e| e[:charge] }.first(3)
-    assert_equal 3, result.size, "lazy.first(3) должен вернуть три значения."
+    assert_equal 3, result.size, "lazy.first(3) должен вернуть три значения"
     assert_operator yielded, :<, 1000,
                     "Ленивый обход не должен перебирать всю ведомость ради трёх записей. " \
-                    "Он работает, только если each сделан как положено: с yield по одной записи."
+                    "Он работает, только если each сделан как положено: с yield по одной записи"
   end
 end
 
@@ -132,7 +132,7 @@ class TestRewritten < Minitest::Test
 
     counting.new(build_entries(10)).total_by { |e| e[:charge] }
     assert_equal 1, passes,
-                 "total_by должен пройти по ведомости ровно один раз, через each."
+                 "total_by должен пройти по ведомости ровно один раз, через each"
   end
 
   def test_без_блока_по_прежнему_ArgumentError
@@ -169,14 +169,14 @@ class TestNewMethods < Minitest::Test
   def test_top_by_не_падает_когда_записей_меньше_чем_просят
     small = Abacus::Ledger.new(build_entries(2))
     assert_equal 2, small.top_by(10) { |e| e[:charge] }.size,
-                 "Просят больше, чем есть, — отдаём сколько есть."
+                 "Просят больше, чем есть, — отдаём сколько есть"
   end
 
   def test_by_road_группирует_по_дорогам
     grouped = @ledger.by_road
     assert_kind_of Hash, grouped
     assert_equal @entries.group_by { |e| e[:road] }, grouped
-    assert_equal @entries.size, grouped.values.sum(&:size), "Ни одна запись не потерялась."
+    assert_equal @entries.size, grouped.values.sum(&:size), "Ни одна запись не потерялась"
   end
 
   def test_by_road_не_выбрасывает_дорогу_с_одной_записью
@@ -185,8 +185,8 @@ class TestNewMethods < Minitest::Test
 
     assert_includes grouped.keys, "TKY",
                     "Дорога с единственной перевозкой — такая же дорога. " \
-                    "group_by не фильтрует, и by_road не должен."
+                    "group_by не фильтрует, и by_road не должен"
     assert_equal 1, grouped["TKY"].size
-    assert_equal entries.size, grouped.values.sum(&:size), "Ни одна запись не потерялась."
+    assert_equal entries.size, grouped.values.sum(&:size), "Ни одна запись не потерялась"
   end
 end

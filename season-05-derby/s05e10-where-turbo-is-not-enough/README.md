@@ -8,7 +8,7 @@ Season 5: Дерби                     Серия s05e10
 Артефакт: `app/javascript/controllers/money_controller.js`, `app/views/consignments/_form.html.erb`   Время: ~65 мин   Сложность: ⭐⭐⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.2 или новее, Rails 8 и **Chrome**: серия проверяется в настоящем браузере (`make test-visual`). Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее, Rails 8 и **Chrome**: серия проверяется в настоящем браузере (`make test-visual`). Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Что делается у стола, никто не проверяет. Поэтому у стола делают только

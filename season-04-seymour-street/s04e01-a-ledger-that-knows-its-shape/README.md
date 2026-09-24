@@ -8,7 +8,7 @@ Season 4: Сеймур-стрит              Серия s04e01
 Артефакт: `db/migrate/*`            Время: ~60 мин      Сложность: ⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.2 или новее и Rails 8. Установка — в [`docs/GETTING_STARTED.md`](../../docs/GETTING_STARTED.md). Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее и Rails 8. Установка — в [`docs/GETTING_STARTED.md`](../../docs/GETTING_STARTED.md). Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Книга принимает всё, что в ней напишут. Машина — только то, что ей объявили».*

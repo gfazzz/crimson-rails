@@ -24,7 +24,7 @@ class TestSelfInInstanceMethod < RegistryTest
     result = registry.register("NTK", gauge: 1067, unit: :lb)
     assert_same registry, result,
                 "self внутри метода экземпляра — сам объект. Возврат self " \
-                "позволяет сцеплять вызовы."
+                "позволяет сцеплять вызовы"
   end
 
   def test_вызовы_сцепляются
@@ -39,7 +39,7 @@ class TestSelfInInstanceMethod < RegistryTest
     registry.register("SJI", gauge: 1067, unit: :kan)
     registry.register("SJI", gauge: 1435, unit: :kg)
     assert_equal({ gauge: 1435, unit: :kg }, registry["SJI"])
-    assert_equal ["SJI"], registry.codes, "И не плодит дубликат кода."
+    assert_equal ["SJI"], registry.codes, "И не плодит дубликат кода"
   end
 
   def test_неизвестная_дорога_это_KeyError_со_списком
@@ -55,8 +55,8 @@ class TestSelfInInstanceMethod < RegistryTest
     result = registry.each { |code, rules| seen[code] = rules }
 
     assert_equal({ "NTK" => { gauge: 1067, unit: :lb } }, seen)
-    assert_same registry, result, "С блоком обход возвращает сам реестр."
-    assert_kind_of Enumerator, Abacus::Registry.new.each, "Без блока — перечислитель."
+    assert_same registry, result, "С блоком обход возвращает сам реестр"
+    assert_kind_of Enumerator, Abacus::Registry.new.each, "Без блока — перечислитель"
   end
 end
 
@@ -66,7 +66,7 @@ class TestSelfInClassBody < RegistryTest
     second = Abacus::Registry.instance
     assert_same first, second,
                 "Registry.instance обязан возвращать один и тот же объект: " \
-                "@instance принадлежит самому классу."
+                "@instance принадлежит самому классу"
   end
 
   def test_reset_забывает_реестр
@@ -79,7 +79,7 @@ class TestSelfInClassBody < RegistryTest
     Abacus::Registry.instance
     refute_includes Abacus::Registry.new.instance_variables, :@instance,
                     "@instance в теле класса — переменная объекта-класса. " \
-                    "У отдельной дороги её быть не должно."
+                    "У отдельной дороги её быть не должно"
   end
 end
 
@@ -93,13 +93,13 @@ class TestSelfInSingletonClass < RegistryTest
   def test_класс_и_экземпляр_говорят_об_одном_реестре
     Abacus::Registry.register("NTK", gauge: 1067, unit: :lb)
     assert_equal ["NTK"], Abacus::Registry.instance.codes,
-                 "Короткий доступ — делегирование, а не второй склад."
+                 "Короткий доступ — делегирование, а не второй склад"
   end
 
   def test_это_методы_класса_а_не_экземпляра
     assert_respond_to Abacus::Registry, :instance
     refute_respond_to Abacus::Registry.new, :instance,
-                      "class << self определяет методы класса."
+                      "class << self определяет методы класса"
   end
 
   def test_обход_через_класс_тоже_работает
@@ -117,7 +117,7 @@ class TestSelfInBlock < RegistryTest
     Abacus::Registry.each do |_code, _rules|
       assert_same outer, self,
                   "Блок не меняет self: внутри он тот же, что снаружи. " \
-                  "Именно поэтому в блоке видны переменные вызывающего кода."
+                  "Именно поэтому в блоке видны переменные вызывающего кода"
     end
   end
 
@@ -129,7 +129,7 @@ class TestSelfInBlock < RegistryTest
 
     assert_equal %w[NTK SJI], Abacus::Registry.codes,
                  "Внутри configure register вызывается без получателя — " \
-                 "значит, self в блоке подменён на сам реестр."
+                 "значит, self в блоке подменён на сам реестр"
   end
 
   def test_configure_возвращает_реестр
@@ -144,6 +144,6 @@ class TestSelfInBlock < RegistryTest
     end
     assert_equal 1435, Abacus::Registry["TKY"][:gauge],
                  "Подмена self не отменяет замыкание: локальные переменные " \
-                 "вызывающего кода по-прежнему видны."
+                 "вызывающего кода по-прежнему видны"
   end
 end

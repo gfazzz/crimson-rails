@@ -8,7 +8,7 @@ Season 5: Дерби                     Серия s05e06
 Артефакт: `config/routes.rb`, `app/controllers/consignments_controller.rb`, `app/views/consignments/*`   Время: ~60 мин   Сложность: ⭐⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.2 или новее и Rails 8. Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее и Rails 8. Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Книга не спрашивает, чей лист в неё вшит. Она просто открывается на нём».*

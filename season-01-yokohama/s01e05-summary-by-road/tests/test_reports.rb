@@ -84,9 +84,9 @@ class TestSummaryByRoad < Minitest::Test
     result = report(entries).summary_by_road
 
     entries.group_by { |e| e[:road] }.each do |road, rows|
-      assert_equal rows.size, result[road][:count], "Число перевозок по #{road}."
-      assert_equal rows.sum { |e| e[:weight] }, result[road][:weight], "Вес по #{road}."
-      assert_equal rows.sum { |e| e[:charge] }, result[road][:charge], "Плата по #{road}."
+      assert_equal rows.size, result[road][:count], "Число перевозок по #{road}"
+      assert_equal rows.sum { |e| e[:weight] }, result[road][:weight], "Вес по #{road}"
+      assert_equal rows.sum { |e| e[:charge] }, result[road][:charge], "Плата по #{road}"
     end
   end
 
@@ -95,7 +95,7 @@ class TestSummaryByRoad < Minitest::Test
     rep.summary_by_road
     assert_equal 1, passes[0],
                  "Обходов вышло #{passes[0]}. Три итога собираются за один проход: " \
-                 "накопитель несут через обход, а не группируют трижды."
+                 "накопитель несут через обход, а не группируют трижды"
   end
 
   def test_на_пустой_ведомости_пустой_свод
@@ -106,7 +106,7 @@ class TestSummaryByRoad < Minitest::Test
     entries = build_entries(30)
     rep = report(entries)
     total = rep.summary_by_road.values.sum { |row| row[:charge] }
-    assert_equal rep.total_charge, total, "Свод по дорогам обязан сойтись с общим итогом."
+    assert_equal rep.total_charge, total, "Свод по дорогам обязан сойтись с общим итогом"
   end
 end
 
@@ -116,7 +116,7 @@ class TestMismatch < Minitest::Test
     rep = report(entries)
     assert_equal({}, rep.mismatch(rep.charges_by_road),
                  "Когда расхождений нет, в ответе не должно быть ничего — " \
-                 "в том числе нулей.")
+                 "в том числе нулей")
   end
 
   def test_показывает_только_разошедшиеся_дороги
@@ -128,7 +128,7 @@ class TestMismatch < Minitest::Test
     result = rep.mismatch(reported)
     assert_equal({ "SJI" => 40 }, result,
                  "Наш итог больше присланного на 40 — значит, +40 по SJI, " \
-                 "и ни одной другой дороги в ответе быть не должно.")
+                 "и ни одной другой дороги в ответе быть не должно")
   end
 
   def test_знак_расхождения_не_потерян
@@ -137,7 +137,7 @@ class TestMismatch < Minitest::Test
     reported = rep.charges_by_road.dup
     reported["NTK"] += 15
     assert_equal({ "NTK" => -15 }, rep.mismatch(reported),
-                 "Наш итог меньше присланного — расхождение отрицательное.")
+                 "Наш итог меньше присланного — расхождение отрицательное")
   end
 
   def test_дорога_которой_нет_у_нас_это_тоже_расхождение
@@ -146,7 +146,7 @@ class TestMismatch < Minitest::Test
     reported = rep.charges_by_road.merge("TKY" => 500)
     assert_equal({ "TKY" => -500 }, rep.mismatch(reported),
                  "Дорога прислала итог, а в нашей ведомости её нет. " \
-                 "Это расхождение, а не повод пропустить дорогу.")
+                 "Это расхождение, а не повод пропустить дорогу")
   end
 
   def test_дорога_которой_нет_у_них_это_тоже_расхождение

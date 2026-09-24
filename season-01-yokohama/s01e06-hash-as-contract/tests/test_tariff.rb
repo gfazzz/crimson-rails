@@ -18,7 +18,7 @@ class TestInitialize < Minitest::Test
     error = assert_raises(ArgumentError) { Abacus::Tariff.new }
     assert_match(/base_rate/, error.message,
                  "Ruby сам скажет, какого именованного аргумента не хватает, " \
-                 "если у него нет умолчания. Тариф без ставки — не тариф.")
+                 "если у него нет умолчания. Тариф без ставки — не тариф")
   end
 
   def test_умолчания_проставляются
@@ -29,13 +29,13 @@ class TestInitialize < Minitest::Test
 
   def test_неизвестное_округление_отвергается_со_списком
     error = assert_raises(ArgumentError) { Abacus::Tariff.new(base_rate: 40, rounding: :sideways) }
-    assert_includes error.message, "sideways", "Скажи, что получил."
-    assert_includes error.message, "nearest", "И что бывает."
+    assert_includes error.message, "sideways", "Скажи, что получил"
+    assert_includes error.message, "nearest", "И что бывает"
   end
 
   def test_тариф_заморожен
     assert_predicate Abacus::Tariff.new(base_rate: 40), :frozen?,
-                     "Правило, которое можно поменять под ногами, нельзя проверить."
+                     "Правило, которое можно поменять под ногами, нельзя проверить"
   end
 end
 
@@ -53,8 +53,8 @@ class TestFrom < Minitest::Test
     end
     assert_includes error.message, "mimimum",
                     "Назови лишний ключ. Молчаливо проигнорированная опечатка — " \
-                    "правило, которое не применилось, и никто не заметил."
-    assert_includes error.message, "minimum", "И покажи, какие ключи известны."
+                    "правило, которое не применилось, и никто не заметил"
+    assert_includes error.message, "minimum", "И покажи, какие ключи известны"
   end
 
   def test_пустые_правила_всё_равно_требуют_ставку
@@ -68,14 +68,14 @@ class TestWith < Minitest::Test
     changed = original.with(minimum: 50)
 
     assert_equal 50, changed.minimum
-    assert_equal 40, changed.base_rate, "Неизменённые правила переносятся."
+    assert_equal 40, changed.base_rate, "Неизменённые правила переносятся"
     refute_same original, changed
   end
 
   def test_исходный_тариф_не_тронут
     original = Abacus::Tariff.new(base_rate: 40, minimum: 0)
     original.with(minimum: 50, base_rate: 99)
-    assert_equal 0, original.minimum, "with не должен менять исходный тариф."
+    assert_equal 0, original.minimum, "with не должен менять исходный тариф"
     assert_equal 40, original.base_rate
   end
 
@@ -91,19 +91,19 @@ class TestChargeFor < Minitest::Test
 
   def test_ставка_за_сто_килограммов
     assert_equal 400, @tariff.charge_for(ENTRY),
-                 "1000 кг при ставке 40 сен за 100 кг — это 400 сен."
+                 "1000 кг при ставке 40 сен за 100 кг — это 400 сен"
   end
 
   def test_надбавка_прибавляется_до_скидки
     # 400 + 100 = 500; скидка 10 % => 450
     assert_equal 450, @tariff.charge_for(ENTRY, surcharge: 100, discount: 0.1),
-                 "Порядок счёта: надбавка, потом скидка. Обратный порядок даст 460."
+                 "Порядок счёта: надбавка, потом скидка. Обратный порядок даст 460"
   end
 
   def test_нижняя_граница_поднимает_плату
     tariff = Abacus::Tariff.new(base_rate: 1, minimum: 250, rounding: :nearest)
     assert_equal 250, tariff.charge_for(ENTRY),
-                 "10 сен по ставке, но минимум 250 — платят 250."
+                 "10 сен по ставке, но минимум 250 — платят 250"
   end
 
   def test_округление_вверх_вниз_и_к_ближайшему
@@ -112,9 +112,9 @@ class TestChargeFor < Minitest::Test
     down = Abacus::Tariff.new(base_rate: 40, rounding: :down)
     near = Abacus::Tariff.new(base_rate: 40, rounding: :nearest)
 
-    assert_equal 41, up.charge_for(entry),   "40.4 вверх — это 41."
-    assert_equal 40, down.charge_for(entry), "40.4 вниз — это 40."
-    assert_equal 40, near.charge_for(entry), "40.4 к ближайшему — это 40."
+    assert_equal 41, up.charge_for(entry),   "40.4 вверх — это 41"
+    assert_equal 40, down.charge_for(entry), "40.4 вниз — это 40"
+    assert_equal 40, near.charge_for(entry), "40.4 к ближайшему — это 40"
   end
 
   def test_скидка_вне_диапазона_отвергается
@@ -127,7 +127,7 @@ class TestChargeFor < Minitest::Test
     assert_equal @tariff.charge_for(ENTRY, surcharge: 100, discount: 0.1),
                  @tariff.charge_for(ENTRY, **options),
                  "** раскрывает хеш в именованные аргументы. Без ** в Ruby 3 " \
-                 "хеш поедет позиционным аргументом и метод его не примет."
+                 "хеш поедет позиционным аргументом и метод его не примет"
   end
 
   def test_неизвестная_опция_не_проглатывается

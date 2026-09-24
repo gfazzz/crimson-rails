@@ -62,7 +62,7 @@ abacus/
       вписана числом.
 - [ ] `license` — `"MIT"`; `summary`, `description`, `authors` заполнены, без
       оставшихся заготовок вроде `TODO`.
-- [ ] `required_ruby_version` разрешает 3.1 и запрещает 2.7.
+- [ ] `required_ruby_version` разрешает 3.3 и запрещает 3.2.
 - [ ] `files` включает `lib/abacus.rb` и файлы `lib/abacus/*.rb`, и собирается
       **без** `git ls-files`: паспорт должен читаться там, где нет репозитория.
 - [ ] `require_paths` — `["lib"]`.

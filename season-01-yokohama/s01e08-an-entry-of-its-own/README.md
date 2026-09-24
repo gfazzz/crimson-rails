@@ -8,7 +8,7 @@ Season 1: Йокогама                 Серия s01e08
 Артефакт: `entry.rb`               Время: ~60 мин      Сложность: ⭐⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.1 или новее. `Abacus::Keys` из `s01e07` лежит готовым в [`support/keys.rb`](support/keys.rb). Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее. `Abacus::Keys` из `s01e07` лежит готовым в [`support/keys.rb`](support/keys.rb). Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Две монеты по двадцать сен — это не две разные монеты. Это сорок сен».*

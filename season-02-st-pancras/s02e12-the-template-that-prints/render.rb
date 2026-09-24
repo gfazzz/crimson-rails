@@ -24,8 +24,10 @@ end
 template, data_file, out = ARGV
 abort "нужно: ruby render.rb <шаблон.erb> <лист.json> <куда.html>" unless out
 
-issue = JSON.parse(File.read(data_file))
-erb = ERB.new(File.read(template), trim_mode: "-")
+# Кодировка — явно: в терминале с LANG=C Ruby прочтёт файл как ASCII и
+# споткнётся на первой кириллической букве.
+issue = JSON.parse(File.read(data_file, encoding: "UTF-8"))
+erb = ERB.new(File.read(template, encoding: "UTF-8"), trim_mode: "-")
 erb.filename = template
 
-File.write(out, erb.result_with_hash(issue: issue))
+File.write(out, erb.result_with_hash(issue: issue), encoding: "UTF-8")

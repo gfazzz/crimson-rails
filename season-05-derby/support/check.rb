@@ -361,8 +361,8 @@ module Crimson
 
     # Minitest дописывает к сообщению точку; сообщения сезона — предложения и
     # кончаются своей. Без этого выходит «..».
-    def message(msg = nil, ending = nil, &default)
-      super(msg.is_a?(String) ? msg.chomp(".") : msg, ending, &default)
+    def message(msg = nil, *ending, &default)
+      super(msg.is_a?(String) ? msg.chomp(".") : msg, *ending, &default)
     end
 
     def assert_status(expected, message = nil)

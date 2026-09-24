@@ -8,7 +8,7 @@ Season 5: Дерби                     Серия s05e09
 Артефакт: `app/controllers/payments_controller.rb`, `app/views/payments/*`, `app/views/settlements/*`, `config/routes.rb`   Время: ~75 мин   Сложность: ⭐⭐⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.2 или новее и Rails 8. Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее и Rails 8. Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Подтверждение приходит с адресом строки. Если строки нет — оно ложится

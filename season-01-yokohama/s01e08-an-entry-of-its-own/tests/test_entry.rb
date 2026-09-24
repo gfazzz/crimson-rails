@@ -29,17 +29,17 @@ class TestConstruction < Minitest::Test
   def test_все_поля_обязательны
     error = assert_raises(ArgumentError) { Abacus::Entry.new(road: "SJI") }
     assert_match(/cargo|weight|charge/, error.message,
-                 "Именованные аргументы без умолчаний — язык сам потребует их.")
+                 "Именованные аргументы без умолчаний — язык сам потребует их")
   end
 
   def test_запись_неизменяема
     assert_predicate entry, :frozen?,
                      "Объект-значение не меняется: иначе две «равные» записи " \
-                     "перестанут быть равными у тебя за спиной."
+                     "перестанут быть равными у тебя за спиной"
   end
 
   def test_поля_нельзя_записать
-    refute_respond_to entry, :road=, "attr_reader, а не attr_accessor."
+    refute_respond_to entry, :road=, "attr_reader, а не attr_accessor"
   end
 
   def test_собирается_из_хеша_с_любыми_ключами
@@ -51,7 +51,7 @@ class TestConstruction < Minitest::Test
   def test_лишние_ключи_в_хеше_не_мешают
     row = FIELDS.merge("clerk" => "Ито", "line" => 388)
     assert_equal entry, Abacus::Entry.from(row),
-                 "В ведомости встречаются чужие поля. Запись берёт свои."
+                 "В ведомости встречаются чужие поля. Запись берёт свои"
   end
 
   def test_to_h_возвращает_поля
@@ -73,8 +73,8 @@ class TestEquality < Minitest::Test
     other = Struct.new(:road, :cargo, :weight, :charge, keyword_init: true)
                   .new(**FIELDS)
     refute_equal entry, other,
-                 "Объект с теми же полями, но другого класса, равным не считается."
-    assert_equal false, entry == 42, "Сравнение с чем угодно возвращает false, а не исключение."
+                 "Объект с теми же полями, но другого класса, равным не считается"
+    assert_equal false, entry == 42, "Сравнение с чем угодно возвращает false, а не исключение"
     assert_equal false, entry == nil
   end
 
@@ -84,7 +84,7 @@ class TestEquality < Minitest::Test
     assert a.eql?(b), "eql? должен вести себя как ==."
     assert_equal a.hash, b.hash,
                  "Равные объекты обязаны иметь равный хеш-код. Иначе Hash, Set " \
-                 "и uniq перестанут их находить."
+                 "и uniq перестанут их находить"
   end
 
   def test_разные_записи_как_правило_имеют_разный_хеш
@@ -95,7 +95,7 @@ class TestEquality < Minitest::Test
     twin = Class.new(Abacus::Entry)
     refute_equal entry.hash, twin.new(**FIELDS).hash,
                  "Наследник с теми же полями — другой объект: класс должен " \
-                 "участвовать в хеш-коде."
+                 "участвовать в хеш-коде"
   end
 end
 
@@ -107,13 +107,13 @@ class TestCollections < Minitest::Test
 
     assert_equal 1, [japanese, british].uniq.size,
                  "Ради этого и писалась вся серия: две записи об одной перевозке " \
-                 "теперь одинаковы для языка, а не только для глаза."
+                 "теперь одинаковы для языка, а не только для глаза"
   end
 
   def test_годится_ключом_хеша
     index = { entry => "строка 388" }
     assert_equal "строка 388", index[entry],
-                 "Другой объект с теми же полями должен находить ту же запись."
+                 "Другой объект с теми же полями должен находить ту же запись"
   end
 
   def test_годится_элементом_множества
@@ -131,20 +131,20 @@ class TestPrinting < Minitest::Test
     text = entry.to_s
     assert_includes text, "SJI"
     assert_includes text, "чай"
-    refute_includes text, "#<", "to_s читают люди: ни решёток, ни имени класса."
-    refute_includes text, "road=", "И без имён полей."
+    refute_includes text, "#<", "to_s читают люди: ни решёток, ни имени класса"
+    refute_includes text, "road=", "И без имён полей"
   end
 
   def test_inspect_для_программиста
     text = entry.inspect
-    assert_includes text, "Abacus::Entry", "Видно класс."
-    assert_includes text, "road", "Видны имена полей."
-    assert_includes text, '"SJI"', "Строковые значения — в кавычках, как в inspect."
+    assert_includes text, "Abacus::Entry", "Видно класс"
+    assert_includes text, "road", "Видны имена полей"
+    assert_includes text, '"SJI"', "Строковые значения — в кавычках, как в inspect"
   end
 
   def test_to_s_и_inspect_это_разные_строки
     refute_equal entry.to_s, entry.inspect,
-                 "Две разные задачи: показать человеку и показать программисту."
+                 "Две разные задачи: показать человеку и показать программисту"
   end
 
   def test_интерполяция_зовёт_to_s

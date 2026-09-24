@@ -18,9 +18,9 @@ class TestTheProblemItself < Minitest::Test
   def test_строка_и_символ_это_разные_ключи
     refute_equal JAPANESE, BRITISH,
                  "Эти два хеша выглядят одинаково и одинаковыми не являются. " \
-                 "Вся серия про это."
+                 "Вся серия про это"
     assert_equal 2, [JAPANESE, BRITISH].uniq.size,
-                 "uniq тоже считает их разными — и потому дубликат не найдёт."
+                 "uniq тоже считает их разными — и потому дубликат не найдёт"
   end
 end
 
@@ -31,13 +31,13 @@ class TestSymbolize < Minitest::Test
 
   def test_идемпотентно
     assert_equal BRITISH, Abacus::Keys.symbolize(BRITISH),
-                 "Уже приведённый хеш не должен портиться при повторном приведении."
+                 "Уже приведённый хеш не должен портиться при повторном приведении"
   end
 
   def test_не_трогает_значения
     result = Abacus::Keys.symbolize("cargo" => "чай")
     assert_equal "чай", result[:cargo],
-                 "Значение осталось строкой: приводим ключи, а не всё подряд."
+                 "Значение осталось строкой: приводим ключи, а не всё подряд"
   end
 
   def test_рекурсивно_для_вложенных_хешей
@@ -56,7 +56,7 @@ class TestSymbolize < Minitest::Test
     raw = { 1 => "первая строка ведомости", "road" => "SJI" }
     result = Abacus::Keys.symbolize(raw)
     assert_equal "первая строка ведомости", result[1],
-                 "Числовой ключ не превращают в символ — он остаётся числом."
+                 "Числовой ключ не превращают в символ — он остаётся числом"
     assert_equal "SJI", result[:road]
   end
 
@@ -64,7 +64,7 @@ class TestSymbolize < Minitest::Test
     raw = { "road" => "SJI" }
     Abacus::Keys.symbolize(raw)
     assert_equal({ "road" => "SJI" }, raw,
-                 "Приведение возвращает новый хеш и не портит переданный.")
+                 "Приведение возвращает новый хеш и не портит переданный")
   end
 
   def test_не_хеш_возвращается_как_есть
@@ -80,7 +80,7 @@ class TestStringify < Minitest::Test
 
   def test_круговое_свойство
     assert_equal BRITISH, Abacus::Keys.symbolize(Abacus::Keys.stringify(BRITISH)),
-                 "Туда и обратно должно давать исходное."
+                 "Туда и обратно должно давать исходное"
   end
 
   def test_рекурсивно
@@ -107,14 +107,14 @@ class TestDedupe < Minitest::Test
     rows = [JAPANESE, BRITISH]
     assert_equal 1, Abacus::Keys.dedupe(rows).size,
                  "Две записи об одной перевозке. Одна из них лишняя, " \
-                 "и ровно она даёт расхождение в сорок сен."
+                 "и ровно она даёт расхождение в сорок сен"
   end
 
   def test_оставляет_первую_в_исходном_виде
     kept = Abacus::Keys.dedupe([JAPANESE, BRITISH]).first
     assert_equal JAPANESE, kept,
                  "Остаётся первая встретившаяся, и ключи ей не переписывают: " \
-                 "как пришла из конторы, так и лежит."
+                 "как пришла из конторы, так и лежит"
   end
 
   def test_сохраняет_порядок_и_не_трогает_уникальные
@@ -131,6 +131,6 @@ class TestDedupe < Minitest::Test
   def test_не_меняет_переданный_массив
     rows = [JAPANESE, BRITISH]
     Abacus::Keys.dedupe(rows)
-    assert_equal 2, rows.size, "Исходный список остаётся как был."
+    assert_equal 2, rows.size, "Исходный список остаётся как был"
   end
 end

@@ -8,7 +8,7 @@ Season 1: Йокогама                 Серия s01e15 · финал се�
 Артефакт: `concern.rb`             Время: ~70 мин      Сложность: ⭐⭐⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.1 или новее. Чтение к серии — [`support/active_support_concern.rb`](support/active_support_concern.rb); гем сезона собран в [`support/lib/`](support/lib/). Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее. Чтение к серии — [`support/active_support_concern.rb`](support/active_support_concern.rb); гем сезона собран в [`support/lib/`](support/lib/). Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Понял ли ты язык — проверяется не тем, что ты на нём написал, а тем, что смог прочесть».*

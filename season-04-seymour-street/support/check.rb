@@ -65,6 +65,12 @@ Crimson.boot!
 module Crimson
   # Общий предок проверок сезона.
   class Test < Minitest::Test
+    # Minitest дописывает к сообщению точку; сообщения сезона — предложения и
+    # кончаются своей. Без этого выходит «..».
+    def message(msg = nil, *ending, &default)
+      super(msg.is_a?(String) ? msg.chomp(".") : msg, *ending, &default)
+    end
+
     def db = ActiveRecord::Base.lease_connection
 
     # ─── что знает про себя база ──────────────────────────────────────────

@@ -8,7 +8,7 @@ Season 5: Дерби                     Серия s05e01
 Артефакт: `config/routes.rb`, `app/controllers/companies_controller.rb`, `app/views/companies/*`   Время: ~60 мин   Сложность: ⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.2 или новее и Rails 8. Установка — в [`docs/GETTING_STARTED.md`](../../docs/GETTING_STARTED.md). Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее и Rails 8. Установка — в [`docs/GETTING_STARTED.md`](../../docs/GETTING_STARTED.md). Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Рычаг, которого нет в раме, не переведёшь. А маршрут, который написан на

@@ -81,7 +81,7 @@ Stimulus ровно в одной серии: там, где Turbo мало.
 
 ## Среда
 
-Ruby 3.2 или новее, Rails 8, SQLite. Установка — в
+Ruby 3.3 или новее, Rails 8, SQLite. Установка — в
 [`docs/GETTING_STARTED.md`](../docs/GETTING_STARTED.md).
 
 ```bash

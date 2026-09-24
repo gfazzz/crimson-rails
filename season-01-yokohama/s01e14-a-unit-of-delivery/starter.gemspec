@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   # TODO: name — "abacus"; version — из Abacus::VERSION.
   # TODO: authors, email, summary, description, homepage.
   # TODO: license — "MIT".
-  # TODO: required_ruby_version — не ниже 3.1.
+  # TODO: required_ruby_version — не ниже 3.3.
   # TODO: files — список файлов гема. Готовый `git ls-files` здесь не годится:
   #       гем должен собираться и там, где репозитория нет.
   # TODO: require_paths — откуда грузятся файлы.

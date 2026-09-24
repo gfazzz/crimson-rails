@@ -53,13 +53,13 @@ class TestEntryPoint < Minitest::Test
     assert_equal false, require("abacus"),
                  "Второй require того же файла обязан вернуть false, а не " \
                  "загрузить всё заново. Это делает сам Ruby — но только если " \
-                 "файл подключают через require, а не читают вручную."
+                 "файл подключают через require, а не читают вручную"
   end
 
   def test_версия_есть_и_осмысленна
     assert Abacus.const_defined?(:VERSION), "Гем без версии не собрать."
     assert_match(/\A\d+\.\d+\.\d+\z/, Abacus::VERSION,
-                 "Версия — три числа через точку: major.minor.patch.")
+                 "Версия — три числа через точку: major.minor.patch")
     assert_predicate Abacus::VERSION, :frozen?
   end
 
@@ -105,37 +105,37 @@ end
 class TestGemspec < Minitest::Test
   def setup
     @spec = Dir.chdir(GEM_ROOT) { Gem::Specification.load("abacus.gemspec") }
-    refute_nil @spec, "Паспорт гема не читается: Gem::Specification.load вернул nil."
+    refute_nil @spec, "Паспорт гема не читается: Gem::Specification.load вернул nil"
   end
 
   def test_имя_и_версия
     assert_equal "abacus", @spec.name
     assert_equal Abacus::VERSION, @spec.version.to_s,
                  "Версия в паспорте должна браться из библиотеки, а не " \
-                 "вписываться второй раз: две записи разойдутся."
+                 "вписываться второй раз: две записи разойдутся"
   end
 
   def test_лицензия_и_описание
-    assert_equal "MIT", @spec.license, "Курс и его гем — MIT."
-    refute_empty @spec.summary.to_s, "Без краткого описания гем не примут."
+    assert_equal "MIT", @spec.license, "Курс и его гем — MIT"
+    refute_empty @spec.summary.to_s, "Без краткого описания гем не примут"
     refute_match(/TODO|FIXME|Write a short summary/i, @spec.summary.to_s,
-                 "Описание должно быть написано, а не оставлено заготовкой.")
+                 "Описание должно быть написано, а не оставлено заготовкой")
     refute_empty @spec.authors.reject { |a| a.to_s.empty? }
   end
 
   def test_требование_к_версии_ruby
-    assert @spec.required_ruby_version.satisfied_by?(Gem::Version.new("3.1.0")),
-           "Курс заявлен на Ruby 3.1+."
-    refute @spec.required_ruby_version.satisfied_by?(Gem::Version.new("2.7.0")),
-           "И не ниже: требование должно быть указано, а не оставлено пустым."
+    assert @spec.required_ruby_version.satisfied_by?(Gem::Version.new("3.3.0")),
+           "Курс заявлен на Ruby 3.3+."
+    refute @spec.required_ruby_version.satisfied_by?(Gem::Version.new("3.2.0")),
+           "И не ниже: требование должно быть указано, а не оставлено пустым; 3.2 уже без поддержки."
   end
 
   def test_список_файлов_и_пути_загрузки
-    assert_includes @spec.files, "lib/abacus.rb", "Точка входа обязана попасть в гем."
+    assert_includes @spec.files, "lib/abacus.rb", "Точка входа обязана попасть в гем"
     assert_operator @spec.files.grep(%r{\Alib/abacus/.*\.rb\z}).size, :>=, 5,
-                    "Файлы библиотеки тоже должны попасть в гем."
+                    "Файлы библиотеки тоже должны попасть в гем"
     assert_equal ["lib"], @spec.require_paths,
-                 "require_paths говорит RubyGems, что добавить в $LOAD_PATH."
+                 "require_paths говорит RubyGems, что добавить в $LOAD_PATH"
   end
 
   def test_паспорт_читается_там_где_нет_git
@@ -143,6 +143,6 @@ class TestGemspec < Minitest::Test
            "Проверка идёт во временной папке без репозитория."
     assert_operator @spec.files.size, :>, 0,
                     "Если список файлов пуст — вероятно, он собирается через " \
-                    "`git ls-files`, а вне репозитория это даёт пустоту."
+                    "`git ls-files`, а вне репозитория это даёт пустоту"
   end
 end

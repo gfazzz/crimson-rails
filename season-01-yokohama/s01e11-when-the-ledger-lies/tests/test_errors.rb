@@ -41,7 +41,7 @@ class TestHierarchy < Minitest::Test
      Abacus::UnknownRoad, Abacus::TransmissionError].each do |klass|
       assert_operator klass, :<, StandardError,
                       "#{klass} должен быть ветвью StandardError: обычный rescue " \
-                      "ловит именно её, а Exception — это про прерывания и выход."
+                      "ловит именно её, а Exception — это про прерывания и выход"
     end
   end
 
@@ -54,7 +54,7 @@ class TestHierarchy < Minitest::Test
 
   def test_беда_ведомости_и_беда_связи_это_разные_ветки
     refute_operator Abacus::TransmissionError, :<, Abacus::LedgerError,
-                    "Их лечат по-разному: одну повторяют, другую разбирают."
+                    "Их лечат по-разному: одну повторяют, другую разбирают"
   end
 
   def test_можно_поймать_всё_одним_rescue
@@ -70,7 +70,7 @@ end
 class TestErrorCarriesContext < Minitest::Test
   def test_ошибка_несёт_номер_строки
     error = Abacus::MalformedRow.new("нет кода дороги", line: 388)
-    assert_equal 388, error.line, "Ошибка без адреса — половина ошибки."
+    assert_equal 388, error.line, "Ошибка без адреса — половина ошибки"
   end
 
   def test_номер_строки_виден_в_сообщении
@@ -96,7 +96,7 @@ class TestRetry < Minitest::Test
     loader = Abacus::Loader.new(source)
 
     assert_equal [ROW], loader.load
-    assert_equal 3, source.fetches, "Две неудачи и одна удача — три обращения."
+    assert_equal 3, source.fetches, "Две неудачи и одна удача — три обращения"
     assert_equal 3, loader.attempts
   end
 
@@ -106,7 +106,7 @@ class TestRetry < Minitest::Test
 
     assert_raises(Abacus::TransmissionError) { loader.load }
     assert_equal Abacus::Loader::MAX_ATTEMPTS, source.fetches,
-                 "Повтор без предела — это не устойчивость, а вечный цикл."
+                 "Повтор без предела — это не устойчивость, а вечный цикл"
   end
 
   def test_беда_ведомости_не_повторяется
@@ -115,7 +115,7 @@ class TestRetry < Minitest::Test
 
     assert_raises(Abacus::MalformedRow) { loader.load }
     assert_equal 1, source.fetches,
-                 "Повторять разбор битой строки бессмысленно: второй раз выйдет то же."
+                 "Повторять разбор битой строки бессмысленно: второй раз выйдет то же"
   end
 
   def test_счётчик_попыток_обнуляется_между_загрузками
@@ -139,14 +139,14 @@ class TestEnsure < Minitest::Test
   def test_источник_закрывается_при_ошибке_разбора
     source = FlakySource.new(rows: ["не запись"])
     assert_raises(Abacus::MalformedRow) { Abacus::Loader.new(source).load }
-    assert_equal 1, source.closes, "ensure выполняется и когда всё пошло не так."
+    assert_equal 1, source.closes, "ensure выполняется и когда всё пошло не так"
   end
 
   def test_источник_закрывается_после_исчерпания_повторов
     source = FlakySource.new(fail_times: 99)
     assert_raises(Abacus::TransmissionError) { Abacus::Loader.new(source).load }
     assert_equal 1, source.closes,
-                 "Закрыть нужно один раз, а не по разу на каждую попытку."
+                 "Закрыть нужно один раз, а не по разу на каждую попытку"
   end
 
   def test_ensure_не_проглатывает_исключение
@@ -154,7 +154,7 @@ class TestEnsure < Minitest::Test
     error = assert_raises(Abacus::MalformedRow) { Abacus::Loader.new(source).load }
     assert_kind_of Abacus::MalformedRow, error,
                    "Если в ensure стоит return или свой raise, исходная ошибка " \
-                   "исчезнет, и причину будет не найти."
+                   "исчезнет, и причину будет не найти"
   end
 end
 
@@ -162,7 +162,7 @@ class TestParsing < Minitest::Test
   def test_строка_без_кода_дороги
     source = FlakySource.new(rows: [ROW, { cargo: "чай" }])
     error = assert_raises(Abacus::MalformedRow) { Abacus::Loader.new(source).load }
-    assert_equal 2, error.line, "Номер строки — вторая: нумерация с единицы."
+    assert_equal 2, error.line, "Номер строки — вторая: нумерация с единицы"
   end
 
   def test_дорога_вне_реестра

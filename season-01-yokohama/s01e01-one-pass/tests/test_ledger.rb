@@ -38,7 +38,7 @@ class TestEachEntry < Minitest::Test
       Abacus::Ledger.new(build_entries(count)).each_entry { calls += 1 }
       assert_equal count, calls,
                    "На #{count} записях блок вызван #{calls} раз. " \
-                   "yield должен сработать ровно один раз на запись."
+                   "yield должен сработать ровно один раз на запись"
     end
   end
 
@@ -47,7 +47,7 @@ class TestEachEntry < Minitest::Test
     seen = []
     Abacus::Ledger.new(entries).each_entry { |entry| seen << entry }
     assert_equal entries, seen,
-                 "Блок должен получать сами записи и в исходном порядке."
+                 "Блок должен получать сами записи и в исходном порядке"
   end
 
   def test_возвращает_саму_ведомость_а_не_массив
@@ -55,7 +55,7 @@ class TestEachEntry < Minitest::Test
     result = ledger.each_entry { }
     assert_same ledger, result,
                 "each_entry вернул #{result.class}. Должен вернуть саму ведомость (self): " \
-                "Array#each возвращает получателя, и твой обход обязан вести себя так же."
+                "Array#each возвращает получателя, и твой обход обязан вести себя так же"
   end
 
   def test_без_блока_возвращает_перечислитель_а_не_падает
@@ -66,9 +66,9 @@ class TestEachEntry < Minitest::Test
       flunk "each_entry без блока упал с LocalJumpError. Проверь block_given? и верни enum_for."
     end
     assert_kind_of Enumerator, result,
-                   "Без блока each_entry вернул #{result.inspect}. Ожидается Enumerator."
+                   "Без блока each_entry вернул #{result.inspect}. Ожидается Enumerator"
     assert_equal 4, result.to_a.size,
-                 "Перечислитель должен перебирать те же записи."
+                 "Перечислитель должен перебирать те же записи"
   end
 end
 
@@ -79,7 +79,7 @@ class TestTotalBy < Minitest::Test
     actual = Abacus::Ledger.new(entries).total_by { |e| e[:charge] }
     assert_equal expected, actual,
                  "Сумма плат не сошлась. total_by складывает то, что вернул блок, " \
-                 "а не что-нибудь из записи по своему выбору."
+                 "а не что-нибудь из записи по своему выбору"
   end
 
   def test_блок_решает_что_суммировать
@@ -88,13 +88,13 @@ class TestTotalBy < Minitest::Test
     expected  = entries.map { |e| e[:weight] }.inject(0) { |acc, v| acc + v }
     assert_equal expected, by_weight,
                  "Тот же метод с другим блоком должен дать другую сумму. " \
-                 "Если сумма не изменилась — метод считает сам, а не спрашивает блок."
+                 "Если сумма не изменилась — метод считает сам, а не спрашивает блок"
   end
 
   def test_на_пустой_ведомости_ноль_а_не_nil
     result = Abacus::Ledger.new([]).total_by { |e| e[:charge] }
     assert_equal 0, result,
-                 "На пустой ведомости вернулось #{result.inspect}. Сумма ничего — это 0."
+                 "На пустой ведомости вернулось #{result.inspect}. Сумма ничего — это 0"
   end
 
   def test_без_блока_понятная_ошибка_а_не_LocalJumpError
@@ -103,7 +103,7 @@ class TestTotalBy < Minitest::Test
     end
     refute_kind_of LocalJumpError, error,
                    "Без блока вылетел LocalJumpError. Он сообщает, что блока нет, " \
-                   "но не говорит, какому методу он был нужен. Подними свой ArgumentError."
+                   "но не говорит, какому методу он был нужен. Подними свой ArgumentError"
     assert_kind_of ArgumentError, error
   end
 
@@ -120,7 +120,7 @@ class TestTotalBy < Minitest::Test
     ledger.total_by { |e| e[:charge] }
     assert_equal 1, ledger.passes.to_i,
                  "total_by не воспользовался each_entry (обходов: #{ledger.passes.inspect}). " \
-                 "Обход в классе должен быть один: остальные методы строятся на нём."
+                 "Обход в классе должен быть один: остальные методы строятся на нём"
   end
 end
 
@@ -129,8 +129,8 @@ class TestCountWhere < Minitest::Test
     entries = build_entries(80)
     expected = entries.count { |e| e[:weight] > 2000 }
     actual = Abacus::Ledger.new(entries).count_where { |e| e[:weight] > 2000 }
-    assert_equal expected, actual, "Счётчик не сошёлся."
-    assert_operator expected, :>, 0, "Тест бессмысленен, если условию не отвечает ни одна запись."
+    assert_equal expected, actual, "Счётчик не сошёлся"
+    assert_operator expected, :>, 0, "Тест бессмысленен, если условию не отвечает ни одна запись"
   end
 
   def test_истина_по_рубистски_ноль_и_пустая_строка_истинны
@@ -139,13 +139,13 @@ class TestCountWhere < Minitest::Test
 
     assert_equal 1, ledger.count_where { |e| e[:charge] },
                  "Ноль в Ruby истинен. Если запись не сосчиталась — внутри стоит " \
-                 "сравнение с true вместо проверки на истинность."
+                 "сравнение с true вместо проверки на истинность"
     assert_equal 1, ledger.count_where { |e| e[:cargo] },
-                 "Пустая строка в Ruby истинна."
+                 "Пустая строка в Ruby истинна"
     assert_equal 0, ledger.count_where { |_e| nil },
-                 "nil ложен."
+                 "nil ложен"
     assert_equal 0, ledger.count_where { |_e| false },
-                 "false ложен."
+                 "false ложен"
   end
 
   def test_на_пустой_ведомости_ноль

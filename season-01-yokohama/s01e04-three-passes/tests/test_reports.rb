@@ -33,13 +33,13 @@ class TestMap < Minitest::Test
 
   def test_charges_это_платы_в_порядке_ведомости
     assert_equal @entries.map { |e| e[:charge] }, @report.charges,
-                 "Порядок должен совпадать с порядком ведомости."
+                 "Порядок должен совпадать с порядком ведомости"
   end
 
   def test_roads_без_повторов_и_в_порядке_появления
     assert_equal %w[NTK KSN HYG SJI], @report.roads,
                  "Дороги идут так, как встретились в ведомости. " \
-                 "Отсортированный список выдаёт sort там, где его не просили."
+                 "Отсортированный список выдаёт sort там, где его не просили"
   end
 
   def test_roads_на_пустой_ведомости_пустой_массив
@@ -57,15 +57,15 @@ class TestSelect < Minitest::Test
     assert_equal @entries.select { |e| e[:weight] > 2000 }, @report.heavier_than(2000)
     edge = [{ road: "NTK", cargo: "чай", weight: 2000, charge: 1 }]
     assert_equal [], report(edge).heavier_than(2000),
-                 "Ровно 2000 — не «тяжелее 2000». Границу считаем строго."
+                 "Ровно 2000 — не «тяжелее 2000». Границу считаем строго"
   end
 
   def test_lighter_than_это_дополнение_к_heavier_than
     heavy = @report.heavier_than(2000)
     light = @report.lighter_than(2000)
     assert_equal @entries.size, heavy.size + light.size,
-                 "Вместе они должны давать всю ведомость и ничего не терять."
-    assert_empty (heavy & light), "И не пересекаться."
+                 "Вместе они должны давать всю ведомость и ничего не терять"
+    assert_empty (heavy & light), "И не пересекаться"
   end
 
   def test_split_by_weight_отдаёт_обе_половины
@@ -89,7 +89,7 @@ class TestSelect < Minitest::Test
     Abacus::Report.new(counting.new(build_entries(20))).split_by_weight(2000)
     assert_equal 1, passes,
                  "Обходов вышло #{passes}. Оба ответа получают за один проход — " \
-                 "в Enumerable для этого есть отдельный метод."
+                 "в Enumerable для этого есть отдельный метод"
   end
 end
 
@@ -102,7 +102,7 @@ class TestReduce < Minitest::Test
   def test_total_charge_на_пустой_ведомости_ноль_а_не_nil
     assert_equal 0, report([]).total_charge,
                  "reduce без начального значения на пустой коллекции возвращает nil. " \
-                 "Сумма ничего — это ноль."
+                 "Сумма ничего — это ноль"
   end
 
   def test_longest_cargo_name
@@ -121,7 +121,7 @@ class TestReduce < Minitest::Test
     ]
     assert_equal "рис", report(entries).longest_cargo_name,
                  "При равной длине остаётся тот, что встретился первым: " \
-                 "сравнение должно быть строгим, а не «больше или равно»."
+                 "сравнение должно быть строгим, а не «больше или равно»"
   end
 
   def test_longest_cargo_name_на_пустой_ведомости_nil
@@ -143,12 +143,12 @@ class TestAverage < Minitest::Test
     ]
     assert_in_delta 1.5, report(entries).average_charge, 1e-9,
                     "1 и 2 в среднем дают 1.5. Целочисленное деление даст 1 — " \
-                    "и это молчаливая ошибка, которую никто не заметит."
+                    "и это молчаливая ошибка, которую никто не заметит"
   end
 
   def test_средняя_на_пустой_ведомости_nil_а_не_деление_на_ноль
     assert_nil report([]).average_charge,
                "Нет записей — нет средней. Ноль тут соврал бы: он значит " \
-               "«перевозки были, и все бесплатные»."
+               "«перевозки были, и все бесплатные»"
   end
 end

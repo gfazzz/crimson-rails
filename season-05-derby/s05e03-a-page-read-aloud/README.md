@@ -8,7 +8,7 @@ Season 5: Дерби                     Серия s05e03
 Артефакт: `app/views/*`, `app/helpers/*`, `app/controllers/companies_controller.rb`   Время: ~65 мин   Сложность: ⭐⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.2 или новее и Rails 8. Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее и Rails 8. Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Читающий не видит, куда смотрит проверяющий. Он видит только то, что

@@ -52,7 +52,7 @@ p = proc   { |a, b| [a, b] }
 l = lambda { |a, b| [a, b] }
 
 p.call(1)          # [1, nil]   — прощает
-l.call(1)          # ArgumentError (given 1, expected 2)
+l.call(1)          # ArgumentError: wrong number of arguments (given 1, expected 2)
 ```
 
 **`return`.**

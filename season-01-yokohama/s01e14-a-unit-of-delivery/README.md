@@ -8,7 +8,7 @@ Season 1: Йокогама                 Серия s01e14
 Артефакт: `abacus.rb` + `abacus.gemspec`   Время: ~50 мин   Сложность: ⭐⭐
 ```
 
-> **Требования среды:** Ruby 3.1 или новее. Модули прошлых серий лежат готовыми в [`support/lib/abacus/`](support/lib/abacus/). Критерии приёмки — в [`mission.md`](mission.md).
+> **Требования среды:** Ruby 3.3 или новее. Модули прошлых серий лежат готовыми в [`support/lib/abacus/`](support/lib/abacus/). Критерии приёмки — в [`mission.md`](mission.md).
 > **Как читать:** открывай `.md` в Markdown-предпросмотре (`Cmd+Shift+V` / `Ctrl+Shift+V`).
 
 > *«Инструмент, которым умеет пользоваться только его хозяин, — не инструмент, а привычка».*
@@ -141,7 +141,7 @@ Gem::Specification.new do |spec|
   spec.name = "abacus"
   spec.version = Abacus::VERSION
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.3.0"
   spec.files = Dir["lib/**/*.rb", "README.md", "LICENSE"]
   spec.require_paths = ["lib"]
 end

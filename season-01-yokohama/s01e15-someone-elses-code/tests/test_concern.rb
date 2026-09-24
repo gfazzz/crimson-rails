@@ -66,14 +66,14 @@ class TestConcernBasics < Minitest::Test
   def test_ClassMethods_подключились_сами
     assert_equal "килограмм", Shipment.unit_name,
                  "Ради этого примесь и существует: в s01e09 для того же " \
-                 "приходилось писать хук included с extend вручную."
+                 "приходилось писать хук included с extend вручную"
     assert_predicate Shipment, :billable?
   end
 
   def test_блок_included_выполнился_в_классе_хозяине
     assert_equal "Shipment", Shipment.weighable_host,
                  "Блок included выполняется в контексте класса-хозяина: " \
-                 "self в нём — Shipment, поэтому name даёт его имя."
+                 "self в нём — Shipment, поэтому name даёт его имя"
   end
 
   def test_повторное_включение_не_выполняет_блок_снова
@@ -90,7 +90,7 @@ class TestConcernBasics < Minitest::Test
     assert_equal 1, runs.size,
                  "Блок included выполнился #{runs.size} раза. Повторное " \
                  "включение в тот же класс не должно делать ничего: " \
-                 "класс, уже включивший примесь, — это base < self."
+                 "класс, уже включивший примесь, — это base < self"
     assert_equal [host], runs
   end
 end
@@ -99,14 +99,14 @@ class TestDependencies < Minitest::Test
   def test_зависимость_включилась_в_класс_а_не_в_примесь
     assert_includes Shipment.ancestors, Weighable,
                     "Weighable должен оказаться в предках Shipment: примесь, " \
-                    "включённая в примесь, разворачивается в класс-хозяин."
+                    "включённая в примесь, разворачивается в класс-хозяин"
   end
 
   def test_порядок_предков_верный
     ancestors = Shipment.ancestors
     assert_operator ancestors.index(Billable), :<, ancestors.index(Weighable),
                     "Зависимость ставится дальше зависящего: Billable может " \
-                    "перекрывать методы Weighable, а не наоборот."
+                    "перекрывать методы Weighable, а не наоборот"
   end
 
   def test_примесь_не_подмешала_зависимость_себе
@@ -114,17 +114,17 @@ class TestDependencies < Minitest::Test
     refute_includes Billable.ancestors, Weighable,
                     "Weighable не должен включаться в сам Billable: он ждёт " \
                     "настоящего класса. Иначе ClassMethods подключились бы " \
-                    "не туда."
+                    "не туда"
   end
 
   def test_ClassMethods_обеих_примесей_на_месте
     assert_predicate Shipment, :billable?
     assert_equal "килограмм", Shipment.unit_name,
-                 "Методы класса из зависимости тоже должны дойти до хозяина."
+                 "Методы класса из зависимости тоже должны дойти до хозяина"
   end
 
   def test_методы_зависимости_работают_из_зависящего
-    assert_equal 20, Shipment.new(2400, 10).bill, "heavy? пришёл из Weighable."
+    assert_equal 20, Shipment.new(2400, 10).bill, "heavy? пришёл из Weighable"
     assert_equal 10, Shipment.new(800, 10).bill
   end
 end
@@ -149,7 +149,7 @@ class TestConcernErrors < Minitest::Test
     host = Class.new { include mod }
 
     assert_equal :a, host.first_one
-    assert_equal :b, host.second_one, "Второй вызов не должен затирать первый."
+    assert_equal :b, host.second_one, "Второй вызов не должен затирать первый"
   end
 
   def test_обычный_хук_included_с_аргументом_продолжает_работать
@@ -165,7 +165,7 @@ class TestConcernErrors < Minitest::Test
 
     assert_equal [host], seen,
                  "included с аргументом — обычный хук Ruby, и он обязан " \
-                 "остаться рабочим."
+                 "остаться рабочим"
   end
 end
 

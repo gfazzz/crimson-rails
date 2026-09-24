@@ -1,15 +1,23 @@
 name: tests
 on: [push, pull_request]
 
+# Ruby курса — 3.3 и новее. Сезоны на Ruby проверяются на всех
+# поддерживаемых ветках: сообщения об ошибках, вид хеша и счёт утверждений
+# у них разные, а проверки обязаны быть зелёными на каждой.
+
 jobs:
   season-01:
-    name: Season 1 — Ruby
+    name: Season 1 — Ruby ${{ matrix.ruby }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.3", "3.4", "4.0"]
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4"
+          ruby-version: ${{ matrix.ruby }}
       - run: make test SEASON=01
 
   season-02:
@@ -43,6 +51,79 @@ jobs:
           npx playwright install --with-deps chromium
         working-directory: season-02-st-pancras
       - run: make test-visual SEASON=02
+
+  season-03:
+    name: Season 3 — JavaScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: пакеты
+        run: npm ci --omit=optional
+        working-directory: season-03-manhattan
+      - run: make test SEASON=03
+
+  season-03-visual:
+    name: Season 3 — в браузере
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: пакеты и браузер
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+        working-directory: season-03-manhattan
+      - run: make test-visual SEASON=03
+
+  season-04:
+    name: Season 4 — Active Record, Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.3", "3.4", "4.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          working-directory: season-04-seymour-street/app
+      - run: make test SEASON=04
+
+  season-05:
+    name: Season 5 — маршруты и Hotwire, Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.3", "3.4", "4.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          working-directory: season-05-derby/app
+      - run: make test SEASON=05
+
+  season-05-visual:
+    name: Season 5 — в браузере
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Chrome на раннере уже стоит; драйвер под него Selenium найдёт сам.
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+          working-directory: season-05-derby/app
+      - run: make test-visual SEASON=05
 
   links:
     runs-on: ubuntu-latest

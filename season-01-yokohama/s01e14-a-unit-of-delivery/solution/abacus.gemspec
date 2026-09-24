@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/gfazzz/crimson-rails"
   spec.license = "MIT"
 
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.3.0"
 
   # Dir, а не git ls-files: гем должен собираться и там, где нет git.
   spec.files = Dir["lib/**/*.rb", "README.md", "LICENSE"]
