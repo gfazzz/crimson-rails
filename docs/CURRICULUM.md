@@ -4,7 +4,7 @@
 
 ## Season 1 — Йокогама · Ruby
 
-серий: 15 · время: 14 ч 05 мин · проверок: 265 · утверждений: 546
+серий: 15 · время: 14 ч 05 мин · проверок: 265 · утверждений: 516
 
 | Серия | Концепт | Артефакт | ⏱ | |
 |---|---|---|---|---|
@@ -68,7 +68,7 @@
 
 ## Season 4 — Лондон, Сеймур-стрит · схема и Active Record
 
-серий: 10 · время: 10 ч 55 мин · проверок: 191 · утверждений: 459
+серий: 10 · время: 10 ч 55 мин · проверок: 0 (не измерены без браузера: s04e01, s04e02, s04e03, s04e04, s04e05, s04e06, s04e07, s04e08, s04e09, s04e10)
 
 | Серия | Концепт | Артефакт | ⏱ | |
 |---|---|---|---|---|
@@ -87,7 +87,7 @@
 
 ## Season 5 — Дерби · маршруты, контроллеры, Hotwire
 
-серий: 11 · время: 12 ч 00 мин · проверок: 122 · утверждений: 571 (не измерены без браузера: s05e07, s05e10)
+серий: 11 · время: 12 ч 00 мин · проверок: 0 (не измерены без браузера: s05e01, s05e02, s05e03, s05e04, s05e05, s05e06, s05e07, s05e08, s05e09, s05e10, s05e11)
 
 | Серия | Концепт | Артефакт | ⏱ | |
 |---|---|---|---|---|
@@ -105,6 +105,26 @@
 
 ---
 
-## Season 6–8 — Rails 8
+## Season 6 — Владивосток · фон, кеш, каналы, интеграции
 
-Не написаны. Артефакты: `dispatch`, `keyring`, `crimson`.
+серий: 11 · время: 12 ч 25 мин · проверок: 0 (не измерены без браузера: s06e01, s06e02, s06e03, s06e04, s06e05, s06e06, s06e07, s06e08, s06e09, s06e10, s06e11)
+
+| Серия | Концепт | Артефакт | ⏱ | |
+|---|---|---|---|---|
+| [s06e01](../season-06-vladivostok/s06e01-a-job-is-a-note/) — Задача — это записка | задача в фоне: Active Job, `perform_later`; в записке ссылка на запись, а не её копия | `app/jobs/dispatch_job.rb`, `app/controllers/telegrams_controller.rb`, `config/routes.rb` | ~60 мин | ⭐⭐ |
+| [s06e02](../season-06-vladivostok/s06e02-a-queue-that-outlives-the-night/) — Очередь, которая переживает ночь | очередь — таблица: Solid Queue, готовые, отложенные, взятые; своя очередь, приоритет, отложенный запуск | `app/jobs/dispatch_job.rb`, `app/models/telegraph_line.rb`, `config/queue.yml` | ~65 мин | ⭐⭐⭐ |
+| [s06e03](../season-06-vladivostok/s06e03-when-the-line-breaks/) — Когда рвётся линия | повтор после сбоя: `retry_on`, `discard_on`, пауза, которая растёт, предел попыток; провал, который видно | `app/jobs/dispatch_job.rb`, `app/models/telegraph_line.rb` | ~65 мин | ⭐⭐⭐ |
+| [s06e04](../season-06-vladivostok/s06e04-twice-as-once/) — Дважды — как один раз | идемпотентность: задача дважды — эффект один; ключ — сама вещь, а не конверт; индекс держит, транзакция связывает | `app/jobs/disburse_job.rb`, `app/models/acceptance.rb`, `db/migrate/*` | ~75 мин | ⭐⭐⭐⭐ |
+| [s06e05](../season-06-vladivostok/s06e05-someone-elses-line/) — Чужая линия | внешний источник: HTTP с пределами ожидания, молчание как обрыв, ключ повтора для чужой стороны, справка «не наша» как ответ | `app/models/telegraph_line.rb` | ~70 мин | ⭐⭐⭐⭐ |
+| [s06e06](../season-06-vladivostok/s06e06-a-receipt-from-outside/) — Квитанция снаружи | входящий вызов: подпись HMAC над сырым телом и временем, 202 и работа в фоне, повтор той же квитанции, отказ словами | `app/controllers/receipts_controller.rb`, `config/routes.rb` | ~65 мин | ⭐⭐⭐⭐ |
+| [s06e07](../season-06-vladivostok/s06e07-a-copy-that-knows-it-is-stale/) — Копия, которая знает, что устарела | кеш: `Rails.cache` и Solid Cache, ключ с версией книг, копия строки и `touch` | `app/models/delivery.rb`, `app/models/acceptance.rb`, `app/models/disbursement.rb`, `app/views/deliveries/_delivery.html.erb`, `config/environments/test.rb` | ~65 мин | ⭐⭐⭐ |
+| [s06e08](../season-06-vladivostok/s06e08-the-page-you-already-have/) — Страница, которая у тебя уже есть | HTTP-кеш: `ETag`, `Last-Modified`, `304 Not Modified`, `fresh_when`; копия у читающего и `Cache-Control` | `app/controllers/payouts_controller.rb` | ~55 мин | ⭐⭐⭐ |
+| [s06e09](../season-06-vladivostok/s06e09-news-that-comes-by-itself/) — Новость, которая приходит сама | каналы: Turbo Streams по Action Cable, трансляция из работника после коммита, подписанное имя потока, Solid Cable | `app/models/delivery.rb`, `app/views/board/show.html.erb`, `config/cable.yml` | ~65 мин | ⭐⭐⭐⭐ |
+| [s06e10](../season-06-vladivostok/s06e10-one-day-under-two-dates/) — Один день под двумя датами | расписание: повторяющиеся задачи Solid Queue, часовой пояс в расписании и в счёте, два календаря, одна сводка на день | `app/jobs/daily_report_job.rb`, `app/models/acceptance.rb`, `config/recurring.yml`, `db/migrate/*` | ~70 мин | ⭐⭐⭐⭐ |
+| [s06e11](../season-06-vladivostok/s06e11-the-whole-line-under-strain/) — Вся линия под нагрузкой | сверка с чужой книгой: клиент с пределами, задача по расписанию, переплата с ключом; приёмка сезона под нагрузкой | `app/jobs/reconcile_job.rb`, `app/models/treasury_book.rb`, `db/migrate/*`, `config/recurring.yml` | ~90 мин | ⭐⭐⭐⭐⭐ |
+
+---
+
+## Season 7–8 — Rails 8
+
+Не написаны. Артефакты: `keyring`, `crimson`.

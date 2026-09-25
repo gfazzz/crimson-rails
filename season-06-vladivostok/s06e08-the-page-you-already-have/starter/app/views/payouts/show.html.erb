@@ -1,0 +1,28 @@
+<% content_for :title, "Лист выплат казны за #{@month}" %>
+
+<h1>Лист выплат казны за <%= @month %></h1>
+
+<% if @disbursements.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Отгрузка</th>
+        <th scope="col">Квитанция</th>
+        <th scope="col">Выплачено</th>
+        <th scope="col">Когда</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @disbursements.each do |payout| %>
+        <tr>
+          <th scope="row"><%= payout.delivery.reference %></th>
+          <td><%= payout.acceptance.line_number %></td>
+          <td><%= roubles(payout.kopecks) %></td>
+          <td><%= payout.paid_at.strftime("%d.%m.%Y %H:%M") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>За этот месяц казна ничего не выплачивала.</p>
+<% end %>

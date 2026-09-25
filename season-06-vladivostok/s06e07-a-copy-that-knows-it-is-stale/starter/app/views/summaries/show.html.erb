@@ -1,0 +1,15 @@
+<% content_for :title, "Сводка поставок за #{@summary[:month]}" %>
+
+<h1>Сводка поставок за <%= @summary[:month] %></h1>
+
+<table>
+  <tbody>
+    <tr><th scope="row">Пароходов у причала</th><td data-steamers><%= @summary[:steamers] %></td></tr>
+    <tr><th scope="row">Шпал</th><td data-sleepers><%= @summary[:sleepers] %></td></tr>
+    <tr><th scope="row">Квитанций кабелем</th><td data-cable><%= @summary[:receipts].fetch("cable", 0) %></td></tr>
+    <tr><th scope="row">Квитанций сушей</th><td data-overland><%= @summary[:receipts].fetch("overland", 0) %></td></tr>
+    <tr><th scope="row">Выплачено казной</th><td data-paid><%= roubles(@summary[:paid_kopecks]) %></td></tr>
+  </tbody>
+</table>
+
+<p><%= link_to "Книга поставок", deliveries_path %></p>

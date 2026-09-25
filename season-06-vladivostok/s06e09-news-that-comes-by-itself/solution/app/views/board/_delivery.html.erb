@@ -1,0 +1,6 @@
+<%# Строка табло. Её id — цель потока: `replace` найдёт строку по нему. %>
+<tr id="<%= dom_id(delivery) %>">
+  <th scope="row"><%= delivery.reference %></th>
+  <td><%= delivery.steamer %></td>
+  <td data-state><%= delivery.board_state %></td>
+</tr>

@@ -39,5 +39,13 @@ module Ledger
     # Линия Большого Северного: станция на Светланской. В проверках адрес
     # подменяется поддельной линией (support/line.rb).
     config.x.telegraph_line = ENV.fetch("TELEGRAPH_LINE", "http://127.0.0.1:4750")
+
+    # Общий секрет с линией: им линия подписывает то, что шлёт конторе сама
+    # (s06e06). На проде — из credentials, а не из кода; здесь — учебный.
+    config.x.line_secret = ENV.fetch("LINE_SECRET") { "svetlanskaya-1892-uchebny" }
+
+    # Книга выплат казначейства — у казначейской части, по проводу (s06e11).
+    # В проверках — поддельная (support/treasury.rb).
+    config.x.treasury_book = ENV.fetch("TREASURY_BOOK", "http://127.0.0.1:4760")
   end
 end

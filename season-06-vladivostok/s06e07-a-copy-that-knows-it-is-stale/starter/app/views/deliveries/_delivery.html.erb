@@ -1,0 +1,10 @@
+<%# TODO: строка поставки — из копии, ключ — сама поставка. %>
+<% if true %>
+  <tr id="<%= dom_id(delivery) %>">
+    <th scope="row"><%= delivery.reference %></th>
+    <td><%= delivery.steamer %></td>
+    <td><%= delivery.sleepers %></td>
+    <td data-receipts><%= delivery.acceptances.size %></td>
+    <td data-paid><%= delivery.disbursements.any? ? roubles(delivery.disbursements.sum(:kopecks)) : "—" %></td>
+  </tr>
+<% end %>

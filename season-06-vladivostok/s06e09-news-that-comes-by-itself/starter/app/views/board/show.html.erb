@@ -1,0 +1,19 @@
+<% content_for :title, "Табло причала" %>
+
+<%# TODO: табло слушает поток Delivery::PIER. %>
+
+<h1>Табло причала</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Отгрузка</th>
+      <th scope="col">Пароход</th>
+      <th scope="col">Где</th>
+    </tr>
+  </thead>
+  <%# Цель для новых строк: поток добавляет поставку сюда. %>
+  <tbody id="<%= Delivery::PIER %>">
+    <%= render partial: "board/delivery", collection: @deliveries %>
+  </tbody>
+</table>

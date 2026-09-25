@@ -1,0 +1,22 @@
+<% content_for :title, "Книга поставок" %>
+
+<h1>Книга поставок</h1>
+
+<% if @deliveries.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Отгрузка</th>
+        <th scope="col">Пароход</th>
+        <th scope="col">Шпал</th>
+        <th scope="col">Квитанций</th>
+        <th scope="col">Выплата</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: "delivery", collection: @deliveries %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Поставок пока нет.</p>
+<% end %>

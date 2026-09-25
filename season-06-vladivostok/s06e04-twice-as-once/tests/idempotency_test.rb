@@ -76,7 +76,7 @@ class IdempotencyTest < Crimson::Test
 
   def test_the_worker_dies_after_paying
     receive
-    crash_after_effect!
+    crash_after_effect!(DisburseJob)
     assert_equal 1, disbursements.count, "Работник выплатил и умер — выплаты в книге нет."
     restart!
     work_off!
@@ -129,7 +129,7 @@ class IdempotencyTest < Crimson::Test
   def test_two_workers_at_once
     receive("НГС-7712", route: "cable")
     receive("ИРК-0331", route: "overland")
-    two_workers_at_once!(meet_at: "disbursements")
+    two_workers_at_once!(meet_at: "disbursements", job_class: DisburseJob)
     assert_equal 0, failed_jobs.size,
                  "Второй работник наткнулся на индекс и упал. Индекс сказал «уже выплачено» — " \
                  "это ответ, а не поломка: задача должна его понять и кончиться ничем."

@@ -56,6 +56,15 @@ Queue, `retry_on` и `discard_on`, HTTP наружу с пределами ож�
 | [s06e02](s06e02-a-queue-that-outlives-the-night/) — Очередь, которая переживает ночь | очередь — таблица: Solid Queue, готовые, отложенные, взятые; своя очередь, приоритет, отложенный запуск | `app/jobs/dispatch_job.rb`, `app/models/telegraph_line.rb`, `config/queue.yml` | ~65 мин | ⭐⭐⭐ |
 | [s06e03](s06e03-when-the-line-breaks/) — Когда рвётся линия | повтор после сбоя: `retry_on`, `discard_on`, пауза, которая растёт, предел попыток; провал, который видно | `app/jobs/dispatch_job.rb`, `app/models/telegraph_line.rb` | ~65 мин | ⭐⭐⭐ |
 | [s06e04](s06e04-twice-as-once/) — Дважды — как один раз | идемпотентность: задача дважды — эффект один; ключ — сама вещь, а не конверт; индекс держит, транзакция связывает | `app/jobs/disburse_job.rb`, `app/models/acceptance.rb`, `db/migrate/*` | ~75 мин | ⭐⭐⭐⭐ |
+| [s06e05](s06e05-someone-elses-line/) — Чужая линия | внешний источник: HTTP с пределами ожидания, молчание как обрыв, ключ повтора для чужой стороны, справка «не наша» как ответ | `app/models/telegraph_line.rb` | ~70 мин | ⭐⭐⭐⭐ |
+| [s06e06](s06e06-a-receipt-from-outside/) — Квитанция снаружи | входящий вызов: подпись HMAC над сырым телом и временем, 202 и работа в фоне, повтор той же квитанции, отказ словами | `app/controllers/receipts_controller.rb`, `config/routes.rb` | ~65 мин | ⭐⭐⭐⭐ |
+| [s06e07](s06e07-a-copy-that-knows-it-is-stale/) — Копия, которая знает, что устарела | кеш: `Rails.cache` и Solid Cache, ключ с версией книг, копия строки и `touch` | `app/models/delivery.rb`, `app/models/acceptance.rb`, `app/models/disbursement.rb`, `app/views/deliveries/_delivery.html.erb`, `config/environments/test.rb` | ~65 мин | ⭐⭐⭐ |
+| [s06e08](s06e08-the-page-you-already-have/) — Страница, которая у тебя уже есть | HTTP-кеш: `ETag`, `Last-Modified`, `304 Not Modified`, `fresh_when`; копия у читающего и `Cache-Control` | `app/controllers/payouts_controller.rb` | ~55 мин | ⭐⭐⭐ |
+| [s06e09](s06e09-news-that-comes-by-itself/) — Новость, которая приходит сама | каналы: Turbo Streams по Action Cable, трансляция из работника после коммита, подписанное имя потока, Solid Cable | `app/models/delivery.rb`, `app/views/board/show.html.erb`, `config/cable.yml` | ~65 мин | ⭐⭐⭐⭐ |
+| [s06e10](s06e10-one-day-under-two-dates/) — Один день под двумя датами | расписание: повторяющиеся задачи Solid Queue, часовой пояс в расписании и в счёте, два календаря, одна сводка на день | `app/jobs/daily_report_job.rb`, `app/models/acceptance.rb`, `config/recurring.yml`, `db/migrate/*` | ~70 мин | ⭐⭐⭐⭐ |
+| [s06e11](s06e11-the-whole-line-under-strain/) — Вся линия под нагрузкой | сверка с чужой книгой: клиент с пределами, задача по расписанию, переплата с ключом; приёмка сезона под нагрузкой | `app/jobs/reconcile_job.rb`, `app/models/treasury_book.rb`, `db/migrate/*`, `config/recurring.yml` | ~90 мин | ⭐⭐⭐⭐⭐ |
+
+Всего: 11 серий, ~12 ч 25 мин, 125 проверок.
 
 Таблица собирается из шапок самих серий: `tools/season_table.py 06`.
 Хронометраж и число проверок — `tools/season_table.py 06 --stats`.

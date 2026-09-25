@@ -156,6 +156,23 @@ Rails»](https://eurecable.com/ideas/972)**, опубликованной на e
 | **RFC 6266** — `Content-Disposition`; серия s05e11 | — |
 | **WAI Tables Tutorial**, **WAI-ARIA Live Regions** — w3.org/WAI — таблица и живая область в шаблонах Rails; серии s05e03, s05e09 | — |
 | **OWASP Authorization Cheat Sheet** (раздел IDOR) — cheatsheetseries.owasp.org — чужая запись через свою книгу; серия s05e06 | — |
+| **Rails Guides: Active Job Basics** — постановка, сериализация и GlobalID, очереди и приоритеты, «Exceptions»; серии s06e01–s06e03 | — |
+| **solid_queue** (гем, github.com/rails/solid_queue) — README: работники, диспетчеры, отложенные и повторяющиеся задачи, heartbeat; серии s06e02, s06e10 | — |
+| **globalid** (гем, github.com/rails/globalid) — адрес записи в записке; серия s06e01 | — |
+| Nygard M. — **Release It!** (2nd ed., 2018) — «Integration Points», «Timeouts», «Stability Patterns»; серии s06e03, s06e05, s06e11 | — |
+| Brooker M. — **Exponential Backoff And Jitter** (AWS Architecture Blog, 2015) — зачем растёт пауза и зачем к ней разброс; серия s06e03 | — |
+| Helland P. — **Idempotence Is Not a Medical Condition** (ACM Queue, 2012) — идемпотентность в распределённых системах; серия s06e04 | — |
+| Richardson C. — **Microservices Patterns** (2018) — «Transactional outbox»; серия s06e04 | — |
+| **IETF: The Idempotency-Key HTTP Header Field** (черновик рабочей группы httpapi) и **Stripe API: Idempotent requests** — ключ повтора для чужой стороны; серия s06e05 | — |
+| **RFC 2104 — HMAC** и **Stripe: Check the webhook signatures** — подпись входящего вызова со временем; серия s06e06 | — |
+| **OWASP: Cross-Site Request Forgery Prevention Cheat Sheet** — от чего защищает токен формы; серия s06e06 | — |
+| **Rails Guides: Caching with Rails: An Overview** — «Low-Level Caching», «Fragment Caching», «Russian Doll Caching», «Conditional GET support»; серии s06e07, s06e08 | — |
+| **solid_cache** (гем) — хранилище, вытеснение; серия s06e07 | — |
+| Hansson D. H. — **How key-based cache expiration works** (Signal v. Noise, 2012); серия s06e07 | — |
+| **RFC 9111 — HTTP Caching** — свежесть, эвристика, `Cache-Control`; серия s06e08 | — |
+| **Rails Guides: Action Cable Overview** и **solid_cable** (гем) — адаптеры, подписки; серия s06e09 | — |
+| **fugit** (гем) — расписания словами и в cron, пояса; серия s06e10 | — |
+| Saltzer J., Reed D., Clark D. — **End-to-End Arguments in System Design** (1984) — откуда сквозные проверки; серия s06e11 | — |
 
 ## Ремесло, тесты, рефакторинг
 
@@ -189,6 +206,7 @@ Adventures of Lovelace and Babbage*, 2015) — комикс, в котором �
 | Padua S. — **The Thrilling Adventures of Lovelace and Babbage** (2015); рус. «Невероятные приключения Лавлейс и Бэббиджа» | Аналитическая машина, ADA, тон курса |
 | Wolmar C. — **Blood, Iron, and Gold: How the Railroads Transformed the World** (2009) | общая рама: как дороги переделали мир, включая Японию и США |
 | Wolmar C. — **To the Edge of the World: The Story of the Trans-Siberian Railway** (2013) | сезон 6, стройка с 1891 года |
+| **История Уссурийской железной дороги** (материалы РЖД и краеведов Приморья) | сезон 6: стройка 1891–1897, кто строил и откуда шёл металл |
 | Schivelbusch W. — **The Railway Journey: The Industrialization of Time and Space in the 19th Century** (1977); рус. Шивельбуш — «Железнодорожное путешествие» | как дорога изменила восприятие времени и расстояния — идейная основа всего курса |
 | Galison P. — **Einstein's Clocks, Poincaré's Maps** (2003) | синхронизация времени; сезон 8 и часовые пояса 1883 года |
 | Jonnes J. — **Empires of Light: Edison, Tesla, Westinghouse** (2003) | сезон 3, война токов |

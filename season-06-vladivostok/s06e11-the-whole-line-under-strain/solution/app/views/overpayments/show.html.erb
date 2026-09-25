@@ -1,0 +1,33 @@
+<% content_for :title, "Переплаты казны за #{@month}" %>
+
+<h1>Переплаты казны за <%= @month %></h1>
+
+<% if @overpayments.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Отгрузка</th>
+        <th scope="col">Квитанция казначейства</th>
+        <th scope="col">Переплачено</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @overpayments.each do |overpayment| %>
+        <tr>
+          <th scope="row"><%= overpayment.delivery.reference %></th>
+          <td><%= overpayment.receipt %></td>
+          <td><%= roubles(overpayment.kopecks) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="row" colspan="2">Всего</th>
+        <td data-total><%= roubles(@overpayments.sum(:kopecks)) %></td>
+      </tr>
+    </tfoot>
+  </table>
+<% else %>
+  <p>Переплат нет: казна выплатила за каждую поставку не больше одного раза.</p>
+  <p>Всего: <span data-total><%= roubles(0) %></span></p>
+<% end %>

@@ -1,0 +1,22 @@
+# Кабель Action Cable: как новость доходит от того, кто правит, до тех, кто
+# смотрит.
+#
+# Правит работник очереди (bin/jobs), смотрит браузер у сервера (bin/rails
+# server) — это два процесса. `async` передаёт новости только внутри
+# одного процесса: то, что нарисует работник, до браузера не дойдёт.
+# Solid Cable — таблица в базе, общая для всех процессов (s06e09).
+development:
+  adapter: solid_cable
+  polling_interval: 0.1.seconds
+  message_retention: 1.day
+
+test:
+  adapter: test
+
+production:
+  adapter: solid_cable
+  connects_to:
+    database:
+      writing: cable
+  polling_interval: 0.1.seconds
+  message_retention: 1.day

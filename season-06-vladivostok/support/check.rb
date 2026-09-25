@@ -45,10 +45,12 @@ module Crimson
       require "active_support/testing/time_helpers"
       require "nokogiri"
       require_relative "line"
+      require_relative "treasury"
 
-      # Линия — поддельная, своя на прогон. Адрес подменяется до первого
-      # обращения конторы к линии.
+      # Линия и книга казначейства — поддельные, свои на прогон. Адреса
+      # подменяются до первого обращения конторы к ним.
       Rails.configuration.x.telegraph_line = Crimson::Line.shared.url
+      Rails.configuration.x.treasury_book = Crimson::Treasury.shared.url
 
       begin
         ActiveRecord::Migration.maintain_test_schema!
@@ -79,6 +81,8 @@ module Crimson
       super
       travel_to Time.zone.local(1892, 5, 12, 9, 0)
       Crimson::Line.shared.reset!
+      Crimson::Treasury.shared.reset!
+      cable.clear if cable.respond_to?(:clear)
     end
 
     def after_teardown
@@ -87,6 +91,7 @@ module Crimson
     end
 
     def line = Crimson::Line.shared
+    def treasury = Crimson::Treasury.shared
 
     # ─── запрос ───────────────────────────────────────────────────────────
     #
@@ -186,6 +191,11 @@ module Crimson
         found = item[:target] ? doc.css("[id='#{item[:target]}']") : doc.css(item[:targets].to_s)
         found.each do |node|
           content = item[:template]&.dup
+          # Turbo не держит двух элементов с одним id: при `append` и
+          # `prepend` элемент, который уже есть, он сначала убирает.
+          if content && %w[append prepend].include?(item[:action])
+            content.element_children.each { |child| child["id"] && doc.css("[id='#{child["id"]}']").each(&:remove) }
+          end
           case item[:action]
           when "append" then node.add_child(content.to_html) if content
           when "prepend" then node.prepend_child(content.to_html) if content
@@ -393,14 +403,31 @@ module Crimson
       done
     end
 
+    # Взять готовые записки — как работник: строки переходят во «взятые».
+    # С классом — только записки этого класса: остальные ждут своего
+    # работника (так проверка выбирает, чью смерть изображать).
+    def claim(job_class = nil, limit = 1)
+      return SolidQueue::ReadyExecution.claim("*", limit, nil) unless job_class
+
+      SolidQueue::ReadyExecution.transaction do
+        ready = SolidQueue::ReadyExecution.joins(:job).where(solid_queue_jobs: { class_name: job_class.to_s })
+                                          .order(:priority, :job_id).limit(limit).to_a
+        next [] if ready.empty?
+
+        SolidQueue::ClaimedExecution.claiming(ready.map(&:job_id), nil) do
+          SolidQueue::ReadyExecution.where(id: ready.map(&:id)).delete_all
+        end
+      end
+    end
+
     # Работник падает посреди задачи: задача сделала своё — и процесс умер,
     # не успев отметить её сделанной. Строка остаётся «взятой».
     #
     # Так бывает с каждым работником: выключили свет, машину, контору. Очередь
     # это переживает — `restart!` — и исполняет задачу ещё раз.
-    def crash_after_effect!
-      claimed = SolidQueue::ReadyExecution.claim("*", 1, nil)
-      flunk "Работнику нечего взять: очередь пуста." if claimed.empty?
+    def crash_after_effect!(job_class = nil)
+      claimed = claim(job_class)
+      flunk "Работнику нечего взять: #{job_class ? "записок #{job_class} в очереди нет" : "очередь пуста"}." if claimed.empty?
 
       execution = claimed.first
       ActiveJob::Base.execute(execution.job.arguments.merge("provider_job_id" => execution.job.id))
@@ -422,8 +449,8 @@ module Crimson
     # секунды. Так оба смотрят в книгу раньше, чем кто-то из них запишет, и
     # «а нет ли уже?» у обоих отвечает «нет». Работник, который в книгу не
     # смотрит, а сразу пишет, никого не ждёт.
-    def two_workers_at_once!(meet_at:)
-      claimed = SolidQueue::ReadyExecution.claim("*", 2, nil)
+    def two_workers_at_once!(meet_at:, job_class: nil)
+      claimed = claim(job_class, 2)
       flunk "Двум работникам нужно две записки, в очереди — #{claimed.size}." if claimed.size < 2
 
       looked = Queue.new
@@ -466,13 +493,54 @@ module Crimson
     # Аргументы задачи так, как они лежат в строке очереди.
     def arguments_of(job) = job.arguments["arguments"]
 
+    # ─── кабель ─────────────────────────────────────────────────────────────
+    #
+    # Action Cable в проверках — адаптер `test`: он запоминает всё, что ушло
+    # по кабелю, по имени потока. Проверка смотрит, что ушло и куда, — и
+    # прикладывает пришедшее к странице так, как это сделает Turbo в
+    # браузере (s05e09).
+
+    def cable = ActionCable.server.pubsub
+
+    # Потоки Turbo, ушедшие по кабелю в поток `name`.
+    def cabled(name)
+      cable.broadcasts(name).flat_map { |payload| streams(JSON.parse(payload).to_s) }
+    end
+
+    # Потоки, которые слушает страница: подписанные имена из
+    # `<turbo-cable-stream-source>`, проверенные тем же ключом, которым их
+    # проверит сервер при подписке. Подделанное имя проверку не пройдёт.
+    def listened(doc = page)
+      doc.css("turbo-cable-stream-source").map do |node|
+        Turbo::StreamsChannel.verified_stream_name(node["signed-stream-name"].to_s)
+      end
+    end
+
+    # ─── линия стучится к нам ───────────────────────────────────────────────
+    #
+    # Так станция Большого Северного шлёт конторе квитанцию: JSON в теле,
+    # время и подпись в заголовках. Подпись — HMAC-SHA256 общего секрета над
+    # «время.тело» (s06e06). `secret:` и `at:` — чтобы подделать или
+    # состарить.
+
+    def line_posts(path, payload, secret: Rails.configuration.x.line_secret, at: Time.current, sign: true)
+      # Линия пишет JSON по-своему — с пробелами и переносами. Контора не
+      # обязана писать так же, но подпись считана над этими байтами.
+      body = payload.is_a?(String) ? payload : JSON.pretty_generate(payload)
+      stamp = at.to_i.to_s
+      headers = { "CONTENT_TYPE" => "application/json", "X-Line-Timestamp" => stamp }
+      headers["X-Line-Signature"] = OpenSSL::HMAC.hexdigest("SHA256", secret, "#{stamp}.#{body}") if sign
+      session.post(path, params: body, headers: headers)
+      response
+    end
+
     # ─── данные ───────────────────────────────────────────────────────────
     #
     # Сезон про контору, а не про базу: строки заводятся моделями — их
     # валидации и ограничения держат приёмы сезона 4.
 
     WIPED = %w[
-      disbursements acceptances telegrams deliveries
+      overpayments day_reports disbursements acceptances telegrams deliveries
       settlements legs consignments entries companies
       solid_queue_recurring_executions solid_queue_scheduled_executions
       solid_queue_ready_executions solid_queue_claimed_executions

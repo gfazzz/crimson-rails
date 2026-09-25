@@ -23,6 +23,12 @@
 # Линия помнит номер отправления (заголовок `Idempotency-Key`): телеграмму с
 # тем же номером она второй раз не передаёт и отвечает прежним номером. Так
 # работают настоящие линии, и на этом держится s06e05.
+#
+# Линию можно спросить о телеграмме по её номеру: `GET /messages/ВЛ-4401` —
+# 200 и что с ней, если это телеграмма этой линии; 404, если нет.
+#
+#   line.knows!("НГС-7712")        — линия передавала телеграмму с этим номером
+#                                    (квитанции из Нагасаки приходят не от нас)
 require "puma"
 require "puma/configuration"
 require "json"
@@ -49,7 +55,11 @@ module Crimson
         @requests = []
         @by_key = {}
         @plan = []
+        @known = []
         @counter = 4400
+        # Поколение линии. Запрос, задумавшийся в прошлой проверке, может
+        # проснуться уже в следующей; то, что он принёс, следующей не касается.
+        @generation = (@generation || 0) + 1
       end
     end
 
@@ -63,7 +73,7 @@ module Crimson
       @server.run
       # Не `at_exit`: минитест сам запускает проверки из `at_exit`, и
       # остановка, записанная позже, сработала бы раньше них.
-      Minitest.after_run { @server.stop(true) } if defined?(Minitest)
+      Minitest.after_run { @server.stop(false) } if defined?(Minitest)
       self
     end
 
@@ -75,6 +85,11 @@ module Crimson
     def lose_answer!(times = 1) = plan(:lose, times)
     def garble!(times = 1) = plan(:garble, times)
 
+    def knows!(*numbers)
+      @lock.synchronize { numbers.each { |number| @known << number } }
+      self
+    end
+
     def plan(what, times)
       @lock.synchronize { times.times { @plan << what } }
       self
@@ -85,27 +100,43 @@ module Crimson
     def call(env)
       request = Request.new(verb: env["REQUEST_METHOD"], path: env["PATH_INFO"],
                             headers: headers_of(env), body: env["rack.input"]&.read)
-      what = @lock.synchronize do
+      kind = if request.verb == "POST" && request.path == "/messages" then :deliver
+             elsif request.verb == "GET" && request.path.start_with?("/messages/") then :trace
+             end
+      generation = nil
+      planned = @lock.synchronize do
+        generation = @generation
         @requests << request
-        request.path == "/messages" && request.verb == "POST" ? @plan.shift : :other
+        @plan.shift if kind
+      end
+      return answer(404, error: "not_found") unless kind
+
+      case planned
+      when :down then return answer(503, error: "line_down")
+      when :reject then return answer(422, error: "no_such_addressee")
+      when :garble then return answer(201, nummer: "?")
+      when Array then sleep planned.last
       end
 
-      case what
-      when :other then answer(404, error: "not_found")
-      when :down then answer(503, error: "line_down")
-      when :reject then answer(422, error: "no_such_addressee")
-      when Array
-        sleep what.last
-        accept(request)
-      when :lose
-        accept(request)
-        sleep 30 # ответ не дойдёт: клиент бросит ждать раньше
-      when :garble then answer(201, nummer: "?")
-      else accept(request)
-      end
+      return answer(410, error: "stale") unless @lock.synchronize { generation == @generation }
+      return trace(request) if kind == :trace
+
+      response = accept(request)
+      sleep 6 if planned == :lose # принято и передано — ответ не дойдёт: клиент бросит ждать раньше
+      response
     end
 
     private
+
+    # Справка о телеграмме. Лежащая или задумавшаяся линия отвечает на справку
+    # так же, как на приём: план расходуется и здесь.
+    def trace(request)
+      number = URI.decode_www_form_component(request.path.delete_prefix("/messages/"))
+      known = @lock.synchronize { @known.include?(number) || @accepted.any? { |item| item[:number] == number } }
+      return answer(404, error: "not_ours") unless known
+
+      answer(200, number: number, state: "transmitted")
+    end
 
     def accept(request)
       number = @lock.synchronize do

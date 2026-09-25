@@ -1,0 +1,13 @@
+<%# Строка поставки — из копии. Ключ копии — поставка с её версией
+    (`updated_at`): новая квитанция или выплата трогают поставку
+    (`touch: true`), и копия устаревает. Без этого строка показывала бы
+    вчерашнее число квитанций сколько угодно долго. %>
+<% cache delivery do %>
+  <tr id="<%= dom_id(delivery) %>">
+    <th scope="row"><%= delivery.reference %></th>
+    <td><%= delivery.steamer %></td>
+    <td><%= delivery.sleepers %></td>
+    <td data-receipts><%= delivery.acceptances.size %></td>
+    <td data-paid><%= delivery.disbursements.any? ? roubles(delivery.disbursements.sum(:kopecks)) : "—" %></td>
+  </tr>
+<% end %>
